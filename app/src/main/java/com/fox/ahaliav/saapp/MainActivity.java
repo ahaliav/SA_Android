@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             drawer.openDrawer(GravityCompat.START);
+                            for(int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                                getSupportFragmentManager().popBackStack();
+                            }
                         }
                     });
                 }
