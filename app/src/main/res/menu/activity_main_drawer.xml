@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_groups"
+            android:icon="@drawable/group"
+            android:title="שיוך פריט למשלוח" />
+        <item
+            android:id="@+id/nav_calender"
+            android:icon="@drawable/calender"
+            android:title="אחזור פריט" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/events"
+            android:title="העברת פריט בארץ" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/news"
+            android:title="צילום כתב משלוח" />
+        <item android:title="" android:enabled="false"/>
+        <item android:title="" android:enabled="false"/>
+        <item android:title="" android:enabled="false" />
+    </group>
+
+
+
+    <item android:title="">
+        <menu>
+            <item
+                android:orderInCategory="200"
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="יציאה" />
+        </menu>
+    </item>
+
+</menu>

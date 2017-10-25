@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SA</string>
+    <string name="action_settings">הגדרות</string>
+    <string name="calculator">יומן נקיות</string>
+    <string name="groups">קבוצות</string>
+    <string name="navigation_drawer_close">סגור</string>
+    <string name="navigation_drawer_open">פתח</string>
+    <string name="news">חדשות</string>
+    <string name="events">אירועים</string>
+</resources>
