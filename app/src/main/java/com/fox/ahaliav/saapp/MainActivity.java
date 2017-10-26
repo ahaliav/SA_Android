@@ -1,9 +1,7 @@
 package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -29,15 +27,6 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         toggle = new ActionBarDrawerToggle(
@@ -53,7 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager.beginTransaction()
                 .add(R.id.main_fragment_container, fragment, "MainFragment")
-                .addToBackStack("MainFragment")
                 .commit();
 
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -64,6 +52,24 @@ public class MainActivity extends AppCompatActivity
                     tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 }
 
+                switch (tag){
+                    case "MainFragment":
+                        getSupportActionBar().setTitle(R.string.main_title);
+                        break;
+                    case "GroupsFragment":
+                        getSupportActionBar().setTitle(R.string.groups_title);
+                        break;
+                    case "NewsFragment":
+                        getSupportActionBar().setTitle(R.string.news_title);
+                        break;
+                    case "CalenderFragment":
+                        getSupportActionBar().setTitle(R.string.calender_title);
+                        break;
+                    case "EventsFragment":
+                        getSupportActionBar().setTitle(R.string.events_title);
+                        break;
+                }
+
 
                 if (tag != "MainFragment" && getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back button
@@ -71,19 +77,22 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             onBackPressed();
+
                         }
                     });
                 } else {
-                    //show hamburger
+
+                    for(int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                        getSupportFragmentManager().popBackStack();
+                    }
+
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     toggle.syncState();
                     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             drawer.openDrawer(GravityCompat.START);
-                            for(int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                                getSupportFragmentManager().popBackStack();
-                            }
+
                         }
                     });
                 }
@@ -133,7 +142,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         String tag = "";
-        if (id == R.id.nav_groups) {
+        if (id == R.id.nav_main) {
+            fragment = new MainFragment();
+            tag = "MainFragment";
+        }
+        else if (id == R.id.nav_groups) {
             fragment = new GroupsFragment();
             tag = "GroupsFragment";
         } else if (id == R.id.nav_calender) {
