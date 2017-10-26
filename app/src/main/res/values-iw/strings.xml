@@ -8,4 +8,12 @@
     <string name="navigation_drawer_open">פתח</string>
     <string name="news">חדשות</string>
     <string name="events">אירועים</string>
+    <string name="exit">יציאה</string>
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+    <string name="homepage">מסך ראשי</string>
+    <string name="calender_title">יומן נקיות</string>
+    <string name="events_title">אירועים</string>
+    <string name="groups_title">קבוצות</string>
+    <string name="main_title">SA</string>
+    <string name="news_title">חדשות SA</string>
 </resources>

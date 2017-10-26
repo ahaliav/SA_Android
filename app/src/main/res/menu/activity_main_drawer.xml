@@ -3,23 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/homepage" />
+        <item
             android:id="@+id/nav_groups"
-            android:icon="@drawable/group"
-            android:title="שיוך פריט למשלוח" />
+            android:icon="@drawable/ic_people_outline_black_24dp"
+            android:title="@string/groups" />
         <item
             android:id="@+id/nav_calender"
-            android:icon="@drawable/calender"
-            android:title="אחזור פריט" />
+            android:icon="@drawable/ic_perm_contact_calendar_black_24dp"
+            android:title="@string/calculator" />
         <item
             android:id="@+id/nav_events"
-            android:icon="@drawable/events"
-            android:title="העברת פריט בארץ" />
+            android:icon="@drawable/ic_event_black_24dp"
+            android:title="@string/events" />
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/news"
-            android:title="צילום כתב משלוח" />
-        <item android:title="" android:enabled="false"/>
-        <item android:title="" android:enabled="false"/>
+            android:icon="@drawable/ic_featured_play_list_black_24dp"
+            android:title="@string/news" />
         <item android:title="" android:enabled="false" />
     </group>
 
@@ -31,7 +33,7 @@
                 android:orderInCategory="200"
                 android:id="@+id/nav_exit"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="יציאה" />
+                android:title="@string/exit" />
         </menu>
     </item>
 
