@@ -16,6 +16,7 @@
     <string name="main_title">SA</string>
     <string name="groups_title">Groups</string>
     <string name="calender_title">Sobriety</string>
+    <string name="daysago">Days Ago</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
