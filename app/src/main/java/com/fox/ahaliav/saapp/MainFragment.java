@@ -2,6 +2,7 @@ package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,6 +76,10 @@ public class MainFragment extends Fragment  {
                 {
                     case MotionEvent.ACTION_DOWN:
                         linearGroups.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new GroupsFragment(), "GroupsFragment");
+                        ft.addToBackStack("GroupsFragment");
+                        ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
@@ -97,6 +102,10 @@ public class MainFragment extends Fragment  {
                 {
                     case MotionEvent.ACTION_DOWN:
                         linearCalender.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new CalenderFragment(), "CalenderFragment");
+                        ft.addToBackStack("CalenderFragment");
+                        ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
@@ -119,6 +128,10 @@ public class MainFragment extends Fragment  {
                 {
                     case MotionEvent.ACTION_DOWN:
                         linearNews.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new NewsFragment(), "NewsFragment");
+                        ft.addToBackStack("NewsFragment");
+                        ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
@@ -141,12 +154,18 @@ public class MainFragment extends Fragment  {
                 {
                     case MotionEvent.ACTION_DOWN:
                         linearEvents.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new EventsFragment(), "EventsFragment");
+                        ft.addToBackStack("EventsFragment");
+                        ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
                         linearEvents.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
+
+
                 return true;
             }
         });

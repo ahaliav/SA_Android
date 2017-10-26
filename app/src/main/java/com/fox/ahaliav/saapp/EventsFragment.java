@@ -1,55 +1,79 @@
 package com.fox.ahaliav.saapp;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
-public class EventsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class EventsFragment extends Fragment implements ICallbackMethod {
+    ListView listview = null;
+    ArrayList<News> list = null;
     public EventsFragment() {
         // Required empty public constructor
     }
 
-
     public static EventsFragment newInstance(String param1, String param2) {
         EventsFragment fragment = new EventsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
+    }
+
+    private void loadevents() {
+        WebSiteHelper helper = new WebSiteHelper(this);
+        helper.getEventsTitles();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+        View v = inflater.inflate(R.layout.fragment_events, container, false);
+
+        listview = (ListView)v.findViewById(R.id.listviewEvents);
+        list = new ArrayList<News>();
+        loadevents();
+
+        return v;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onTaskDone(List<Object> objs) {
+        for (int i = 0; i < objs.size(); ++i) {
+            Map<String,Object> mapPost = (Map<String,Object>)objs.get(i);
+            Map<String,Object> mapTitle = (Map<String, Object>) mapPost.get("title");
+            News n = new News("", (String) mapTitle.get("rendered"), new Date());
+            n.setTitle(n.getTitle().replaceAll("\\<[^>]*>","").replaceAll("\\&.*?\\;", ""));
+            list.add(n);
+        }
+
+        final NewsAdapter adapter = new NewsAdapter(list, getActivity().getApplicationContext());
+        listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                News dataModel= list.get(position);
+
+                Snackbar.make(view, dataModel.getTitle(), Snackbar.LENGTH_LONG)
+                        .setAction("No action", null).show();
+            }
+        });
     }
 }

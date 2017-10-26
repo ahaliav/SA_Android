@@ -11,13 +11,15 @@ public class WebSiteHelper {
         this.callback = callback;
     }
 
-    public News getNewsTitles()
+    public void getNewsTitles()
     {
         JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?fields=id,title", this.callback);
         reader.execute();
-
-
-        return  null;
     }
 
+    public void getEventsTitles() {
+
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?fields=id,title", this.callback);
+        reader.execute();
+    }
 }

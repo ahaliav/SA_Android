@@ -1,48 +1,76 @@
 package com.fox.ahaliav.saapp;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 public class CalenderFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    ListView listview = null;
+    ArrayList<Subriety> list = null;
     public CalenderFragment() {
         // Required empty public constructor
     }
 
     public static CalenderFragment newInstance(String param1, String param2) {
         CalenderFragment fragment = new CalenderFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calender, container, false);
+        View v = inflater.inflate(R.layout.fragment_calender, container, false);
+
+        listview = (ListView)v.findViewById(R.id.listviewSubrieties);
+        list = new ArrayList<Subriety>();
+        loadsubrieties();
+
+
+        return v;
+    }
+
+    private void loadsubrieties() {
+
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+        Cursor result = db.selectSubrieties("");
+
+        if(result != null) {
+
+            while (result.moveToNext()) {
+
+                int id = result.getInt(0);
+                String name = result.getString(1);
+                String date = result.getString(2);
+
+                Subriety s = new Subriety(id,name, date);
+                list.add(s);
+            }
+
+            if (!result.isClosed())  {
+                result.close();
+            }
+
+            final CalenderAdapter adapter = new CalenderAdapter(list, getActivity().getApplicationContext());
+            listview.setAdapter(adapter);
+
+            if(list.size() == 0){
+                //go to add new subriety
+            }
+
+        }
     }
 }

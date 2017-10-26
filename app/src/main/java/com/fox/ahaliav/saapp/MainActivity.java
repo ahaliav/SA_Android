@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
 
                 switch (tag){
                     case "MainFragment":
+                    case "":
                         getSupportActionBar().setTitle(R.string.main_title);
                         break;
                     case "GroupsFragment":

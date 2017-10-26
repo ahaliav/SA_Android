@@ -58,7 +58,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
             Map<String,Object> mapPost = (Map<String,Object>)objs.get(i);
             Map<String,Object> mapTitle = (Map<String, Object>) mapPost.get("title");
             News n = new News("", (String) mapTitle.get("rendered"), new Date());
-
+            n.setTitle(n.getTitle().replaceAll("\\<[^>]*>","").replaceAll("\\&.*?\\;", ""));
             list.add(n);
         }
 
