@@ -39,7 +39,6 @@ public class CalenderFragment extends Fragment {
         list = new ArrayList<Subriety>();
         loadsubrieties();
 
-
         return v;
     }
 
