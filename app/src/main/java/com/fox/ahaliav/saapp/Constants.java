@@ -11,4 +11,9 @@ public class Constants {
     public static String getEventsUrl(){
         return "http://sa-israel.org/wp-json/wp/v2/posts";
     }
+
+    public static String getGroupsCsv(){
+        return "http://www.sa-israel.org/wp-content/uploads/2017/10/wpdt_export.csv";
+    }
+
 }

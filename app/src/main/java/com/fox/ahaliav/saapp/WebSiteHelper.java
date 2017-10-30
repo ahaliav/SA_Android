@@ -22,4 +22,10 @@ public class WebSiteHelper {
         JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?fields=id,title", this.callback);
         reader.execute();
     }
+
+    public void getGroups() {
+
+        CsvReader reader = new CsvReader(Constants.getGroupsCsv(), this.callback);
+        reader.execute();
+    }
 }

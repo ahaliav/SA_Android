@@ -1,21 +1,22 @@
 package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class GroupsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class GroupsFragment extends Fragment implements ICallbackMethod {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ListView listview = null;
+    ArrayList<Group> list = null;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -24,26 +25,53 @@ public class GroupsFragment extends Fragment {
 
     public static GroupsFragment newInstance(String param1, String param2) {
         GroupsFragment fragment = new GroupsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_groups, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_groups, container, false);
+
+        listview = (ListView)v.findViewById(R.id.listviewGroups);
+        list = new ArrayList<Group>();
+        loadgroups();
+
+        return v;
+    }
+
+    private void loadgroups() {
+        WebSiteHelper helper = new WebSiteHelper(this);
+        helper.getGroups();
+    }
+
+    @Override
+    public void onTaskDone(List<Object> objs) {
+        for (int i = 0; i < objs.size(); ++i) {
+
+            Group n = (Group)objs.get(i);
+            list.add(n);
+        }
+
+        final GroupsAdapter adapter = new GroupsAdapter(list, getActivity().getApplicationContext());
+        listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Group dataModel= list.get(position);
+
+                Snackbar.make(view, dataModel.getDay(), Snackbar.LENGTH_LONG)
+                        .setAction("No action", null).show();
+            }
+        });
     }
 }
