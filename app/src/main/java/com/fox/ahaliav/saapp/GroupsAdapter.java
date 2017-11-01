@@ -15,9 +15,8 @@ import java.util.ArrayList;
  */
 
 public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickListener {
-    private ArrayList<Group> dataSet;
+    ArrayList<Group> dataSet;
     Context mContext;
-
     private static class ViewHolder {
         TextView tvDay;
         TextView tvFromTime;
@@ -52,8 +51,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
         // Check if an existing view is being reused, otherwise inflate the view
         GroupsAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
 
-        final View result;
-
         if (convertView == null) {
 
             viewHolder = new GroupsAdapter.ViewHolder();
@@ -66,15 +63,11 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
             viewHolder.tvLang = (TextView) convertView.findViewById(R.id.tvLang);
             viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
             viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
-            result = convertView;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (GroupsAdapter.ViewHolder) convertView.getTag();
-            result = convertView;
         }
-
-        lastPosition = position;
 
         viewHolder.tvDay.setText(dataModel.getDay());
         viewHolder.tvFromTime.setText(dataModel.getFromTime());
@@ -84,9 +77,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
         viewHolder.tvLocation.setText(dataModel.getLocation());
 
         viewHolder.mainframe.setOnClickListener(this);
-        viewHolder.mainframe.setTag(position);
 
         // Return the completed view to render on screen
         return convertView;
     }
 }
+
