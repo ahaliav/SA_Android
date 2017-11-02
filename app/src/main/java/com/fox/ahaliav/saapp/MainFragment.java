@@ -1,5 +1,6 @@
 package com.fox.ahaliav.saapp;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 public class MainFragment extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
@@ -101,11 +104,7 @@ public class MainFragment extends Fragment  {
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        linearCalender.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new CalenderFragment(), "CalenderFragment");
-                        ft.addToBackStack("CalenderFragment");
-                        ft.commit();
+                        loadsubrieties();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
@@ -170,5 +169,43 @@ public class MainFragment extends Fragment  {
             }
         });
 
+    }
+
+    private void loadsubrieties() {
+
+        ArrayList<Subriety> list = new ArrayList<Subriety>();
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+        Cursor result = db.selectSubrieties("");
+
+        if(result != null) {
+
+            while (result.moveToNext()) {
+
+                int id = result.getInt(0);
+                String name = result.getString(1);
+                String date = result.getString(2);
+
+                Subriety s = new Subriety(id,name, date);
+                list.add(s);
+            }
+
+            if (!result.isClosed())  {
+                result.close();
+            }
+
+            if(list.size() == 0){
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, new CalenderAddFragment(), "CalenderAddFragment");
+                ft.addToBackStack("CalenderAddFragment");
+                ft.commit();
+            }
+            else {
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, new CalenderFragment(), "CalenderFragment");
+                ft.addToBackStack("CalenderFragment");
+                ft.commit();
+            }
+
+        }
     }
 }

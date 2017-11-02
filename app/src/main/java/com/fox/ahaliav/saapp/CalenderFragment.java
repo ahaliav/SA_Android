@@ -66,13 +66,6 @@ public class CalenderFragment extends Fragment {
 
             final CalenderAdapter adapter = new CalenderAdapter(list, getActivity().getApplicationContext());
             listview.setAdapter(adapter);
-
-            if(list.size() == 0){
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.main_fragment_container, new CalenderAddFragment(), "CalenderAddFragment");
-                ft.commit();
-            }
-
         }
     }
 }
