@@ -18,6 +18,8 @@
     <string name="calender_title">Sobriety</string>
     <string name="daysago">Days Ago</string>
     <string name="searchgroups">Search</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="calender__add_title">Add Sobriety Date</string>
+    <string name="subriety_title">Title</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

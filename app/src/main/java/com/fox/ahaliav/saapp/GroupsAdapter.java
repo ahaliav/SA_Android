@@ -51,7 +51,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
         // Check if an existing view is being reused, otherwise inflate the view
         GroupsAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
 
-        if (convertView == null) {
+        //if (convertView == null) {
 
             viewHolder = new GroupsAdapter.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -65,9 +65,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
             viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
 
             convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (GroupsAdapter.ViewHolder) convertView.getTag();
-        }
+        //} else {
+         //   viewHolder = (GroupsAdapter.ViewHolder) convertView.getTag();
+        //}
 
         viewHolder.tvDay.setText(dataModel.getDay());
         viewHolder.tvFromTime.setText(dataModel.getFromTime());

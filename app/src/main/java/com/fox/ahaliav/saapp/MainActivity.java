@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity
                     case "CalenderFragment":
                         getSupportActionBar().setTitle(R.string.calender_title);
                         break;
+                    case "CalenderAddFragment":
+                        getSupportActionBar().setTitle(R.string.calender__add_title);
+                        break;
                     case "EventsFragment":
                         getSupportActionBar().setTitle(R.string.events_title);
                         break;

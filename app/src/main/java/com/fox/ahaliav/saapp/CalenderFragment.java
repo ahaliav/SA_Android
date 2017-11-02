@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,9 @@ public class CalenderFragment extends Fragment {
             listview.setAdapter(adapter);
 
             if(list.size() == 0){
-                //go to add new subriety
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, new CalenderAddFragment(), "CalenderAddFragment");
+                ft.commit();
             }
 
         }

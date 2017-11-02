@@ -29,7 +29,6 @@
                     android:textColor="@android:color/black"
                     android:layout_column="0"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
                     android:layout_columnWeight="1"/>
                 <TextView
                     android:id="@+id/tvFromTime"
@@ -39,8 +38,8 @@
                     android:textColor="@android:color/black"
                     android:layout_column="1"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"/>
+                    android:layout_columnWeight="1"
+                    />
                 <TextView
                     android:id="@+id/tvToTime"
                     android:layout_width="wrap_content"
@@ -49,8 +48,8 @@
                     android:textColor="@android:color/black"
                     android:layout_column="2"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1" />
+                    android:layout_columnWeight="1"
+                    />
                 <TextView
                     android:id="@+id/tvComment"
                     android:layout_width="wrap_content"
@@ -59,8 +58,8 @@
                     android:textColor="@android:color/black"
                     android:layout_column="3"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1"/>
+                    android:layout_columnWeight="1"
+                    />
                 <TextView
                     android:id="@+id/tvLang"
                     android:layout_width="wrap_content"
@@ -69,8 +68,8 @@
                     android:textColor="@android:color/black"
                     android:layout_column="4"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1" />
+                    android:layout_columnWeight="1"
+                    />
                 <TextView
                     android:id="@+id/tvLocation"
                     android:layout_width="wrap_content"
@@ -79,8 +78,8 @@
                     android:textColor="@android:color/black"
                     android:layout_column="5"
                     android:layout_row="0"
-                    android:layout_gravity="fill"
-                    android:layout_columnWeight="1" />
+                    android:layout_columnWeight="1"
+                    />
             </GridLayout>
 
 

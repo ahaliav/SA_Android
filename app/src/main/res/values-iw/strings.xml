@@ -18,4 +18,8 @@
     <string name="news_title">חדשות SA</string>
     <string name="daysago">ימים</string>
     <string name="searchgroups">חפש</string>
+    <string name="calender__add_title">הוסף תאריך נקיות</string>
+    <string name="subriety_title">כותרת</string>
+    <string name="save">שמירה</string>
+    <string name="cancel">ביטול</string>
 </resources>
