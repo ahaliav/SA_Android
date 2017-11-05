@@ -47,7 +47,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> implements View.OnCl
         Subriety dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
-
+        //dataModel = getSubriety(dataModel.getId());
         final View result;
 
         if (convertView == null) {
@@ -77,4 +77,6 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> implements View.OnCl
         // Return the completed view to render on screen
         return convertView;
     }
+
+
 }

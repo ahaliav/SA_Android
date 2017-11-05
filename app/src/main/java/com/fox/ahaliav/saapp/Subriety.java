@@ -13,7 +13,7 @@ import java.util.Date;
 public class Subriety {
 
     public Subriety(int id, String name, String date) {
-        this.date = date;
+        this.name = name;
         this.id = id;
         this.date = date;
     }
@@ -46,7 +46,7 @@ public class Subriety {
     }
 
     public String getDays() {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = null;
         String days = "";
         try {
