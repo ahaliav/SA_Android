@@ -10,9 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 public class NewsFragment extends Fragment implements ICallbackMethod {
 
@@ -46,6 +46,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
         listview = (ListView)v.findViewById(R.id.listviewNews);
+
         list = new ArrayList<News>();
         loadnews();
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by ahaliav_fox on 26 אוקטובר 2017.
  */
 
-public class CalenderAdapter extends ArrayAdapter<Subriety> implements View.OnClickListener {
+public class CalenderAdapter extends ArrayAdapter<Subriety> {
     private ArrayList<Subriety> dataSet;
     Context mContext;
 
@@ -31,13 +31,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> implements View.OnCl
         this.mContext = context;
     }
 
-    @Override
-    public void onClick(View v) {
 
-        int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        Subriety dataModel = (Subriety) object;
-    }
 
     private int lastPosition = -1;
 
@@ -71,7 +65,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> implements View.OnCl
         viewHolder.tvTitle.setText(dataModel.getName());
         viewHolder.tvDays.setText(dataModel.getDays());
 
-        viewHolder.mainframe.setOnClickListener(this);
+       // viewHolder.mainframe.setOnClickListener(this);
         viewHolder.mainframe.setTag(position);
 
         // Return the completed view to render on screen
