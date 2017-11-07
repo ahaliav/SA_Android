@@ -11,18 +11,15 @@
         android:layout_marginBottom="-52dp"
         android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/listviewSubrieties"
+        <GridView
+            android:id="@+id/gvSubrieties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:layout_marginTop="50dp"
-            android:background="#EDEEEE"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:paddingBottom="20dp"
-            android:clickable="true"
+            android:numColumns="auto_fit"
             android:paddingTop="20dp" />
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true" android:drawable="@drawable/subriety_item_style_selected">
+        <corners android:radius="10dp" />
+        <stroke
+            android:width="3dip"
+            android:color="#040729" />
+
+        <solid android:color="#64203980" />
+    </item>
+
+
+
+    <item android:drawable="@drawable/subriety_item_style_not_selected">
+        <corners android:radius="10dp" />
+        <stroke
+            android:width="3dip"
+            android:color="#616bd7" />
+
+        <solid android:color="#645571be" />
+    </item>
+
+</selector>

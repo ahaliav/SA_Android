@@ -2,7 +2,9 @@ package com.fox.ahaliav.saapp;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,16 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 
 public class CalenderFragment extends Fragment {
 
-    ListView listview = null;
+    GridView gvSubrieties = null;
     ArrayList<Subriety> list = null;
+    FloatingActionButton floatingActionButton = null;
     Menu menu;
     public CalenderFragment() {
         // Required empty public constructor
@@ -43,28 +47,55 @@ public class CalenderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calender, container, false);
 
-        listview = (ListView)v.findViewById(R.id.listviewSubrieties);
+        gvSubrieties = (GridView)v.findViewById(R.id.gvSubrieties);
         //listview.setItemsCanFocus(false);
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gvSubrieties.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
                 // TODO Auto-generated method stub
                 setHasOptionsMenu(true);
-                //Toast.makeText(getActivity(), "Please long long press the key", Toast.LENGTH_LONG ).show();
+                FrameLayout v = (FrameLayout) view.findViewById(R.id.mainframe);
+                v.setBackground(getResources().getDrawable(R.drawable.subriety_item_style_selected));
+
+                LinearLayout ll = (LinearLayout) view.findViewById(R.id.mainlayout);
+                ll.setBackground(getResources().getDrawable(R.drawable.ic_check_opacity_black_15dp));
                 return true;
             }
         });
 
-        listview.setOnItemClickListener(new OnItemClickListener() {
+        gvSubrieties.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
+                Subriety sub = (Subriety)parent.getAdapter().getItem(position);
 
-                Toast.makeText(getActivity(), "Please long press the key", Toast.LENGTH_LONG ).show();
+                Bundle bundle=new Bundle();
+                bundle.putInt("id", sub.getId());
+                bundle.putString("name", sub.getName());
+                bundle.putString("date", sub.getDate());
 
+                CalenderAddFragment calen = new CalenderAddFragment();
+                calen.setArguments(bundle);
+
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, calen, "CalenderAddFragment");
+                ft.addToBackStack("CalenderAddFragment");
+                ft.commit();
             }
         });
+
+        floatingActionButton =  (FloatingActionButton)v.findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, new CalenderAddFragment(), "CalenderAddFragment");
+                ft.addToBackStack("CalenderAddFragment");
+                ft.commit();
+            }
+        });
+
 
         list = new ArrayList<Subriety>();
         loadsubrieties();
@@ -118,7 +149,7 @@ public class CalenderFragment extends Fragment {
             }
 
             final CalenderAdapter adapter = new CalenderAdapter(list, getActivity().getApplicationContext());
-            listview.setAdapter(adapter);
+            gvSubrieties.setAdapter(adapter);
         }
     }
 }

@@ -52,7 +52,7 @@ public class Subriety {
         try {
             startDate = df.parse(date);
             Date currentTime = Calendar.getInstance().getTime();
-            long mills = startDate.getTime() - currentTime.getTime();
+            long mills = currentTime.getTime() - startDate.getTime();
             days = String.valueOf(mills/(24 * 60 * 60 * 1000));
         } catch (ParseException e) {
             e.printStackTrace();

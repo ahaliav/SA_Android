@@ -1,54 +1,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainlayout"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/mainframe"
-            android:clickable="false"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+    <FrameLayout
+        android:id="@+id/mainframe"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+
+        android:background="@drawable/subriety_item_style"
+        android:clickable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
             android:layout_margin="10dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
 
-            android:background="@drawable/item_news_style">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_margin="10dp"
-                android:gravity="left"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:orientation="vertical">
+                android:textColor="#596b97"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/tvDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textColor="#596b97"
+                android:textSize="30sp" />
 
-                <TextView
-                    android:id="@+id/tvDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/tvDaysAgo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/daysago"
+                android:textColor="#596b97" />
 
-                <TextView
-                    android:id="@+id/tvDaysAgo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/daysago"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

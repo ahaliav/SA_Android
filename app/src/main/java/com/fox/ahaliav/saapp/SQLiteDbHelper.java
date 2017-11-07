@@ -48,6 +48,26 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateSubriety (Integer id, String name, Date subrietdate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(subrietdate);
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("subrietdate", date);
+        db.update("subrieties", contentValues,"id="+id.toString(), null);
+        return true;
+    }
+
+    public boolean deleteSubriety (Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("subrieties", "id="+id.toString(), null);
+        return true;
+    }
+
     public Cursor selectSubrieties (String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 

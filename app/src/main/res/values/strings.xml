@@ -22,4 +22,6 @@
     <string name="subriety_title">Title</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="calender_edit_title">Edit Sobriety</string>
+
 </resources>

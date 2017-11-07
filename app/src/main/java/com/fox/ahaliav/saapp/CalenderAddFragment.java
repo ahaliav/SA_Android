@@ -2,6 +2,7 @@ package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +11,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class CalenderAddFragment extends Fragment {
@@ -23,7 +28,9 @@ public class CalenderAddFragment extends Fragment {
     int year;
     int month;
     int day;
-
+    Integer id = -1;
+    String name = "";
+    String date = "";
     public CalenderAddFragment() {
         // Required empty public constructor
     }
@@ -43,10 +50,37 @@ public class CalenderAddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         rootView = inflater.inflate(R.layout.fragment_calender_add, container, false);
 
-        setCurrentDateOnView();
+        txtName = (EditText)rootView.findViewById(R.id.txtName);
+
+        if(getArguments() != null && getArguments().containsKey("id")){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.calender_edit_title);
+            id = getArguments().getInt("id");
+            name = getArguments().getString("name");
+            date = getArguments().getString("date");
+            txtName.setText(name);
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date startdate = null;
+            try {
+
+                startdate = df.parse(date);
+                Calendar c = Calendar.getInstance();
+                c.setTime(startdate);
+                setCurrentDateOnView(c);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.calender__add_title);
+            setCurrentDateOnView(Calendar.getInstance());
+        }
+
+
 
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
         btnCancel = (Button) rootView.findViewById(R.id.btnCancel);
@@ -56,7 +90,6 @@ public class CalenderAddFragment extends Fragment {
                 saveCurrentDateOnView();
             }
         });
-
 
         btnCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -68,11 +101,10 @@ public class CalenderAddFragment extends Fragment {
     }
 
 
-    public void setCurrentDateOnView() {
+    public void setCurrentDateOnView(Calendar c) {
 
         dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
 
-        final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
@@ -86,12 +118,17 @@ public class CalenderAddFragment extends Fragment {
 
         dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
 
-        EditText txtName = (EditText)rootView.findViewById(R.id.txtName);
-
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
 
-        String name = txtName.getText().toString();
-        db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+        name = txtName.getText().toString();
+
+        if(id <=0){
+            db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+        }
+        else {
+            db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
+        }
+
     }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
