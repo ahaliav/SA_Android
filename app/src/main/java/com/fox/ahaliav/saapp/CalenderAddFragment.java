@@ -35,12 +35,6 @@ public class CalenderAddFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static CalenderAddFragment newInstance(String param1, String param2) {
-        CalenderAddFragment fragment = new CalenderAddFragment();
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,14 +74,13 @@ public class CalenderAddFragment extends Fragment {
             setCurrentDateOnView(Calendar.getInstance());
         }
 
-
-
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
         btnCancel = (Button) rootView.findViewById(R.id.btnCancel);
 
         btnSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 saveCurrentDateOnView();
+                getFragmentManager().popBackStack();
             }
         });
 
@@ -128,7 +121,6 @@ public class CalenderAddFragment extends Fragment {
         else {
             db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
         }
-
     }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
