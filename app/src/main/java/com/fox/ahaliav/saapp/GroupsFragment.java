@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     ArrayList<Group> list = null;
     GroupsAdapter adapter = null;
     Filter filter = null;
+    private ProgressBar spinner;
+
     public GroupsFragment() {
         // Required empty public constructor
     }
@@ -45,6 +48,9 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         View v = inflater.inflate(R.layout.fragment_groups, container, false);
 
         listview = (ListView)v.findViewById(R.id.listviewGroups);
+
+        spinner = (ProgressBar)v.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);
 
         searchgroup = (SearchView)v.findViewById(R.id.searchgroup);
         list = new ArrayList<Group>();
@@ -82,6 +88,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                         .setAction("No action", null).show();
             }
         });
+
+        spinner.setVisibility(View.GONE);
     }
 
     @Override

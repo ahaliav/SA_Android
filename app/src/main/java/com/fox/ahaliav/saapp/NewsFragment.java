@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
 
     ListView listview = null;
     ArrayList<News> list = null;
+    private ProgressBar spinner;
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -46,7 +48,8 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
         listview = (ListView)v.findViewById(R.id.listviewNews);
-
+        spinner = (ProgressBar)v.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);
         list = new ArrayList<News>();
         loadnews();
 
@@ -76,5 +79,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
                         .setAction("No action", null).show();
             }
         });
+
+        spinner.setVisibility(View.GONE);
     }
 }

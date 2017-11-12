@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class EventsFragment extends Fragment implements ICallbackMethod {
     ListView listview = null;
     ArrayList<News> list = null;
+    private ProgressBar spinner;
+
     public EventsFragment() {
         // Required empty public constructor
     }
@@ -44,6 +47,9 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_events, container, false);
+
+        spinner = (ProgressBar)v.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);
 
         listview = (ListView)v.findViewById(R.id.listviewEvents);
         list = new ArrayList<News>();
@@ -75,5 +81,7 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
                         .setAction("No action", null).show();
             }
         });
+
+        spinner.setVisibility(View.GONE);
     }
 }
