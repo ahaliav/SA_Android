@@ -44,28 +44,34 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
 
             Group g = null;
             String line = "";
+            boolean isfirst = true;
             while ((line = rd.readLine()) != null) {
-                String[] RowData = line.split(",");
-                String day = "";
-                String fromtime = "";
-                String tomtime = "";
-                String location = "";
-                String comment = "";
-                String lang = "";
-                if(RowData.length > 0)
-                    day = RowData[0];
-                if(RowData.length > 1)
-                    location = RowData[1];
-                if(RowData.length > 2)
-                    fromtime = RowData[2];
-                if(RowData.length > 3)
-                    tomtime = RowData[3];
-                if(RowData.length > 4)
-                    lang = RowData[4];
-                if(RowData.length > 5)
-                    comment = RowData[5];
-                g = new Group(day, fromtime,tomtime,comment,location,lang);
-                list.add(g);
+                if(isfirst){
+                    isfirst = false;
+                }
+                else {
+                    String[] RowData = line.split(",");
+                    String day = "";
+                    String fromtime = "";
+                    String tomtime = "";
+                    String location = "";
+                    String comment = "";
+                    String lang = "";
+                    if(RowData.length > 0)
+                        day = RowData[0];
+                    if(RowData.length > 1)
+                        location = RowData[1];
+                    if(RowData.length > 2)
+                        fromtime = RowData[2];
+                    if(RowData.length > 3)
+                        tomtime = RowData[3];
+                    if(RowData.length > 4)
+                        lang = RowData[4];
+                    if(RowData.length > 5)
+                        comment = RowData[5];
+                    g = new Group(day, fromtime,tomtime,comment,location,lang);
+                    list.add(g);
+                }
             }
 
             return list;
