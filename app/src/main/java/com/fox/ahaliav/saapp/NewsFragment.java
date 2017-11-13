@@ -1,8 +1,8 @@
 package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +20,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
     ListView listview = null;
     ArrayList<News> list = null;
     private ProgressBar spinner;
+
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -47,8 +48,8 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
-        listview = (ListView)v.findViewById(R.id.listviewNews);
-        spinner = (ProgressBar)v.findViewById(R.id.progressBar);
+        listview = (ListView) v.findViewById(R.id.listviewNews);
+        spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
         list = new ArrayList<News>();
         loadnews();
@@ -59,10 +60,11 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
     @Override
     public void onTaskDone(List<Object> objs) {
         for (int i = 0; i < objs.size(); ++i) {
-            Map<String,Object> mapPost = (Map<String,Object>)objs.get(i);
-            Map<String,Object> mapTitle = (Map<String, Object>) mapPost.get("title");
-            News n = new News("", (String) mapTitle.get("rendered"), new Date());
-            n.setTitle(n.getTitle().replaceAll("\\<[^>]*>","").replaceAll("\\&.*?\\;", ""));
+            Map<String, Object> mapPost = (Map<String, Object>) objs.get(i);
+            Map<String, Object> mapTitle = (Map<String, Object>) mapPost.get("title");
+            Float nid = Float.parseFloat(mapPost.get("id").toString());
+            News n = new News(nid,"", (String) mapTitle.get("rendered"), new Date());
+            n.setTitle(n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", ""));
             list.add(n);
         }
 
@@ -73,10 +75,18 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                News dataModel= list.get(position);
+                News dataModel = list.get(position);
 
-                Snackbar.make(view, dataModel.getTitle(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
+                Bundle bundle = new Bundle();
+                bundle.putFloat("id", dataModel.getId());
+
+                NewsDetailsFragment news = new NewsDetailsFragment();
+                news.setArguments(bundle);
+
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, news, "NewsDetailsFragment");
+                ft.addToBackStack("NewsDetailsFragment");
+                ft.commit();
             }
         });
 

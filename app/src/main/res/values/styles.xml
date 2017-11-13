@@ -18,4 +18,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SearchStyle" parent="android:Theme.Holo.Light">
+        <item name="android:textColorHint">@android:color/black</item>
+    </style>
 </resources>

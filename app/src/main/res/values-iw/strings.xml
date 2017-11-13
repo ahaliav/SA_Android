@@ -23,4 +23,11 @@
     <string name="save">שמירה</string>
     <string name="cancel">ביטול</string>
     <string name="calender_edit_title">עדכון נקיות</string>
+    <string name="language">שפה</string>
+    <string name="totime">עד</string>
+    <string name="fromtime">מ</string>
+    <string name="city">עיר</string>
+    <string name="day">יום</string>
+    <string name="comments">הערות</string>
+    <string name="news_detalis_title">חדשות</string>
 </resources>

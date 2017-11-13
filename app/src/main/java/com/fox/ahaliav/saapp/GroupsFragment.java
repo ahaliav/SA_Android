@@ -1,12 +1,10 @@
 package com.fox.ahaliav.saapp;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -77,17 +75,6 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         listview.setTextFilterEnabled(true);
         filter = adapter.getFilter();
         searchgroup.setOnQueryTextListener(this);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Group dataModel= list.get(position);
-
-                Snackbar.make(view, dataModel.getDay(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
-            }
-        });
 
         spinner.setVisibility(View.GONE);
     }

@@ -14,13 +14,14 @@ import java.util.ArrayList;
  * Created by ahaliav_fox on 25 אוקטובר 2017.
  */
 
-public class NewsAdapter extends ArrayAdapter<News> implements View.OnClickListener {
+public class NewsAdapter extends ArrayAdapter<News> {
 
     private ArrayList<News> dataSet;
     Context mContext;
 
     private static class ViewHolder {
         TextView tvTitle;
+        Float ID;
         FrameLayout mainframe;
     }
 
@@ -28,14 +29,6 @@ public class NewsAdapter extends ArrayAdapter<News> implements View.OnClickListe
         super(context, R.layout.item_news, data);
         this.dataSet = data;
         this.mContext = context;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        News dataModel = (News) object;
     }
 
     private int lastPosition = -1;
@@ -67,8 +60,7 @@ public class NewsAdapter extends ArrayAdapter<News> implements View.OnClickListe
         lastPosition = position;
 
         viewHolder.tvTitle.setText(dataModel.getTitle());
-
-        viewHolder.mainframe.setOnClickListener(this);
+        viewHolder.ID = dataModel.getId();
         viewHolder.mainframe.setTag(position);
 
         // Return the completed view to render on screen

@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-52dp"
+        android:background="#ffffff"
         android:orientation="vertical">
 
         <SearchView
@@ -19,20 +20,22 @@
             android:paddingRight="13dp"
             android:layout_marginTop="55dp"
             android:queryHint="@string/searchgroups">
-
         </SearchView>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#315087" />
         <ListView
             android:id="@+id/listviewGroups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:layout_marginTop="2dp"
-            android:background="#EDEEEE"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:paddingBottom="20dp"
-            android:paddingTop="20dp" />
+            android:paddingTop="0dp" />
     </LinearLayout>
 
     <ProgressBar

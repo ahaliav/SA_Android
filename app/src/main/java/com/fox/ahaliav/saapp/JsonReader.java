@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +22,12 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
 
     private String url = "";
     ICallbackMethod callback;
-    public JsonReader(String url, ICallbackMethod callback){
+
+    public JsonReader(String url, ICallbackMethod callback) {
         this.url = url;
         this.callback = callback;
     }
+
     private String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -41,20 +44,27 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
             String jsonText = readAll(rd);
 
 
-            List<Object> list;
+            Object obj;
+            List<Object> list = new ArrayList<Object>();
             Gson gson;
             ListView postList;
-            Map<String,Object> mapPost;
-            Map<String,Object> mapTitle;
+            Map<String, Object> mapPost;
+            Map<String, Object> mapTitle;
             int postID;
             String postTitle[];
 
             gson = new Gson();
-            list = (List) gson.fromJson(jsonText, List.class);
+            try {
+                list = (List) gson.fromJson(jsonText, List.class);
+            } catch (Exception ex) {
+                obj = (Object) gson.fromJson(jsonText, Object.class);
+                list.add(obj);
+            }
+
             postTitle = new String[list.size()];
 
-            for(int i=0;i<list.size();++i){
-                mapPost = (Map<String,Object>)list.get(i);
+            for (int i = 0; i < list.size(); ++i) {
+                mapPost = (Map<String, Object>) list.get(i);
                 mapTitle = (Map<String, Object>) mapPost.get("title");
                 postTitle[i] = (String) mapTitle.get("rendered");
             }
@@ -71,14 +81,11 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
     protected List<Object> doInBackground(Void... voids) {
         List<Object> result = null;
 
-        try
-        {
+        try {
             result = readJsonFromUrl(this.url);
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
 
-        }
-        catch (JSONException ex){
+        } catch (JSONException ex) {
             String exep = ex.getMessage();
         }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by ahaliav_fox on 30 אוקטובר 2017.
  */
 
-public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickListener {
+public class GroupsAdapter extends ArrayAdapter<Group> {
     ArrayList<Group> dataSet;
     Context mContext;
     private static class ViewHolder {
@@ -32,14 +32,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
         super(context, R.layout.item_group, data);
         this.dataSet = data;
         this.mContext = context;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        Group dataModel = (Group) object;
     }
 
     private int lastPosition = -1;
@@ -75,8 +67,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements View.OnClickLi
         viewHolder.tvComment.setText(dataModel.getComment());
         viewHolder.tvLang.setText(dataModel.getLang());
         viewHolder.tvLocation.setText(dataModel.getLocation());
-
-        viewHolder.mainframe.setOnClickListener(this);
 
         // Return the completed view to render on screen
         return convertView;

@@ -24,4 +24,12 @@
     <string name="cancel">Cancel</string>
     <string name="calender_edit_title">Edit Sobriety</string>
 
+    <string name="city">City</string>
+    <string name="fromtime">From</string>
+    <string name="totime">To</string>
+    <string name="language">Language</string>
+    <string name="day">Day</string>
+    <string name="comments">Comments</string>
+    <string name="news_detalis_title">News</string>
+
 </resources>

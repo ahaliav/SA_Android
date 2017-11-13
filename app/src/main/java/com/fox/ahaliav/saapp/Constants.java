@@ -13,7 +13,7 @@ public class Constants {
     }
 
     public static String getGroupsCsv(){
-        return "http://www.sa-israel.org/wp-content/uploads/2017/10/wpdt_export.csv";
+        return "http://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
     }
 
 }

@@ -17,6 +17,13 @@ public class WebSiteHelper {
         reader.execute();
     }
 
+
+    public void getNewsDetails(Float id)
+    {
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "/" + Math.round(id), this.callback);
+        reader.execute();
+    }
+
     public void getEventsTitles() {
 
         JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?fields=id,title", this.callback);

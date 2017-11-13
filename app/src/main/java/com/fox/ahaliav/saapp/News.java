@@ -3,9 +3,15 @@ package com.fox.ahaliav.saapp;
 import java.util.Date;
 
 public class News {
-    public News(String content, String title, Date date) {
+    public News(Float id, String content, String title, Date date) {
         this.content = content;
         this.title = title;
+        this.id = id;
+    }
+
+    private Float id = -1.0f;
+    public Float getId(){
+        return id;
     }
 
     private String content = "";

@@ -63,7 +63,8 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
         for (int i = 0; i < objs.size(); ++i) {
             Map<String,Object> mapPost = (Map<String,Object>)objs.get(i);
             Map<String,Object> mapTitle = (Map<String, Object>) mapPost.get("title");
-            News n = new News("", (String) mapTitle.get("rendered"), new Date());
+            Float nid = Float.parseFloat(mapPost.get("id").toString());
+            News n = new News(nid,"", (String) mapTitle.get("rendered"), new Date());
             n.setTitle(n.getTitle().replaceAll("\\<[^>]*>","").replaceAll("\\&.*?\\;", ""));
             list.add(n);
         }
