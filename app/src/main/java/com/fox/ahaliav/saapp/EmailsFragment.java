@@ -56,6 +56,9 @@ public class EmailsFragment extends Fragment {
         list.add(new EmailContact("news@sa-israel.org",getResources().getString(R.string.sanews),"",""));
         list.add(new EmailContact("website@sa-israel.org",getResources().getString(R.string.website),"",""));
         list.add(new EmailContact("12masorot@sa-israel.org",getResources().getString(R.string.traditions),"",""));
-    }
 
+
+        final EmailContactAdapter adapter = new EmailContactAdapter(list, getActivity().getApplicationContext());
+        listview.setAdapter(adapter);
+    }
 }
