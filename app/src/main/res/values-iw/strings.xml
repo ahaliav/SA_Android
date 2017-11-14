@@ -30,4 +30,13 @@
     <string name="day">יום</string>
     <string name="comments">הערות</string>
     <string name="news_detalis_title">חדשות</string>
+    <string name="contact">צור קשר</string>
+    <string name="prayers">תפילות</string>
+
+    <string name="mainoffice">משרד ראשי SA</string>
+    <string name="womenhelp">תמיכה לנשים</string>
+    <string name="hotline">ועדת הקו החם</string>
+    <string name="sanews">עדכון חדשות ואירועים</string>
+    <string name="website">ועשת אינטרנט</string>
+    <string name="traditions">ועדת האתיקה והמסורות</string>
 </resources>

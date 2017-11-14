@@ -31,5 +31,15 @@
     <string name="day">Day</string>
     <string name="comments">Comments</string>
     <string name="news_detalis_title">News</string>
+    <string name="contact">Contact</string>
+    <string name="prayers">Prayers</string>
+
+    <string name="mainoffice">SA Israel Office</string>
+    <string name="womenhelp">Wonmen Support</string>
+    <string name="hotline">Hotline Committee</string>
+    <string name="sanews">SA News Updates</string>
+    <string name="website">SA Website Committee</string>
+    <string name="traditions">Ethics and traditions committee</string>
+
 
 </resources>

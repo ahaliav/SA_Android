@@ -2,34 +2,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fox.ahaliav.saapp.NewsDetailsFragment">
-
+    tools:context="com.fox.ahaliav.saapp.EmailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="-52dp"
+        android:background="#ffffff"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtTitle"
+        <ListView
+            android:id="@+id/listviewEmails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="60dp"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="0dp" />
     </LinearLayout>
-
-
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -38,4 +31,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center_vertical|center_horizontal|center" />
+
 </FrameLayout>

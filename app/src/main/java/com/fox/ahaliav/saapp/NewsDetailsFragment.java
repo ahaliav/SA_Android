@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
     ArrayList<News> list = null;
     WebView webview = null;
     private Float id;
+    TextView txtTitle = null;
 
     public NewsDetailsFragment() {
         // Required empty public constructor
@@ -40,7 +42,7 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_details, container, false);
         webview = (WebView) v.findViewById(R.id.webview);
-
+        txtTitle = (TextView) v.findViewById(R.id.txtTitle);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
         list = new ArrayList<News>();
@@ -63,17 +65,20 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
 
     @Override
     public void onTaskDone(List<Object> objs) {
-        if(objs != null){
+        if (objs != null) {
             for (int i = 0; i < objs.size(); ++i) {
                 Map<String, Object> mapPost = (Map<String, Object>) objs.get(i);
                 Map<String, Object> mapTitle = (Map<String, Object>) mapPost.get("title");
-                Map<String, Object> mapContent= (Map<String, Object>) mapPost.get("content");
+                Map<String, Object> mapContent = (Map<String, Object>) mapPost.get("content");
                 Float nid = Float.parseFloat(mapPost.get("id").toString());
                 News n = new News(nid, (String) mapContent.get("rendered"), (String) mapTitle.get("rendered"), new Date());
+                String title = n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", "");
+                txtTitle.setText(title);
 
-                webview.loadData(n.getContent(), "text/html; charset=UTF-8", null);
 
-             break;
+                webview.loadData("<html><body dir=\"rtl\">" + n.getContent() + "</body></html>", "text/html; charset=UTF-8", null);
+
+                break;
             }
         }
 
