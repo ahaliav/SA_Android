@@ -39,4 +39,12 @@
     <string name="sanews">עדכון חדשות ואירועים</string>
     <string name="website">ועשת אינטרנט</string>
     <string name="traditions">ועדת האתיקה והמסורות</string>
+    <string name="contacts">אנשי קשר</string>
+    <string name="contactname">שם</string>
+    <string name="phone">טלפון</string>
+    <string name="edit_contact">עדכון איש קשר</string>
+    <string name="contact_edit_title">עדכון איש קשר</string>
+    <string name="contact_add_title">הוספת איש קשר</string>
+    <string name="email">דוא\"ל</string>
+    <string name="sendmessage">שלח הודעה</string>
 </resources>

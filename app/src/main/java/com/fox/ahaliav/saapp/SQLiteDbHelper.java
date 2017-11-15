@@ -24,6 +24,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table subrieties " +
         "(id integer primary key, name text, subrietdate text)");
+
+        db.execSQL("create table contacts " +
+                "(id integer primary key, name text, phone text, comments text)");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -77,6 +80,50 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         }
 
         Cursor res =  db.rawQuery( "select * from subrieties" + query, null );
+        return res;
+    }
+
+    //Contacts
+
+    public boolean insertContact (String name, String phone, String comments) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("phone", phone);
+        contentValues.put("comments", comments);
+
+        db.insert("contacts", null, contentValues);
+        return true;
+    }
+
+    public boolean updateContact (Integer id, String name, String phone, String comments) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("phone", phone);
+        contentValues.put("comments", comments);
+        db.update("contacts", contentValues,"id="+id.toString(), null);
+        return true;
+    }
+
+    public boolean deleteContact (Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("contacts", "id="+id.toString(), null);
+        return true;
+    }
+
+    public Cursor selectContacts (String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+        if(!id.isEmpty()){
+            query = " where id=" + id;
+        }
+
+        Cursor res =  db.rawQuery( "select * from contacts" + query, null );
         return res;
     }
 }

@@ -139,6 +139,62 @@ public class MainFragment extends Fragment  {
             }
         });
 
+        LinearLayout linearContacts = (LinearLayout) rootView.findViewById(R.id.linearContacts);
+
+        linearContacts.setOnTouchListener( new View.OnTouchListener()
+        {
+            LinearLayout linearContacts = (LinearLayout) rootView.findViewById(R.id.linearContacts);
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                switch(event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        linearContacts.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new ContactsFragment(), "ContactsFragment");
+                        ft.addToBackStack("ContactsFragment");
+                        ft.commit();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //set color back to default
+                        linearContacts.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        break;
+                }
+
+
+                return true;
+            }
+        });
+
+        LinearLayout linearEmail = (LinearLayout) rootView.findViewById(R.id.linearEmail);
+
+        linearEmail.setOnTouchListener( new View.OnTouchListener()
+        {
+            LinearLayout linearEmail = (LinearLayout) rootView.findViewById(R.id.linearEmail);
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                switch(event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        linearEmail.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.main_fragment_container, new EmailsFragment(), "EmailsFragment");
+                        ft.addToBackStack("EmailsFragment");
+                        ft.commit();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //set color back to default
+                        linearEmail.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        break;
+                }
+
+
+                return true;
+            }
+        });
+
     }
 
     private void loadsubrieties() {
