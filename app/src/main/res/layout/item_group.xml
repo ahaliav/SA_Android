@@ -33,7 +33,7 @@
                     android:layout_columnWeight="1"
                     android:layout_gravity="fill"
                     android:layout_row="0"
-                    android:background="@drawable/item_news_frame_style">
+                    android:background="#8579a9ec">
 
                     <TextView
                         android:layout_width="wrap_content"
