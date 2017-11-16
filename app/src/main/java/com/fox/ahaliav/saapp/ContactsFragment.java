@@ -33,7 +33,6 @@ import java.util.HashMap;
 
 public class ContactsFragment extends Fragment {
 
-    ListView listview = null;
     SearchView searchgroup = null;
     ArrayList<Contact> list = null;
     GroupsAdapter adapter = null;
@@ -65,7 +64,6 @@ public class ContactsFragment extends Fragment {
         expContacts = (ExpandableListView) v.findViewById(R.id.expContacts);
 
         listSelected = new ArrayList<Integer>();
-        listview = (ListView)v.findViewById(R.id.listviewContacts);
 
         spinner = (ProgressBar)v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -73,7 +71,7 @@ public class ContactsFragment extends Fragment {
         searchgroup = (SearchView)v.findViewById(R.id.searchgroup);
         list = new ArrayList<Contact>();
 
-        listview.setOnItemClickListener(new OnItemClickListener() {
+        expContacts.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
