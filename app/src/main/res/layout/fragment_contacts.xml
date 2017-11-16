@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.fox.ahaliav.saapp.ContactsFragment">
 
+    <ExpandableListView
+        android:id="@+id/expContacts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

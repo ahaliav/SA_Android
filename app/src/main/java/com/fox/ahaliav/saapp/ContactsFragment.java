@@ -18,7 +18,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListAdapter;
+
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 
 
 public class ContactsFragment extends Fragment {
@@ -31,6 +41,12 @@ public class ContactsFragment extends Fragment {
     private ProgressBar spinner;
     FloatingActionButton floatingActionButton = null;
     ArrayList<Integer> listSelected = null;
+
+    ContactAdapter listAdapter;
+    ExpandableListView expContacts;
+    List<String> listDataHeader;
+    HashMap<Integer, Contact> listDataChild;
+
     Menu menu;
 
     public ContactsFragment() {
@@ -44,6 +60,9 @@ public class ContactsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        // get the listview
+        expContacts = (ExpandableListView) v.findViewById(R.id.expContacts);
 
         listSelected = new ArrayList<Integer>();
         listview = (ListView)v.findViewById(R.id.listviewContacts);
@@ -118,7 +137,9 @@ public class ContactsFragment extends Fragment {
     }
 
     private void loadcontacts() {
-        list = new ArrayList<Contact>();
+
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<Integer, Contact>();
 
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
         Cursor result = db.selectContacts("");
@@ -130,15 +151,18 @@ public class ContactsFragment extends Fragment {
                 String phone = result.getString(2);
                 String comments = result.getString(3);
                 Contact s = new Contact(id, name, phone, comments);
+
                 list.add(s);
+                listDataChild.put(s.getId(), s);
+                listDataHeader.add(result.getString(1));
             }
 
             if (!result.isClosed()) {
                 result.close();
             }
 
-            final ContactAdapter adapter = new ContactAdapter(list, getActivity().getApplicationContext());
-            listview.setAdapter(adapter);
+            listAdapter = new ContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
+            expContacts.setAdapter(listAdapter);
         }
     }
 }
