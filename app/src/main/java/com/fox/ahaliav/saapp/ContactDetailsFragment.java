@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class ContactDetailsFragment extends Fragment {
@@ -19,6 +20,7 @@ public class ContactDetailsFragment extends Fragment {
     EditText txtName;
     EditText txtComments;
     EditText txtPhone;
+    TextView tvTitle;
     View rootView = null;
 
     Integer id = -1;
@@ -34,14 +36,16 @@ public class ContactDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_prayer_details, container, false);
+        rootView = inflater.inflate(R.layout.fragment_contact_details, container, false);
 
         txtName = (EditText)rootView.findViewById(R.id.txtName);
         txtComments = (EditText)rootView.findViewById(R.id.txtComments);
         txtPhone = (EditText)rootView.findViewById(R.id.txtPhone);
+        tvTitle =  (TextView)rootView.findViewById(R.id.tvTitle);
 
         if(getArguments() != null && getArguments().containsKey("id")){
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_edit_title);
+            tvTitle.setText(R.string.contact_edit_title);
             id = getArguments().getInt("id");
             name = getArguments().getString("name");
             phone = getArguments().getString("phone");
@@ -52,6 +56,7 @@ public class ContactDetailsFragment extends Fragment {
         }
         else{
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_add_title);
+            tvTitle.setText(R.string.contact_add_title);
         }
 
         btnSave = (Button) rootView.findViewById(R.id.btnSave);

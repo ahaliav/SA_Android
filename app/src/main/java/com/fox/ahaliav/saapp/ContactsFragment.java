@@ -45,6 +45,7 @@ public class ContactsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
 
+        listSelected = new ArrayList<Integer>();
         listview = (ListView)v.findViewById(R.id.listviewContacts);
 
         spinner = (ProgressBar)v.findViewById(R.id.progressBar);
@@ -120,14 +121,14 @@ public class ContactsFragment extends Fragment {
         list = new ArrayList<Contact>();
 
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-        Cursor result = db.selectSubrieties("");
+        Cursor result = db.selectContacts("");
 
         if (result != null) {
             while (result.moveToNext()) {
                 int id = result.getInt(0);
                 String name = result.getString(1);
                 String phone = result.getString(2);
-                String comments = result.getString(2);
+                String comments = result.getString(3);
                 Contact s = new Contact(id, name, phone, comments);
                 list.add(s);
             }

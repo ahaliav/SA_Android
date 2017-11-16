@@ -150,18 +150,13 @@ public class MainFragment extends Fragment  {
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        linearContacts.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new ContactsFragment(), "ContactsFragment");
-                        ft.addToBackStack("ContactsFragment");
-                        ft.commit();
+                        loadcontacts();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
                         linearContacts.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
-
 
                 return true;
             }
@@ -194,7 +189,6 @@ public class MainFragment extends Fragment  {
                 return true;
             }
         });
-
     }
 
     private void loadsubrieties() {
@@ -232,6 +226,41 @@ public class MainFragment extends Fragment  {
                 ft.commit();
             }
 
+        }
+    }
+
+    private void loadcontacts() {
+        ArrayList<Contact> list = new ArrayList<Contact>();
+
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+        Cursor result = db.selectContacts("");
+
+        if (result != null) {
+            while (result.moveToNext()) {
+                int id = result.getInt(0);
+                String name = result.getString(1);
+                String phone = result.getString(2);
+                String comments = result.getString(2);
+                Contact s = new Contact(id, name, phone, comments);
+                list.add(s);
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        if(list.size() == 0){
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.main_fragment_container, new ContactDetailsFragment(), "ContactDetailsFragment");
+            ft.addToBackStack("ContactDetailsFragment");
+            ft.commit();
+        }
+        else {
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.main_fragment_container, new ContactsFragment(), "ContactsFragment");
+            ft.addToBackStack("ContactsFragment");
+            ft.commit();
         }
     }
 }

@@ -13,6 +13,7 @@
         android:rowCount="5">
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
@@ -37,7 +38,7 @@
                 android:ems="10"
                 android:inputType="text"
                 android:hint="@string/contactname"
-                android:textColor="#ffffff" />
+                android:textColor="#21275c" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,9 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="phone"
                 android:hint="@string/phone"
-                android:textColor="#ffffff" />
+                android:textColor="#21275c" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,7 +76,7 @@
                 android:ems="10"
                 android:inputType="text"
                 android:hint="@string/comments"
-                android:textColor="#ffffff" />
+                android:textColor="#21275c" />
         </LinearLayout>
 
         <LinearLayout

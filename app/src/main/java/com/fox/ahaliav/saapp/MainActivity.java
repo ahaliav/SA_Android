@@ -75,6 +75,12 @@ public class MainActivity extends AppCompatActivity
                     case "NewsDetailsFragment":
                         getSupportActionBar().setTitle(R.string.news_detalis_title);
                         break;
+                    case "ContactsFragment":
+                        getSupportActionBar().setTitle(R.string.contacts);
+                        break;
+                    case "EmailsFragment":
+                        getSupportActionBar().setTitle(R.string.contact);
+                        break;
 
                 }
 
