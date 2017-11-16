@@ -136,18 +136,21 @@
                         android:id="@+id/btnEdit"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:background="#ffffff"
                         android:src="@drawable/edit" />
 
                     <ImageButton
                         android:id="@+id/btnCall"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:background="#ffffff"
                         android:src="@drawable/phonecall" />
 
                     <ImageButton
                         android:id="@+id/btnSms"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
+                        android:background="#ffffff"
                         android:src="@drawable/sms" />
                 </LinearLayout>
             </LinearLayout>
