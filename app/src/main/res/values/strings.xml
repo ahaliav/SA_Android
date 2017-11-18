@@ -13,7 +13,7 @@
     <string name="homepage">Home</string>
     <string name="news_title">News</string>
     <string name="events_title">Events</string>
-    <string name="main_title">SA</string>
+    <string name="main_title"></string>
     <string name="groups_title">Groups</string>
     <string name="calender_title">Sobriety</string>
     <string name="daysago">Days Ago</string>
@@ -48,6 +48,10 @@
     <string name="contact_edit_title">Edit Contact</string>
     <string name="contact_add_title">Add Contact</string>
     <string name="sendmessage">Send Message</string>
-    <string name="email">Email</string>
+    <string name="email">Email:</string>
+
+    <string name="wellcome">Wellcome</string>
+    <string name="committeeName">Name:</string>
+
 
 </resources>

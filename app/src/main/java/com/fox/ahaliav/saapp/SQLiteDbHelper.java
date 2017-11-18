@@ -26,13 +26,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         "(id integer primary key, name text, subrietdate text)");
 
         db.execSQL("create table contacts " +
-                "(id integer primary key, name text, phone text, comments text)");
+                "(id integer primary key, name text, phone text, email text,comments text)");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        //db.execSQL(SQL_DELETE_ENTRIES);
-        //onCreate(db);
+        db.execSQL("drop table contacts");
+
+        onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
@@ -85,25 +84,28 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
     //Contacts
 
-    public boolean insertContact (String name, String phone, String comments) {
+    public boolean insertContact (String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("phone", phone);
         contentValues.put("comments", comments);
+        contentValues.put("email", email);
 
         db.insert("contacts", null, contentValues);
         return true;
     }
 
-    public boolean updateContact (Integer id, String name, String phone, String comments) {
+    public boolean updateContact (Integer id, String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("phone", phone);
         contentValues.put("comments", comments);
+        contentValues.put("email", email);
+
         db.update("contacts", contentValues,"id="+id.toString(), null);
         return true;
     }

@@ -20,6 +20,7 @@ public class ContactDetailsFragment extends Fragment {
     EditText txtName;
     EditText txtComments;
     EditText txtPhone;
+    EditText txtEmail;
     TextView tvTitle;
     View rootView = null;
 
@@ -27,7 +28,7 @@ public class ContactDetailsFragment extends Fragment {
     String name = "";
     String phone = "";
     String comments = "";
-
+    String email = "";
     public ContactDetailsFragment() {
         // Required empty public constructor
     }
@@ -42,6 +43,7 @@ public class ContactDetailsFragment extends Fragment {
         txtComments = (EditText)rootView.findViewById(R.id.txtComments);
         txtPhone = (EditText)rootView.findViewById(R.id.txtPhone);
         tvTitle =  (TextView)rootView.findViewById(R.id.tvTitle);
+        txtEmail =  (EditText)rootView.findViewById(R.id.txtEmail);
 
         if(getArguments() != null && getArguments().containsKey("id")){
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_edit_title);
@@ -50,9 +52,12 @@ public class ContactDetailsFragment extends Fragment {
             name = getArguments().getString("name");
             phone = getArguments().getString("phone");
             comments = getArguments().getString("comments");
+            email = getArguments().getString("email");
+
             txtName.setText(name);
             txtComments.setText(comments);
             txtPhone.setText(phone);
+            txtEmail.setText(email);
         }
         else{
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_add_title);
@@ -87,12 +92,13 @@ public class ContactDetailsFragment extends Fragment {
         name = txtName.getText().toString();
         comments = txtComments.getText().toString();
         phone = txtPhone.getText().toString();
+        email = txtEmail.getText().toString();
 
         if(id <=0){
-            db.insertContact(name, phone, comments);
+            db.insertContact(name, phone, comments, email);
         }
         else {
-            db.updateContact(id, name, phone, comments);
+            db.updateContact(id, name, phone, comments, email);
         }
     }
 

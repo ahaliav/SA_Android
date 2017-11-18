@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,7 +33,8 @@ public class MainFragment extends Fragment  {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         addListenerOnButton();
-
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.favicon_sa);
         return rootView;
     }
 
@@ -240,10 +242,10 @@ public class MainFragment extends Fragment  {
                 int id = result.getInt(0);
                 String name = result.getString(1);
                 String phone = result.getString(2);
-                String comments = result.getString(2);
-                Contact s = new Contact(id, name, phone, comments);
+                Contact s = new Contact(id, name, phone, "","");
                 list.add(s);
             }
+
 
             if (!result.isClosed()) {
                 result.close();

@@ -4,25 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.fox.ahaliav.saapp.EmailsFragment">
 
-    <LinearLayout
+    <ExpandableListView
+        android:id="@+id/expContacts"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:background="#ffffff"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/listviewEmails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="0dp"
-            android:background="#ffffff"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:paddingBottom="20dp"
-            android:paddingTop="0dp" />
-    </LinearLayout>
+        android:layout_height="match_parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

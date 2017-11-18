@@ -47,4 +47,6 @@
     <string name="contact_add_title">הוספת איש קשר</string>
     <string name="email">דוא\"ל</string>
     <string name="sendmessage">שלח הודעה</string>
+    <string name="wellcome">ברוך הבא</string>
+    <string name="committeeName">שם:</string>
 </resources>

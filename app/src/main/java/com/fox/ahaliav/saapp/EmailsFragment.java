@@ -5,20 +5,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class EmailsFragment extends Fragment {
 
-    ListView listview = null;
     ArrayList<EmailContact> list = null;
     GroupsAdapter adapter = null;
     Filter filter = null;
     private ProgressBar spinner;
+    List<String> listDataHeader;
+    ExpandableListView expContacts;
+    HashMap<Integer, EmailContact> listDataChild;
+    EmailContactAdapter listAdapter;
 
     public EmailsFragment() {
         // Required empty public constructor
@@ -35,7 +41,7 @@ public class EmailsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_emails, container, false);
 
-        listview = (ListView)v.findViewById(R.id.listviewEmails);
+        expContacts = (ExpandableListView) v.findViewById(R.id.expContacts);
 
         spinner = (ProgressBar)v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -57,8 +63,16 @@ public class EmailsFragment extends Fragment {
         list.add(new EmailContact("website@sa-israel.org",getResources().getString(R.string.website),"",""));
         list.add(new EmailContact("12masorot@sa-israel.org",getResources().getString(R.string.traditions),"",""));
 
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<Integer, EmailContact>();
 
-        final EmailContactAdapter adapter = new EmailContactAdapter(list, getActivity().getApplicationContext());
-        listview.setAdapter(adapter);
+        for(int i=0; i<list.size(); i++){
+
+            listDataChild.put(i, list.get(i));
+            listDataHeader.add(list.get(i).getTitle());
+        }
+
+        listAdapter = new EmailContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
+        expContacts.setAdapter(listAdapter);
     }
 }

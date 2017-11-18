@@ -31,6 +31,7 @@ public class CalenderAddFragment extends Fragment {
     Integer id = -1;
     String name = "";
     String date = "";
+    String email = "";
     public CalenderAddFragment() {
         // Required empty public constructor
     }
@@ -54,6 +55,7 @@ public class CalenderAddFragment extends Fragment {
             id = getArguments().getInt("id");
             name = getArguments().getString("name");
             date = getArguments().getString("date");
+
             txtName.setText(name);
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");

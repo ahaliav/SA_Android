@@ -16,7 +16,7 @@
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/contact" />
+        android:src="@drawable/committee" />
 
     <TextView
         android:id="@+id/tvListHeader"

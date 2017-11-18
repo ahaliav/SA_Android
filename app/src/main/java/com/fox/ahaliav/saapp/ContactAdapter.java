@@ -35,7 +35,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return 0;
+        return _listDataHeader.size();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        return this._listDataChild.get(groupPosition);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
         TextView tvListHeader = (TextView) convertView
                 .findViewById(R.id.tvListHeader);
-        tvListHeader.setTypeface(null, Typeface.BOLD);
+        //tvListHeader.setTypeface(null, Typeface.BOLD);
         tvListHeader.setText(headerTitle);
 
         return convertView;
@@ -101,6 +101,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
         TextView tvPhoneNumber = (TextView) convertView.findViewById(R.id.tvPhoneNumber);
         TextView tvComments = (TextView) convertView.findViewById(R.id.tvComments);
+        TextView tvEmail = (TextView) convertView.findViewById(R.id.tvEmail);
         FrameLayout mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
 
         tvName.setText(contact.getName());

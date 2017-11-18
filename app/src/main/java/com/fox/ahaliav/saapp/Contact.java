@@ -5,11 +5,12 @@ package com.fox.ahaliav.saapp;
  */
 
 public class Contact {
-    public Contact(int id, String name, String phoneNumber, String comments){
+    public Contact(int id, String name, String phoneNumber, String comments, String email){
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
+        this.email = email;
     }
 
     private int id = 0;
@@ -36,5 +37,11 @@ public class Contact {
 
     public String getComments() {
         return comments;
+    }
+
+    private String email = "";
+
+    public String getEmail() {
+        return email;
     }
 }

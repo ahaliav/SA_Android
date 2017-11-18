@@ -1,21 +1,37 @@
 package com.fox.ahaliav.saapp;
 
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
+import static android.util.Patterns.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final int PERMS_REQUEST_CODE = 1;
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
@@ -52,34 +68,43 @@ public class MainActivity extends AppCompatActivity
                     tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 }
 
-                switch (tag){
+                switch (tag) {
                     case "MainFragment":
                     case "":
-                        getSupportActionBar().setTitle(R.string.main_title);
+                        getSupportActionBar().setTitle("");
+                        getSupportActionBar().setIcon(R.drawable.favicon_sa);
                         break;
                     case "GroupsFragment":
                         getSupportActionBar().setTitle(R.string.groups_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "NewsFragment":
                         getSupportActionBar().setTitle(R.string.news_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "CalenderFragment":
                         getSupportActionBar().setTitle(R.string.calender_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "CalenderAddFragment":
                         //getSupportActionBar().setTitle(R.string.calender__add_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "EventsFragment":
                         getSupportActionBar().setTitle(R.string.events_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "NewsDetailsFragment":
                         getSupportActionBar().setTitle(R.string.news_detalis_title);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "ContactsFragment":
                         getSupportActionBar().setTitle(R.string.contacts);
+                        getSupportActionBar().setIcon(null);
                         break;
                     case "EmailsFragment":
                         getSupportActionBar().setTitle(R.string.contact);
+                        getSupportActionBar().setIcon(null);
                         break;
 
                 }
@@ -96,7 +121,7 @@ public class MainActivity extends AppCompatActivity
                     });
                 } else {
 
-                    for(int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                    for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
                         getSupportFragmentManager().popBackStack();
                     }
 
@@ -112,6 +137,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        loadAccounts(navigationView);
     }
 
     @Override
@@ -163,8 +190,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_main) {
             fragment = new MainFragment();
             tag = "MainFragment";
-        }
-        else if (id == R.id.nav_groups) {
+        } else if (id == R.id.nav_groups) {
             fragment = new GroupsFragment();
             tag = "GroupsFragment";
         } else if (id == R.id.nav_calender) {
@@ -176,8 +202,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_news) {
             fragment = new NewsFragment();
             tag = "NewsFragment";
-        }
-        else if (id == R.id.nav_exit) {
+        } else if (id == R.id.nav_exit) {
             fragment = new NewsFragment();
             tag = "NewsFragment";
         }
@@ -190,5 +215,41 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void loadAccounts(NavigationView navigationView) {
+
+        View headerView = navigationView.getHeaderView(0); //navigationView.inflateHeaderView(R.layout.nav_header_main);
+
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.GET_ACCOUNTS)) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS}, PERMS_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS}, PERMS_REQUEST_CODE);
+            }
+        } else {
+            //do some stuff
+            ArrayList<String> emails = new ArrayList<>();
+
+            String email = "";
+            Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
+            Account[] accounts = AccountManager.get(this).getAccounts();
+            for (Account account : accounts) {
+                if (gmailPattern.matcher(account.name).matches()) {
+                    emails.add(account.name);
+                    if (account.name.toLowerCase().equals("ahaliav@gmail.com")) {
+                        if (Locale.getDefault().getLanguage() == "he")
+                            email = account.name + " " + getResources().getString(R.string.wellcome);
+                        else
+                            email = getResources().getString(R.string.wellcome) + " " + account.name;
+                        break;
+                    }
+                }
+            }
+
+            TextView viewEmail = (TextView) headerView.findViewById(R.id.email_address_view);
+            viewEmail.setText(email);
+        }
     }
 }

@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="55dp"
         android:columnCount="1"
-        android:rowCount="5">
+        android:rowCount="6">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -34,7 +34,7 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="text"
                 android:hint="@string/contactname"
@@ -53,7 +53,7 @@
                 android:id="@+id/txtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="phone"
                 android:hint="@string/phone"
@@ -69,10 +69,29 @@
             android:layout_row="3">
 
             <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:hint="@string/email"
+                android:textColor="#21275c" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center"
+            android:orientation="horizontal"
+            android:layout_column="0"
+            android:layout_row="4">
+
+            <EditText
                 android:id="@+id/txtComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_margin="10dp"
                 android:ems="10"
                 android:inputType="text"
                 android:hint="@string/comments"
@@ -83,10 +102,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|center"
-            android:layout_margin="30dp"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:layout_column="0"
-            android:layout_row="4">
+            android:layout_row="5">
 
             <Button
                 android:id="@+id/btnSave"

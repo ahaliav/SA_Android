@@ -34,7 +34,6 @@ import java.util.HashMap;
 public class ContactsFragment extends Fragment {
 
     SearchView searchgroup = null;
-    ArrayList<Contact> list = null;
     GroupsAdapter adapter = null;
     Filter filter = null;
     private ProgressBar spinner;
@@ -69,7 +68,6 @@ public class ContactsFragment extends Fragment {
         spinner.setVisibility(View.VISIBLE);
 
         searchgroup = (SearchView)v.findViewById(R.id.searchgroup);
-        list = new ArrayList<Contact>();
 
         expContacts.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -105,6 +103,7 @@ public class ContactsFragment extends Fragment {
                     bundle.putString("name", sub.getName());
                     bundle.putString("phone", sub.getPhoneNumber());
                     bundle.putString("comments", sub.getComments());
+                    bundle.putString("email", sub.getEmail());
 
                     ContactDetailsFragment calen = new ContactDetailsFragment();
                     calen.setArguments(bundle);
@@ -142,16 +141,17 @@ public class ContactsFragment extends Fragment {
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
         Cursor result = db.selectContacts("");
 
+        int i =0;
         if (result != null) {
             while (result.moveToNext()) {
                 int id = result.getInt(0);
                 String name = result.getString(1);
                 String phone = result.getString(2);
                 String comments = result.getString(3);
-                Contact s = new Contact(id, name, phone, comments);
+                String email = result.getString(4);
+                Contact s = new Contact(id, name, phone, comments,email);
 
-                list.add(s);
-                listDataChild.put(s.getId(), s);
+                listDataChild.put(i++, s);
                 listDataHeader.add(result.getString(1));
             }
 
