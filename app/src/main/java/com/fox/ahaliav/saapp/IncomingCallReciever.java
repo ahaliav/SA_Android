@@ -17,11 +17,7 @@ public class IncomingCallReciever extends BroadcastReceiver {
 
     private Context mContext;
     private Intent mIntent;
-    Activity activity;
 
-    public IncomingCallReciever(Activity activity){
-        this.activity = activity;
-    }
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context;
