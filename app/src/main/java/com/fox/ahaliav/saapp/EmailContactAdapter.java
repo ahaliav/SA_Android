@@ -1,12 +1,17 @@
 package com.fox.ahaliav.saapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,15 +27,16 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     private HashMap<Integer, EmailContact> _listDataChild;
+    FragmentManager manager;
 
     private ArrayList<EmailContact> dataSet;
-    Context mContext;
 
     public EmailContactAdapter(Context context, List<String> listDataHeader,
-                          HashMap<Integer, EmailContact> listChildData) {
+                               HashMap<Integer, EmailContact> listChildData, FragmentManager manager) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.manager = manager;
     }
 
     @Override
@@ -104,6 +110,42 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
 
         tvTitle.setText(contact.getTitle());
         tvEmail.setText(contact.getEmail());
+
+
+        ImageButton btnSendMessage=(ImageButton)convertView.findViewById(R.id.btnSendMessage);
+        ImageButton btnEmail=(ImageButton)convertView.findViewById(R.id.btnEmail);
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                final FragmentTransaction ft = manager.beginTransaction();
+                EmailDetailsFragment emaildetails = new EmailDetailsFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("email", contact.getEmail());
+                bundle.putString("title", contact.getTitle());
+
+                emaildetails.setArguments(bundle);
+
+                ft.replace(R.id.main_fragment_container, emaildetails, "EmailDetailsFragment");
+                ft.addToBackStack("EmailDetailsFragment");
+                ft.commit();
+            }
+        });
+
+        btnEmail.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent testIntent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
+                testIntent.setData(data);
+                manager.findFragmentByTag("EmailsFragment").startActivity(testIntent);
+            }
+        });
+
         return convertView;
     }
 

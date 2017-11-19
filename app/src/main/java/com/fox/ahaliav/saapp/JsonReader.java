@@ -38,14 +38,16 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
     }
 
     private List<Object> readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
+        List<Object> list = new ArrayList<Object>();
+        InputStream is = null;
         try {
+            is = new URL(url).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
 
 
             Object obj;
-            List<Object> list = new ArrayList<Object>();
+
             Gson gson;
             ListView postList;
             Map<String, Object> mapPost;
@@ -71,9 +73,22 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
 
             return list;
 
-        } finally {
-            is.close();
         }
+        catch (Exception ex){
+
+        }
+        finally {
+            try{
+                if(is != null)
+                    is.close();
+            }
+            catch (Exception ex){
+
+            }
+
+        }
+
+        return list;
     }
 
 
@@ -96,6 +111,12 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
     protected void onPostExecute(List<Object> result) {
         super.onPostExecute(result);
 
-        callback.onTaskDone(result);
+        try{
+            callback.onTaskDone(result);
+        }
+        catch(Exception ex){
+            String e = ex.getMessage();
+        }
+
     }
 }

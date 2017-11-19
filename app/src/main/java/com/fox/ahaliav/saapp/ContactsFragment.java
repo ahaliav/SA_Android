@@ -11,24 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListAdapter;
-
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ExpandableListView.OnGroupCollapseListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ContactsFragment extends Fragment {
@@ -147,8 +139,8 @@ public class ContactsFragment extends Fragment {
                 int id = result.getInt(0);
                 String name = result.getString(1);
                 String phone = result.getString(2);
-                String comments = result.getString(3);
-                String email = result.getString(4);
+                String email = result.getString(3);
+                String comments = result.getString(4);
                 Contact s = new Contact(id, name, phone, comments,email);
 
                 listDataChild.put(i++, s);
@@ -159,7 +151,7 @@ public class ContactsFragment extends Fragment {
                 result.close();
             }
 
-            listAdapter = new ContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
+            listAdapter = new ContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild, getFragmentManager());
             expContacts.setAdapter(listAdapter);
         }
     }

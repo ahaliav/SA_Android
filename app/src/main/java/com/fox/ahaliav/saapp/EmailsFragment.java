@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -47,14 +46,14 @@ public class EmailsFragment extends Fragment {
         spinner.setVisibility(View.VISIBLE);
 
         list = new ArrayList<EmailContact>();
-        loademails();
+        loademails(inflater);
 
         spinner.setVisibility(View.GONE);
 
         return v;
     }
 
-    private void loademails() {
+    private void loademails(LayoutInflater inflater) {
         list.add(new EmailContact("office@sa-israel.org",getResources().getString(R.string.mainoffice),"",""));
         list.add(new EmailContact("women@sa-israel.org",getResources().getString(R.string.womenhelp),"",""));
         list.add(new EmailContact("contact@sa-israel.org",getResources().getString(R.string.hotline),"",""));
@@ -72,7 +71,7 @@ public class EmailsFragment extends Fragment {
             listDataHeader.add(list.get(i).getTitle());
         }
 
-        listAdapter = new EmailContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
+        listAdapter = new EmailContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild,getFragmentManager());
         expContacts.setAdapter(listAdapter);
     }
 }

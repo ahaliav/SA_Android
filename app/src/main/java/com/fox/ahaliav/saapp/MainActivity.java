@@ -20,13 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import static android.util.Patterns.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -202,7 +199,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_news) {
             fragment = new NewsFragment();
             tag = "NewsFragment";
-        } else if (id == R.id.nav_exit) {
+        } else if (id == R.id.nav_register) {
+            fragment = new RegisterFragment();
+            tag = "RegisterFragment";
+        } else if (id == R.id.nav_contacts) {
+            fragment = new ContactsFragment();
+            tag = "ContactsFragment";
+        } else if (id == R.id.nav_emails) {
+            fragment = new EmailsFragment();
+            tag = "EmailsFragment";
+        }
+
+        else if (id == R.id.nav_exit) {
             fragment = new NewsFragment();
             tag = "NewsFragment";
         }

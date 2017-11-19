@@ -109,6 +109,12 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
     protected void onPostExecute(List<Object> result) {
         super.onPostExecute(result);
 
-        callback.onTaskDone(result);
+        try{
+            callback.onTaskDone(result);
+        }
+        catch (Exception ex){
+
+        }
+
     }
 }

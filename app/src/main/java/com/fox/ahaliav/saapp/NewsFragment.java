@@ -59,37 +59,41 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
 
     @Override
     public void onTaskDone(List<Object> objs) {
-        for (int i = 0; i < objs.size(); ++i) {
-            Map<String, Object> mapPost = (Map<String, Object>) objs.get(i);
-            Map<String, Object> mapTitle = (Map<String, Object>) mapPost.get("title");
-            Float nid = Float.parseFloat(mapPost.get("id").toString());
-            News n = new News(nid,"", (String) mapTitle.get("rendered"), new Date());
-            n.setTitle(n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", ""));
-            list.add(n);
+
+        if(objs != null){
+            for (int i = 0; i < objs.size(); ++i) {
+                Map<String, Object> mapPost = (Map<String, Object>) objs.get(i);
+                Map<String, Object> mapTitle = (Map<String, Object>) mapPost.get("title");
+                Float nid = Float.parseFloat(mapPost.get("id").toString());
+                News n = new News(nid,"", (String) mapTitle.get("rendered"), new Date());
+                n.setTitle(n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", ""));
+                list.add(n);
+            }
+
+            final NewsAdapter adapter = new NewsAdapter(list, getActivity().getApplicationContext());
+            listview.setAdapter(adapter);
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    News dataModel = list.get(position);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putFloat("id", dataModel.getId());
+
+                    NewsDetailsFragment news = new NewsDetailsFragment();
+                    news.setArguments(bundle);
+
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_container, news, "NewsDetailsFragment");
+                    ft.addToBackStack("NewsDetailsFragment");
+                    ft.commit();
+                }
+            });
+
+            spinner.setVisibility(View.GONE);
         }
 
-        final NewsAdapter adapter = new NewsAdapter(list, getActivity().getApplicationContext());
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                News dataModel = list.get(position);
-
-                Bundle bundle = new Bundle();
-                bundle.putFloat("id", dataModel.getId());
-
-                NewsDetailsFragment news = new NewsDetailsFragment();
-                news.setArguments(bundle);
-
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.main_fragment_container, news, "NewsDetailsFragment");
-                ft.addToBackStack("NewsDetailsFragment");
-                ft.commit();
-            }
-        });
-
-        spinner.setVisibility(View.GONE);
     }
 }
