@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -17,11 +19,15 @@ public class IncomingCallReciever extends BroadcastReceiver {
 
     private Context mContext;
     private Intent mIntent;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context;
         mIntent = intent;
+
+        //Intent i = new Intent(context, ViewDialog.class);
+        //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //context.startActivity(i);
+
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         int events = PhoneStateListener.LISTEN_CALL_STATE;
         tm.listen(phoneStateListener, events);
@@ -51,13 +57,13 @@ public class IncomingCallReciever extends BroadcastReceiver {
                         Toast.makeText(mContext, "International - " + dialingNumber, Toast.LENGTH_LONG).show();
                         callState = "International - Dialing (" + dialingNumber + ")";
                     } else {
+
                         Toast.makeText(mContext, "Local Call - " + dialingNumber, Toast.LENGTH_LONG).show();
                         callState = "Local - Dialing (" + dialingNumber + ")";
                     }
                     break;
             }
 
-            Log.i(">>>Broadcast", "onCallStateChanged " + callState);
             super.onCallStateChanged(state, incomingNumber);
         }
     };
