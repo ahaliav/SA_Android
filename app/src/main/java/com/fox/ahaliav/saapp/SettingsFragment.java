@@ -63,12 +63,12 @@ public class SettingsFragment extends Fragment {
                 String key = result.getString(1);
                 String val = result.getString(2);
 
-                if(key =="calldialog" && val.equals("true"))
+                if(key.equals("calldialog") && val.equals("true"))
                     swShowCallDialog.setChecked(true);
                 else
                     swShowCallDialog.setChecked(false);
 
-                if(key =="notifications" && val.equals("true"))
+                if(key.equals("notifications") && val.equals("true"))
                     swAllowNotifications.setChecked(true);
                 else
                     swAllowNotifications.setChecked(false);
