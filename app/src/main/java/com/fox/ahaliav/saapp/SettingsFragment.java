@@ -53,7 +53,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void loadvalues() {
-        Cursor result = db.selectSettings("calldialog");
+        Cursor result = db.selectSettings("");
 
         if(result != null) {
 
@@ -63,15 +63,19 @@ public class SettingsFragment extends Fragment {
                 String key = result.getString(1);
                 String val = result.getString(2);
 
-                if(key.equals("calldialog") && val.equals("true"))
-                    swShowCallDialog.setChecked(true);
-                else
-                    swShowCallDialog.setChecked(false);
+                if(key.equals("calldialog")){
+                    if(val.equals("true"))
+                        swShowCallDialog.setChecked(true);
+                    else
+                        swShowCallDialog.setChecked(false);
+                }
 
-                if(key.equals("notifications") && val.equals("true"))
-                    swAllowNotifications.setChecked(true);
-                else
-                    swAllowNotifications.setChecked(false);
+                if(key.equals("notifications")){
+                    if(val.equals("true"))
+                        swAllowNotifications.setChecked(true);
+                    else
+                        swAllowNotifications.setChecked(false);
+                }
             }
 
             if (!result.isClosed())  {

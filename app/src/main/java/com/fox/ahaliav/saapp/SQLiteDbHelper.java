@@ -137,7 +137,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         if(phoneNumber.length() > 9){
             String last9numbers = phoneNumber.substring(phoneNumber.length() - 9);
             if(!phoneNumber.isEmpty()){
-                query = " where phone LIKE %'" + phoneNumber + "'";
+                query = " where phone LIKE '%" + phoneNumber + "'";
             }
         }
 

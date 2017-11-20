@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -42,6 +43,30 @@ public class IncomingCallReciever extends BroadcastReceiver {
     private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
+            try {
+                SQLiteDbHelper db = new SQLiteDbHelper(mContext);
+                Cursor result = db.selectSettings("calldialog");
+
+                boolean exite = false;
+                if (result != null) {
+                    while (result.moveToNext()) {
+                        int id = result.getInt(0);
+                        String key = result.getString(1);
+                        String val = result.getString(2);
+                        if (val.equals("false"))
+                            exite = true;
+                    }
+
+                    if (!result.isClosed())
+                        result.close();
+
+                    if (exite)
+                        return;
+                }
+            } catch (Exception ex) {
+
+            }
+
 
             try {
                 String callState = "UNKNOWN";
@@ -81,10 +106,9 @@ public class IncomingCallReciever extends BroadcastReceiver {
                         break;
                     case TelephonyManager.CALL_STATE_OFFHOOK:
                         wasAnwerd = true;
-                        try{
+                        try {
                             IncomingCallActivity.instance.finish();
-                        }
-                        catch (Exception ex){
+                        } catch (Exception ex) {
 
                         }
                         String dialingNumber = mIntent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
