@@ -55,4 +55,7 @@
     <string name="registration">הרשמה</string>
     <string name="send_message">שליחת הודעה</string>
     <string name="message">הודעה</string>
+    <string name="incoming_call_title">אחד החברים הטובים שלך מתקשר</string>
+    <string name="close">סגור</string>
+    <string name="incoming_call_title_unanswered">יש לך שיחה שלא נענתה מאחד החברים הטובים שלך</string>
 </resources>

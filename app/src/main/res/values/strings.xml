@@ -58,5 +58,9 @@
     <string name="register_comments">Please tell us about the live meetings you are going to and two of your SA friends</string>
     <string name="send_message">Send Message</string>
     <string name="message">Message</string>
+    <string name="incoming_call_title">One of your best friends is calling</string>
+    <string name="close">Close</string>
+    <string name="incoming_call_title_unanswered">you have an unanswered call from one of your good friends</string>
+
 
 </resources>
