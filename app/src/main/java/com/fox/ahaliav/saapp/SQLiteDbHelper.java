@@ -27,9 +27,18 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table contacts " +
                 "(id integer primary key, name text, phone text, email text,comments text)");
+
+        db.execSQL("create table settings " +
+                "(id integer primary key, key_set text, value_set text)");
+
+        db.execSQL("create table user " +
+                "(id integer primary key, name text, email text, is_registered integer)");
+
+        //insertSettings("notifications","true");
+        //insertSettings("calldialog","true");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table contacts");
+        //db.execSQL("drop table contacts");
 
         onCreate(db);
     }
@@ -117,7 +126,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor selectContacts (String id) {
+    public Cursor selectContacts (String id, String phoneNumber) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
@@ -125,7 +134,102 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             query = " where id=" + id;
         }
 
+        if(phoneNumber.length() > 9){
+            String last9numbers = phoneNumber.substring(phoneNumber.length() - 9);
+            if(!phoneNumber.isEmpty()){
+                query = " where phone LIKE %'" + phoneNumber + "'";
+            }
+        }
+
+
         Cursor res =  db.rawQuery( "select * from contacts" + query, null );
+        return res;
+    }
+
+    //user
+    public boolean insertUser (String name, String is_registered, String email) {
+
+        Cursor cur = selectUser(email);
+        if(cur != null && cur.getCount() > 0){
+            updateUser(name, is_registered, email);
+        }
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", name);
+            contentValues.put("email", email);
+            contentValues.put("is_registered", is_registered);
+
+            db.insert("user", null, contentValues);
+        }
+
+        return true;
+    }
+
+    public boolean updateUser (String name, String is_registered, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("email", email);
+        contentValues.put("is_registered", is_registered);
+
+        db.update("user", contentValues,"email="+email, null);
+        return true;
+    }
+
+    public Cursor selectUser (String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+        if(!email.isEmpty()){
+            query = " where email='" + email + "'";
+        }
+
+        Cursor res =  db.rawQuery( "select * from user" + query, null );
+        return res;
+    }
+
+    //settings
+    public boolean insertSettings (String key_set, String value_set) {
+        Cursor cur = selectSettings(key_set);
+        if(cur != null && cur.getCount() > 0){
+            updateSettings(key_set, value_set);
+        }
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("key_set", key_set);
+            contentValues.put("value_set", value_set);
+
+            db.insert("settings", null, contentValues);
+        }
+
+        return true;
+    }
+
+    public boolean updateSettings (String key_set, String value_set) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("key_set", key_set);
+        contentValues.put("value_set", value_set);
+
+        db.update("settings", contentValues,"key_set='"+key_set +"'", null);
+        return true;
+    }
+
+    public Cursor selectSettings (String key_set) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+        if(!key_set.isEmpty()){
+            query = " where key_set='" + key_set + "'";
+        }
+
+        Cursor res =  db.rawQuery( "select * from settings " + query, null );
         return res;
     }
 }
