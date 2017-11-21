@@ -33,11 +33,12 @@ public class unansweredCallActivity extends AppCompatActivity {
 
             String number = getIntent().getStringExtra(
                     TelephonyManager.EXTRA_INCOMING_NUMBER);
+            String name = getIntent().getStringExtra("name");
             TextView tvName = (TextView) findViewById(R.id.tvName);
             TextView tvPhoneNumber = (TextView) findViewById(R.id.tvPhoneNumber);
 
             tvPhoneNumber.setText(number);
-            tvName.setText("אליאב הפלצן");
+            tvName.setText(name);
         }
         catch (Exception ex){
             Log.d("Exception", ex.toString());

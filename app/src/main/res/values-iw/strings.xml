@@ -60,4 +60,5 @@
     <string name="incoming_call_title_unanswered">יש לך שיחה שלא נענתה מאחד החברים הטובים שלך</string>
     <string name="show_custom_call_dialog">הצג חלונית בקבלת שיחות מחברי תוכנית</string>
     <string name="allow_push_notifications">הצג התראות להודעות SA</string>
+    <string name="select_account">בחר חשבון</string>
 </resources>

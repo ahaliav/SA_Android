@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -19,10 +20,12 @@ import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
+
+    AccountsAdapter listAdapter;
+    private List<String> listDataHeader; // header titles
+    private HashMap<String, List<String>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -135,15 +144,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.CALL_PHONE)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.CALL_PHONE},
-//                    123);
-//        }
-
         loadAccounts(navigationView);
     }
 
@@ -174,18 +174,16 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        String tag = "";
-        Fragment fragment = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            fragment = new SettingsFragment();
-            tag = "SettingsFragment";
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, new SettingsFragment())
+                    .addToBackStack("SettingsFragment")
+                    .commit();
+            return true;
         }
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, fragment)
-                .commit();
 
         return super.onOptionsItemSelected(item);
     }
@@ -243,37 +241,63 @@ public class MainActivity extends AppCompatActivity
 
     private void loadAccounts(NavigationView navigationView) {
 
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getApplicationContext());
+        Cursor result = db.selectUser("");
+
+        Boolean emailfound = false;
+        String email = "";
+        int i =0;
+        if (result != null) {
+            while (result.moveToNext()) {
+                int id = result.getInt(0);
+                email = result.getString(2);
+                emailfound = true;
+                break;
+            }
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+
+        if(listDataHeader.size() == 0){
+            email = getResources().getString(R.string.select_account);
+        }
+
+        listDataHeader.add(email);
+
         View headerView = navigationView.getHeaderView(0); //navigationView.inflateHeaderView(R.layout.nav_header_main);
 
+        ArrayList<String> emails = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.GET_ACCOUNTS)) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CALL_PHONE}, PERMS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS}, PERMS_REQUEST_CODE);
             } else {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CALL_PHONE}, PERMS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS}, PERMS_REQUEST_CODE);
             }
         } else {
             //do some stuff
-            ArrayList<String> emails = new ArrayList<>();
-
-            String email = "";
             Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
             Account[] accounts = AccountManager.get(this).getAccounts();
             for (Account account : accounts) {
                 if (gmailPattern.matcher(account.name).matches()) {
                     emails.add(account.name);
-                    if (account.name.toLowerCase().equals("ahaliav@gmail.com")) {
-                        if (Locale.getDefault().getLanguage() == "he")
-                            email = account.name + " " + getResources().getString(R.string.wellcome);
-                        else
-                            email = getResources().getString(R.string.wellcome) + " " + account.name;
-                        break;
-                    }
                 }
             }
 
-            TextView viewEmail = (TextView) headerView.findViewById(R.id.email_address_view);
-            viewEmail.setText(email);
+            listDataChild.put(email, emails);
         }
+
+        Spinner expAccounts = (Spinner) headerView.findViewById(R.id.email_address_view);
+
+        ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
+        expAccounts.setAdapter(myAdapter);
+
+        if(emailfound)
+            expAccounts.setEnabled(false);
     }
 }

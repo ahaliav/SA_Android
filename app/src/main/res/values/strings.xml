@@ -63,6 +63,7 @@
     <string name="incoming_call_title_unanswered">you have an unanswered call from one of your good friends</string>
     <string name="show_custom_call_dialog">Show Custom Incoming Call Dialog</string>
     <string name="allow_push_notifications">Allow News/Events Notifications</string>
+    <string name="select_account">Select Account</string>
 
 
 </resources>
