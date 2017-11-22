@@ -35,4 +35,13 @@ public class WebSiteHelper {
         CsvReader reader = new CsvReader(Constants.getGroupsCsv(), this.callback);
         reader.execute();
     }
+
+    public void getDisKM(double latitude, double longitude,
+                         double prelatitute, double prelongitude)
+    {
+        String url ="http://maps.googleapis.com/maps/api/distancematrix/json?origins=" + latitude + "," + longitude + "&destinations=" + prelatitute + "," + prelongitude + "&mode=driving&language=en-EN&sensor=false";
+
+        JsonReader reader = new JsonReader(url, this.callback);
+        reader.execute();
+    }
 }
