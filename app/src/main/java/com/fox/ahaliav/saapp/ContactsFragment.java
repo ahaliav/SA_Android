@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
