@@ -11,6 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -42,7 +45,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     Filter filter = null;
     private ProgressBar spinner;
     LocationManager locationManager;
-
+    Menu menu;
     double cur_latitude = 0;
     double cur_longitude = 0;
 
@@ -110,8 +113,44 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         // locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, (LocationListener) this);
-
+        setHasOptionsMenu(true);
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+
+        this.menu = menu;
+
+        MenuItem action_delete = menu.findItem(R.id.action_delete);
+        action_delete.setVisible(true);
+
+        MenuItem action_edit = menu.findItem(R.id.action_edit);
+        action_edit.setVisible(true);
+
+        MenuItem action_add = menu.findItem(R.id.action_add);
+        action_add.setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+
+                return false;
+            case R.id.action_edit:
+
+                return false;
+            case R.id.action_delete:
+
+                return false;
+            default:
+                break;
+        }
+
+        return false;
     }
 
     public final static double AVERAGE_RADIUS_OF_EARTH = 6371;

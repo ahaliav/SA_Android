@@ -3,6 +3,9 @@ package com.fox.ahaliav.saapp;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -22,7 +25,7 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
     WebView webview = null;
     private Float id;
     TextView txtTitle = null;
-
+    Menu menu;
     public NewsDetailsFragment() {
         // Required empty public constructor
     }
@@ -49,9 +52,34 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
 
         loadnews();
 
+        setHasOptionsMenu(true);
+
         return v;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+
+        this.menu = menu;
+
+        MenuItem action_add = menu.findItem(R.id.action_edit);
+        action_add.setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+
+                return false;
+            default:
+                break;
+        }
+
+        return false;
+    }
 
     private void loadnews() {
         WebSiteHelper helper = new WebSiteHelper(this);

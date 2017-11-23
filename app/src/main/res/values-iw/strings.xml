@@ -62,4 +62,5 @@
     <string name="allow_push_notifications">הצג התראות להודעות SA</string>
     <string name="select_account">בחר חשבון</string>
     <string name="KM">ק\"מ</string>
+    <string name="action_edit">עדכון</string>
 </resources>

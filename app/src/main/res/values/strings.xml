@@ -65,6 +65,7 @@
     <string name="allow_push_notifications">Allow News/Events Notifications</string>
     <string name="select_account">Select Account</string>
     <string name="KM">Km</string>
+    <string name="action_edit">Edit</string>
 
 
 </resources>
