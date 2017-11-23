@@ -21,7 +21,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> {
     private static class ViewHolder {
         TextView tvTitle;
         TextView tvDays;
-
+        TextView tvMoreDetails;
         FrameLayout mainframe;
     }
 
@@ -51,6 +51,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> {
             convertView = inflater.inflate(R.layout.item_subriety, parent, false);
             viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
             viewHolder.tvDays = (TextView) convertView.findViewById(R.id.tvDays);
+            viewHolder.tvMoreDetails = (TextView) convertView.findViewById(R.id.tvMoreDetails);
             viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
             result = convertView;
 
@@ -64,6 +65,7 @@ public class CalenderAdapter extends ArrayAdapter<Subriety> {
 
         viewHolder.tvTitle.setText(dataModel.getName());
         viewHolder.tvDays.setText(dataModel.getDays());
+        viewHolder.tvMoreDetails.setText(dataModel.getMorDetails());
 
        // viewHolder.mainframe.setOnClickListener(this);
         viewHolder.mainframe.setTag(position);
