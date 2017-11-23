@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -22,6 +23,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("create table groups " +
+                "(id integer primary key, day text, fromtime text, tomtime text, location text, comment text, lang text, latitude float,longitude float, km float)");
+
         db.execSQL("create table subrieties " +
         "(id integer primary key, name text, subrietdate text)");
 
@@ -231,5 +236,48 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
         Cursor res =  db.rawQuery( "select * from settings " + query, null );
         return res;
+    }
+
+    //groups
+    public Cursor selectGroups () {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+
+        Cursor res =  db.rawQuery( "select * from groups order by km", null );
+        return res;
+    }
+
+    public boolean deleteGroups () {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+
+        Cursor res =  db.rawQuery( "delete from groups", null );
+        return true;
+    }
+
+    public boolean insertGroups(ArrayList<Group> list) {
+
+        deleteGroups();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        for(Group g: list){
+            contentValues.put("day", g.getDay());
+            contentValues.put("fromtime", g.getFromTime());
+            contentValues.put("tomtime", g.getToTime());
+            contentValues.put("location", g.getLocation());
+            contentValues.put("comment", g.getComment());
+            contentValues.put("lang", g.getLang());
+            contentValues.put("latitude", g.getLatitude());
+            contentValues.put("longitude", g.getLongitude());
+            contentValues.put("km", g.getKm());
+            db.insert("groups", null, contentValues);
+        }
+
+        return true;
     }
 }

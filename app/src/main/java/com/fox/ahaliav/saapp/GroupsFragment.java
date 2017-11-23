@@ -3,10 +3,8 @@ package com.fox.ahaliav.saapp;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+import android.database.Cursor;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,28 +17,20 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DecimalFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.Executor;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 
 public class GroupsFragment extends Fragment implements SearchView.OnQueryTextListener, ICallbackMethod {
@@ -51,8 +41,11 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     GroupsAdapter adapter = null;
     Filter filter = null;
     private ProgressBar spinner;
-    TextView tvLocation;
     LocationManager locationManager;
+
+    double cur_latitude = 0;
+    double cur_longitude = 0;
+
     private FusedLocationProviderClient mFusedLocationClient;
 
     LatLng l1 = null;
@@ -81,7 +74,6 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         View v = inflater.inflate(R.layout.fragment_groups, container, false);
 
         listview = (ListView) v.findViewById(R.id.listviewGroups);
-        tvLocation = (TextView) v.findViewById(R.id.tvLocation);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
 
@@ -105,76 +97,11 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                         @Override
                         public void onSuccess(Location loc) {
                             // Got last known location. In some rare situations this can be null.
-                            tvLocation.setText("");
                             if (loc != null) {
+                                cur_latitude = loc.getLatitude();
+                                cur_longitude = loc.getLongitude();
 
-                                Toast.makeText(
-                                        getContext(),
-                                        "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                                                + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-                                String longitude = "Longitude: " + loc.getLongitude();
-
-                                String latitude = "Latitude: " + loc.getLatitude();
-
-                                String res = "";
-                                double latitude1 = 0;
-                                double longitude1 = 0;
-                                double latitude2 = 0;
-                                double longitude2 = 0;
-        /*------- To get city name from coordinates -------- */
-                                String cityName = null;
-                                Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
-                                List<Address> addresses;
-                                try {
-                                    addresses = gcd.getFromLocation(loc.getLatitude(),
-                                            loc.getLongitude(), 1);
-
-                                    if (addresses.size() > 0) {
-                                        System.out.println(addresses.get(0).getLocality());
-                                        cityName = addresses.get(0).getLocality();
-                                        cityName = addresses.get(0).getThoroughfare();
-                                    }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                                        + cityName;
-
-                                Geocoder selected_place_geocoder = new Geocoder(getContext());
-                                List<Address> address;
-                                List<Address> address2;
-
-                                try {
-                                    address = selected_place_geocoder.getFromLocationName("שטנר 7 ירושלים", 5);
-                                    address2 =  selected_place_geocoder.getFromLocationName("טללים 21 ירושלים", 5);
-
-                                    if (address == null) {
-
-                                    } else {
-                                        Address location = address.get(0);
-                                        Address location2 = address2.get(0);
-                                        res = "Latitude: " + location.getLatitude();
-                                        res += ", Longitude: " + location.getLongitude();
-                                        res += ", City: " + location.getLocality();
-                                        res += ", Street: " + location.getThoroughfare();
-
-                                        latitude1 = location2.getLatitude();
-                                        longitude1 = location2.getLongitude();
-
-                                        latitude2 = location.getLatitude();
-                                        longitude2 = location.getLongitude();
-                                    }
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                                l1 = new LatLng(latitude1, longitude1);
-                                l2 = new LatLng(latitude2,longitude2);
-                                loadkm(l1.latitude, l1.longitude, l2.latitude, l2.longitude);
-                                //distance(loc.getLatitude(), loc.getLongitude(),latitude2,longitude2)
-                                //tvLocation.setText(CalculationByDistance(l1,l2)  + " KM");
+                                loadgroups_from_db();
                             }
                         }
                     });
@@ -187,14 +114,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         return v;
     }
 
-    private void loadkm(double latitude1, double longitude1,double latitude2, double longitude2)
-    {
-        WebSiteHelper helper = new WebSiteHelper(this);
-
-        helper.getDisKM(latitude1, longitude1,latitude2,longitude2);
-    }
-
     public final static double AVERAGE_RADIUS_OF_EARTH = 6371;
+
     public float calculateDistance(double userLat, double userLng, double venueLat, double venueLng) {
 
         double latDistance = Math.toRadians(userLat - venueLat);
@@ -212,56 +133,132 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
     }
 
-    private String getDistanceOnRoad(double latitude, double longitude,
-                                     double prelatitute, double prelongitude) {
-        String result_in_kms = "";
+    private void loadgroups() {
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
 
-        String tag[] = { "text" };
-        try {
+        Cursor result = db.selectSettings("group");
+        String val = "";
+        boolean loadgroups = true;
+        if (result != null) {
 
-//            if (doc != null) {
-//                NodeList nl;
-//                ArrayList args = new ArrayList();
-//                for (String s : tag) {
-//                    nl = doc.getElementsByTagName(s);
-//                    if (nl.getLength() > 0) {
-//                        Node node = nl.item(nl.getLength() - 1);
-//                        args.add(node.getTextContent());
-//                    } else {
-//                        args.add(" - ");
-//                    }
-//                }
-//                result_in_kms = String.format("%s", args.get(0));
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            while (result.moveToNext()) {
+                val = result.getString(2);
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+
+            try{
+                if(val == "" || getDays(val) > 1){
+                    WebSiteHelper helper = new WebSiteHelper(this);
+                    helper.getGroups();
+                }
+                else {
+                    loadgroups_from_db();
+                }
+            }
+            catch (Exception ex){
+
+            }
         }
-        return result_in_kms;
     }
 
-    private void loadgroups() {
-        WebSiteHelper helper = new WebSiteHelper(this);
-        helper.getGroups();
+    private void loadgroups_from_db() {
+        getGroupsFromDb();
+
+        setGroupList();
+    }
+
+
+    private void getGroupsFromDb() {
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+
+        Cursor result = db.selectGroups();
+
+        if (result != null) {
+            list = new ArrayList<Group>();
+            while (result.moveToNext()) {
+                String day = result.getString(1);
+                String fromtime = result.getString(2);
+                String tomtime = result.getString(3);
+                String location = result.getString(4);
+                String comment = result.getString(5);
+                String lang = result.getString(6);
+                float latitude = result.getFloat(7);
+                float longitude = result.getFloat(8);
+                float db_km = result.getFloat(8);
+
+                float km = 0;
+
+                if (cur_latitude > 0) {
+                    km = calculateDistance(cur_latitude, cur_longitude, latitude, longitude);
+                }
+
+
+                Group g = new Group(day, fromtime, tomtime, comment, location, lang, latitude, longitude, km);
+                list.add(g);
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+
+            Collections.sort(list, new GroupComparator());
+        }
+    }
+
+
+
+    private void setGroupList(){
+        adapter = new GroupsAdapter(list, getActivity().getApplicationContext());
+        listview.setAdapter(adapter);
+
+        spinner.setVisibility(View.GONE);
+    }
+
+    public Integer getDays(String date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        String days = "";
+        try {
+            startDate = df.parse(date);
+            Date currentTime = Calendar.getInstance().getTime();
+            long mills = currentTime.getTime() - startDate.getTime();
+            days = String.valueOf(mills/(24 * 60 * 60 * 1000));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return Integer.parseInt(days);
     }
 
     @Override
     public void onTaskDone(List<Object> objs) {
-        if(objs != null && objs.size() > 0 && objs.get(0) instanceof Group){
+
+        if (objs != null && objs.size() > 0 && objs.get(0) instanceof Group) {
             for (int i = 0; i < objs.size(); ++i) {
 
                 Group n = (Group) objs.get(i);
                 list.add(n);
             }
 
-            adapter = new GroupsAdapter(list, getActivity().getApplicationContext());
-            listview.setAdapter(adapter);
+            setGroupList();
+
             listview.setTextFilterEnabled(true);
             filter = adapter.getFilter();
             searchgroup.setOnQueryTextListener(this);
 
+            SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+            db.insertGroups(list);
+
+
+            Date currentTime = Calendar.getInstance().getTime();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            db.insertSettings("group", df.format(currentTime));
+
             spinner.setVisibility(View.GONE);
-        }
-        else {
+
+        } else {
 
         }
 
@@ -304,7 +301,6 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         return false;
     }
-
 
 
 }

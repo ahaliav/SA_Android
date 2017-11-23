@@ -22,10 +22,12 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
 
     private String url = "";
     ICallbackMethod callback;
-    public CsvReader(String url, ICallbackMethod callback){
+
+    public CsvReader(String url, ICallbackMethod callback) {
         this.url = url;
         this.callback = callback;
     }
+
     private String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -46,10 +48,9 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
             String line = "";
             boolean isfirst = true;
             while ((line = rd.readLine()) != null) {
-                if(isfirst){
+                if (isfirst) {
                     isfirst = false;
-                }
-                else {
+                } else {
                     String[] RowData = line.split(",");
                     String day = "";
                     String fromtime = "";
@@ -57,31 +58,42 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
                     String location = "";
                     String comment = "";
                     String lang = "";
-                    if(RowData.length > 0)
+                    String latitude = "";
+                    String longitude = "";
+                    if (RowData.length > 0)
                         day = RowData[0];
-                    if(RowData.length > 1)
+                    if (RowData.length > 1)
                         location = RowData[1];
-                    if(RowData.length > 2)
+                    if (RowData.length > 2)
                         fromtime = RowData[2];
-                    if(RowData.length > 3)
+                    if (RowData.length > 3)
                         tomtime = RowData[3];
-                    if(RowData.length > 4)
+                    if (RowData.length > 4)
                         lang = RowData[4];
-                    if(RowData.length > 5)
+                    if (RowData.length > 5)
                         comment = RowData[5];
-                    g = new Group(day, fromtime,tomtime,comment,location,lang);
+                    if (RowData.length > 6)
+                        latitude = RowData[6];
+                    if (RowData.length > 7)
+                        longitude = RowData[7];
+
+                    latitude = pad(latitude, 8, '0');
+                    longitude = pad(longitude, 8, '0');
+
+                    float f_latitude = Float.parseFloat(latitude);
+                    float f_longitude = Float.parseFloat(longitude);
+
+                    g = new Group(day, fromtime, tomtime, comment, location, lang, f_latitude, f_longitude, 0);
                     list.add(g);
                 }
             }
 
             return list;
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             String err = ex.getMessage();
             return null;
-        }
-        finally {
+        } finally {
             is.close();
         }
     }
@@ -91,14 +103,11 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
     protected List<Object> doInBackground(Void... voids) {
         List<Object> result = null;
 
-        try
-        {
+        try {
             result = readCsvFromUrl(this.url);
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
 
-        }
-        catch (JSONException ex){
+        } catch (JSONException ex) {
             String exep = ex.getMessage();
         }
 
@@ -109,12 +118,19 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
     protected void onPostExecute(List<Object> result) {
         super.onPostExecute(result);
 
-        try{
+        try {
             callback.onTaskDone(result);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
 
         }
 
+    }
+
+    public String pad(String str, int size, char padChar) {
+        StringBuffer padded = new StringBuffer(str);
+        while (padded.length() < size) {
+            padded.append(padChar);
+        }
+        return padded.toString();
     }
 }
