@@ -175,12 +175,20 @@
                             android:src="@drawable/phonecall" />
 
                         <ImageButton
+                            android:id="@+id/btnShare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:src="@drawable/ic_share_black_24dp" />
+
+                        <ImageButton
                             android:id="@+id/btnSms"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="#ffffff"
-                            android:src="@drawable/sms" />
+                            android:src="@drawable/ic_sms_black_24dp" />
 
                         <ImageButton
                             android:id="@+id/btnEmail"

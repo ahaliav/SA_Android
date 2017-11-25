@@ -63,4 +63,6 @@
     <string name="select_account">בחר חשבון</string>
     <string name="KM">ק\"מ</string>
     <string name="action_edit">עדכון</string>
+    <string name="sharevia">שתף באמצעות</string>
+    <string name="sharecontact">איש קשר</string>
 </resources>

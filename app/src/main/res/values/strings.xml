@@ -66,6 +66,7 @@
     <string name="select_account">Select Account</string>
     <string name="KM">Km</string>
     <string name="action_edit">Edit</string>
-
+    <string name="sharevia">Share Via</string>
+    <string name="sharecontact">Contact</string>
 
 </resources>

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     private HashMap<Integer, Contact> _listDataChild;
     FragmentManager manager;
 
+
     private ArrayList<Contact> dataSet;
 
     public ContactAdapter(Context context, List<String> listDataHeader,
@@ -42,6 +44,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.manager = manager;
+
     }
 
     @Override
@@ -124,12 +127,32 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         ImageButton btnCall=(ImageButton)convertView.findViewById(R.id.btnCall);
         ImageButton btnEdit=(ImageButton)convertView.findViewById(R.id.btnEdit);
         ImageButton btnSms=(ImageButton)convertView.findViewById(R.id.btnSms);
+        ImageButton btnShare=(ImageButton)convertView.findViewById(R.id.btnShare);
+
         btnSms.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 manager.findFragmentByTag("ContactsFragment").startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
                         + contact.getPhoneNumber())));
+
+            }
+        });
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String sharevia = _context.getResources().getString(R.string.sharevia);
+                String sharecontact = _context.getResources().getString(R.string.sharecontact);
+
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = contact.getName() + "\n" + contact.getPhoneNumber() + "\n" + contact.getEmail();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, sharecontact);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                _context.startActivity(Intent.createChooser(sharingIntent, sharevia));
 
             }
         });
