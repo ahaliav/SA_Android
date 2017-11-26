@@ -1,5 +1,7 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
     ArrayList<News> list = null;
     WebView webview = null;
     private Float id;
+    String title = "";
     TextView txtTitle = null;
     Menu menu;
     public NewsDetailsFragment() {
@@ -72,6 +75,16 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
+                String message = getResources().getString(R.string.news_subject) + ": " + title + "\n";
+                message += getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+                message += getResources().getString(R.string.event_details) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.new_news_update_subject) + "&body=" + message + "&to=news@sa-israel.org");
+                intent.setData(data);
+
+                startActivity(Intent.createChooser(intent, ""));
 
                 return false;
             default:
@@ -100,9 +113,8 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
                 Map<String, Object> mapContent = (Map<String, Object>) mapPost.get("content");
                 Float nid = Float.parseFloat(mapPost.get("id").toString());
                 News n = new News(nid, (String) mapContent.get("rendered"), (String) mapTitle.get("rendered"), new Date());
-                String title = n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", "");
+                title = n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", "");
                 txtTitle.setText(title);
-
 
                 webview.loadData("<html><body dir=\"rtl\">" + n.getContent() + "</body></html>", "text/html; charset=UTF-8", null);
 

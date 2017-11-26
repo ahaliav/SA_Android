@@ -1,5 +1,7 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -77,13 +79,15 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
+                String message = getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+                message += getResources().getString(R.string.news_details) + ": \n";
 
-                return false;
-            case R.id.action_edit:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.new_news_subject) + "&body=" + message + "&to=news@sa-israel.org");
+                intent.setData(data);
 
-                return false;
-            case R.id.action_delete:
-
+                startActivity(Intent.createChooser(intent, ""));
                 return false;
             default:
                 break;

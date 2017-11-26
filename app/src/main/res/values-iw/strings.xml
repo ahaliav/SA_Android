@@ -65,4 +65,17 @@
     <string name="action_edit">עדכון</string>
     <string name="sharevia">שתף באמצעות</string>
     <string name="sharecontact">איש קשר</string>
+    <string name="local">he</string>
+    <string name="myphoneis">הטלפון שלי הוא</string>
+    <string name="iwoulsliketoupdate">אני רוצה לעדכן ש</string>
+    <string name="mynameis">השם שלי הוא</string>
+    <string name="hisaiwouldliketoupdateagroup">שלום SA ברצוני לעדכן קבוצה</string>
+    <string name="hisaiwouldliketoupdatethisremoved">שלום SA ברצוני לעדכן שהקבוצה כבר לא קיימת</string>
+    <string name="hisaiwouldliketoupdatenewgoup">שלום SA ברצוני לעדכן על קבוצה חדשה</string>
+    <string name="new_news_subject">שלום SA ברצוני לעדכן חדשות</string>
+    <string name="new_event_subject">שלום SA ברצוני לספר על אירוע מתקרב</string>
+    <string name="event_details">פרטים על האירוע</string>
+    <string name="news_details">פרטים על החדשות</string>
+    <string name="new_news_update_subject">"עדכון חדשות \\ אירוע קיים "</string>
+    <string name="news_subject">כותרת חדשות \\ אירוע</string>
 </resources>

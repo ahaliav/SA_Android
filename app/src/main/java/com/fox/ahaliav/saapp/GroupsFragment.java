@@ -2,10 +2,12 @@ package com.fox.ahaliav.saapp;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -124,12 +126,6 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         this.menu = menu;
 
-        MenuItem action_delete = menu.findItem(R.id.action_delete);
-        action_delete.setVisible(true);
-
-        MenuItem action_edit = menu.findItem(R.id.action_edit);
-        action_edit.setVisible(true);
-
         MenuItem action_add = menu.findItem(R.id.action_add);
         action_add.setVisible(true);
     }
@@ -138,13 +134,18 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
+                String message = getResources().getString(R.string.city) + ": \n";
+                message += getResources().getString(R.string.day) + ": \n";
+                message += getResources().getString(R.string.fromtime) + ": \n";
+                message += getResources().getString(R.string.totime) + ": \n";
+                message += getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
 
-                return false;
-            case R.id.action_edit:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.hisaiwouldliketoupdatenewgoup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                intent.setData(data);
 
-                return false;
-            case R.id.action_delete:
-
+                startActivity(Intent.createChooser(intent, ""));
                 return false;
             default:
                 break;
@@ -250,7 +251,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     private void setGroupList(){
-        adapter = new GroupsAdapter(list, getActivity().getApplicationContext());
+        adapter = new GroupsAdapter(list, getActivity().getApplicationContext() ,cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
 
         spinner.setVisibility(View.GONE);
@@ -316,7 +317,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         }
 
-        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext());
+        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
         return false;
     }
@@ -334,7 +335,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         }
 
-        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext());
+        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
 
 

@@ -3,6 +3,9 @@ package com.fox.ahaliav.saapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,10 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
     ArrayList<Group> dataSet;
     Context mContext;
     Group dataModel;
+    double cur_latitude = 0;
+    double cur_longitude = 0;
+
+    //FragmentManager manager;
     private static class ViewHolder {
         TextView tvDay;
         TextView tvFromTime;
@@ -30,13 +37,19 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         TextView tvLocation;
         TextView tvKm;
         ImageButton btnWaze;
+        ImageButton btnGooglemaps;
+        ImageButton btnEdit;
+        ImageButton btnDelete;
         FrameLayout mainframe;
     }
 
-    public GroupsAdapter(ArrayList<Group> data, Context context) {
+    public GroupsAdapter(ArrayList<Group> data, Context context, double cur_latitude, double cur_longitude) {
         super(context, R.layout.item_group, data);
         this.dataSet = data;
         this.mContext = context;
+        this.cur_latitude = cur_latitude;
+        this.cur_longitude = cur_longitude;
+        //this.manager = manager;
     }
 
     private int lastPosition = -1;
@@ -61,7 +74,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
         viewHolder.tvKm = (TextView) convertView.findViewById(R.id.tvKm);
         viewHolder.btnWaze = (ImageButton) convertView.findViewById(R.id.btnWaze);
-
+        viewHolder.btnGooglemaps = (ImageButton) convertView.findViewById(R.id.btnGooglemaps);
+        viewHolder.btnEdit = (ImageButton) convertView.findViewById(R.id.btnEdit);
+        viewHolder.btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
         viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
 
         convertView.setTag(viewHolder);
@@ -75,7 +90,11 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.tvComment.setText(dataModel.getComment());
         viewHolder.tvLang.setText(dataModel.getLang());
         viewHolder.tvLocation.setText(dataModel.getLocation());
-        viewHolder.tvKm.setText(String.valueOf(dataModel.getKm()));
+
+        if (mContext.getResources().getString(R.string.local) == "he")
+            viewHolder.tvKm.setText(" קמ" + String.valueOf(dataModel.getKm()));
+        else
+            viewHolder.tvKm.setText(String.valueOf(dataModel.getKm()) + " " + mContext.getResources().getString(R.string.KM));
 
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -84,6 +103,62 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                         Uri.parse(uri)));
             }
         });
+
+        viewHolder.btnGooglemaps.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri
+                        .parse("http://maps.google.com/maps?saddr="
+                                + cur_latitude + ","
+                                + cur_longitude + "&daddr="
+                                + dataModel.getLatitude() + "," + dataModel.getLongitude()));
+                mContext.startActivity(navigation);
+            }
+        });
+
+
+        viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                message += mContext.getResources().getString(R.string.mynameis) + ": \n";
+                message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                intent.setData(data);
+
+                mContext.startActivity(Intent.createChooser(intent, ""));
+
+            }
+        });
+
+        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                message += mContext.getResources().getString(R.string.mynameis) + ": \n";
+                message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                intent.setData(data);
+
+                mContext.startActivity(Intent.createChooser(intent, ""));
+
+            }
+        });
+
 
         return convertView;
     }

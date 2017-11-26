@@ -68,5 +68,19 @@
     <string name="action_edit">Edit</string>
     <string name="sharevia">Share Via</string>
     <string name="sharecontact">Contact</string>
+    <string name="local">us</string>
+    <string name="mynameis">My Name Is</string>
+    <string name="iwoulsliketoupdate">I Would Like To Update That</string>
+    <string name="myphoneis">My Phone Is</string>
+    <string name="hisaiwouldliketoupdateagroup">Hi SA I would like to update this group</string>
+    <string name="hisaiwouldliketoupdatethisremoved">Hi SA I would like to update this group does not exists any more</string>
+    <string name="hisaiwouldliketoupdatenewgoup">Hi SA I would like to update about a new group</string>
+    <string name="new_event_subject">Hi SA there is a new events coming soon</string>
+    <string name="new_news_subject">Hi SA I have some news for you</string>
+    <string name="event_details">Event Details</string>
+    <string name="news_details">News Details</string>
+    <string name="new_news_update_subject">Update Existing News / Event</string>
+    <string name="news_subject">News / Event Subject</string>
+
 
 </resources>

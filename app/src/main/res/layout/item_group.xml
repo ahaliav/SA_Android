@@ -1,12 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout android:id="@+id/flShipmentBackgouned"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/flShipmentBackgouned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/item_group_style">
 
@@ -23,17 +26,17 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:columnCount="4"
-                android:rowCount="4">
+                android:rowCount="6">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="80dp"
                     android:layout_column="0"
-                    android:layout_row="0"
                     android:layout_columnWeight="1"
                     android:layout_gravity="fill"
-                    android:background="#8579a9ec">
+                    android:layout_row="0"
+                    android:background="#8579a9ec"
+                    android:minWidth="80dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -50,11 +53,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
-                    android:minWidth="50dp"
                     android:layout_columnWeight="1"
                     android:layout_gravity="fill"
                     android:layout_row="0"
-                    android:background="#8579a9ec">
+                    android:background="#8579a9ec"
+                    android:minWidth="50dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -72,12 +75,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:minWidth="50dp"
                     android:layout_columnWeight="1"
-
                     android:layout_gravity="fill"
+
                     android:layout_row="0"
-                    android:background="#8579a9ec">
+                    android:background="#8579a9ec"
+                    android:minWidth="50dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -177,39 +180,11 @@
                 </FrameLayout>
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="fill"
-                    android:layout_row="2"
-                    android:orientation="horizontal"
-                    android:background="#8579a9ec">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/KM" />
-
-                    <ImageButton
-                        android:id="@+id/btnWaze"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:background="#8579a9ec"
-                        android:src="@drawable/waze" />
-                </LinearLayout>
-
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_columnSpan="2"
+                    android:layout_column="1"
+                    android:layout_columnSpan="3"
                     android:layout_columnWeight="1"
                     android:layout_gravity="fill"
                     android:layout_row="2"
@@ -239,35 +214,13 @@
                     android:text="Day"
                     android:textColor="@android:color/black" />
 
-                <FrameLayout
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-
-                    android:layout_row="3"
-                    android:background="@drawable/km_style">
-
-                    <TextView
-                        android:id="@+id/tvKm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="KM"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black" />
-                </FrameLayout>
-
 
                 <TextView
                     android:id="@+id/tvComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_columnSpan="2"
+                    android:layout_column="1"
+                    android:layout_columnSpan="3"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -275,6 +228,80 @@
                     android:layout_row="3"
                     android:text="Comments"
                     android:textColor="@android:color/black" />
+
+                <View android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_column="0"
+                    android:layout_columnSpan="4"
+                    android:layout_row="4"
+                    android:background="#a6220d">
+                </View>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_columnSpan="4"
+                    android:layout_row="5"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/km_style"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/tvKm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="KM"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/black" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/btnWaze"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="4dp"
+                        android:background="#ffffff"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_navigation_black_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnGooglemaps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:src="@drawable/ic_directions_walk_black_24dp" />
+                    <ImageButton
+                        android:id="@+id/btnEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnDelete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:src="@drawable/ic_delete_gray_24dp" />
+
+                </LinearLayout>
 
             </GridLayout>
 

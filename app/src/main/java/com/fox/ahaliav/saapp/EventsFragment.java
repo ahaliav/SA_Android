@@ -1,9 +1,15 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +26,7 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
     ListView listview = null;
     ArrayList<News> list = null;
     private ProgressBar spinner;
+    Menu menu;
 
     public EventsFragment() {
         // Required empty public constructor
@@ -29,6 +36,38 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
         EventsFragment fragment = new EventsFragment();
 
         return fragment;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+
+        this.menu = menu;
+
+        MenuItem action_add = menu.findItem(R.id.action_add);
+        action_add.setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                String message = getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+                message += getResources().getString(R.string.event_details) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.new_event_subject) + "&body=" + message + "&to=news@sa-israel.org");
+                intent.setData(data);
+
+                startActivity(Intent.createChooser(intent, ""));
+                return false;
+            default:
+                break;
+        }
+
+        return false;
     }
 
     private void loadevents() {
@@ -55,18 +94,21 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
         list = new ArrayList<News>();
         loadevents();
 
+        setHasOptionsMenu(true);
+
         return v;
     }
 
     @Override
     public void onTaskDone(List<Object> objs) {
+
         if(objs != null){
             for (int i = 0; i < objs.size(); ++i) {
-                Map<String,Object> mapPost = (Map<String,Object>)objs.get(i);
-                Map<String,Object> mapTitle = (Map<String, Object>) mapPost.get("title");
+                Map<String, Object> mapPost = (Map<String, Object>) objs.get(i);
+                Map<String, Object> mapTitle = (Map<String, Object>) mapPost.get("title");
                 Float nid = Float.parseFloat(mapPost.get("id").toString());
                 News n = new News(nid,"", (String) mapTitle.get("rendered"), new Date());
-                n.setTitle(n.getTitle().replaceAll("\\<[^>]*>","").replaceAll("\\&.*?\\;", ""));
+                n.setTitle(n.getTitle().replaceAll("\\<[^>]*>", "").replaceAll("\\&.*?\\;", ""));
                 list.add(n);
             }
 
@@ -77,10 +119,18 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    News dataModel= list.get(position);
+                    News dataModel = list.get(position);
 
-                    Snackbar.make(view, dataModel.getTitle(), Snackbar.LENGTH_LONG)
-                            .setAction("No action", null).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putFloat("id", dataModel.getId());
+
+                    NewsDetailsFragment news = new NewsDetailsFragment();
+                    news.setArguments(bundle);
+
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_container, news, "NewsDetailsFragment");
+                    ft.addToBackStack("NewsDetailsFragment");
+                    ft.commit();
                 }
             });
 
@@ -88,4 +138,5 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
         }
 
     }
+
 }

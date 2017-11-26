@@ -208,6 +208,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 Intent testIntent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
                 testIntent.setData(data);
+
                 manager.findFragmentByTag("ContactsFragment").startActivity(testIntent);
             }
         });
