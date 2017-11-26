@@ -18,6 +18,7 @@ public class IncomingCallReciever extends BroadcastReceiver {
     private Context mContext;
     private Intent mIntent;
     String name = "";
+    String email = "";
     boolean exite = true;
     boolean contactExsits = false;
 
@@ -129,6 +130,7 @@ public class IncomingCallReciever extends BroadcastReceiver {
                     while (result.moveToNext()) {
                         contactExsits = true;
                         name = result.getString(1);
+                        email = result.getString(3);
                         break;
                     }
 
@@ -142,6 +144,12 @@ public class IncomingCallReciever extends BroadcastReceiver {
         }
 
         private void openUnansweredActivity() {
+
+            try {
+                IncomingCallActivity.instance.finish();
+            } catch (Exception ex) {
+            }
+
             exite = true;
             contactExsits = false;
             String number = mIntent.getStringExtra(
@@ -153,9 +161,15 @@ public class IncomingCallReciever extends BroadcastReceiver {
 
             Intent curintent = new Intent(mContext, unansweredCallActivity.class);
             mIntent.putExtra("name", name);
+            mIntent.putExtra("email", email);
             curintent.putExtras(mIntent);
             curintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             curintent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
 
             mContext.startActivity(curintent);
         }
@@ -167,9 +181,15 @@ public class IncomingCallReciever extends BroadcastReceiver {
             curintent.putExtras(mIntent);
             curintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             curintent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            curintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             mContext.startActivity(curintent);
+
         }
+
+
     };
 
 }

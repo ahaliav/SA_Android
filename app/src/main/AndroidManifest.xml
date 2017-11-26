@@ -44,11 +44,13 @@
         </activity>
         <activity
             android:name=".IncomingCallActivity"
-            android:theme="@style/Theme.CallDialog">
+            android:theme="@style/Theme.CallDialog"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".unansweredCallActivity"
-            android:theme="@style/Theme.CallDialog">
+            android:theme="@style/Theme.CallDialog"
+            android:noHistory="true">
         </activity>
     </application>
 

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:background="#ffffff"
                     android:columnCount="3"
-                    android:rowCount="5">
+                    android:rowCount="6">
 
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -62,6 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_row="0"
+                        android:textIsSelectable="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -103,6 +104,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="10dp"
+                        android:textIsSelectable="true"
                         android:textColor="#363330"
                         android:textSize="18sp" />
 
@@ -139,6 +141,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
+                        android:textIsSelectable="true"
                         android:layout_marginTop="10dp"
                         android:textColor="#363330"
                         android:textSize="18sp" />
@@ -154,16 +157,23 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="10dp"
+                        android:textIsSelectable="true"
                         android:text="@string/comments"
                         android:textColor="#363330"
                         android:textSize="18sp" />
-
+                    <View android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_column="0"
+                        android:layout_columnSpan="3"
+                        android:layout_row="4"
+                        android:background="#000000">
+                    </View>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
                         android:layout_columnSpan="2"
-                        android:layout_row="4"
+                        android:layout_column="0"
+                        android:layout_row="5"
                         android:orientation="horizontal">
 
                         <ImageButton
@@ -172,7 +182,7 @@
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="#ffffff"
-                            android:src="@drawable/phonecall" />
+                            android:src="@drawable/ic_local_phone_black_24dp" />
 
                         <ImageButton
                             android:id="@+id/btnShare"
@@ -196,7 +206,7 @@
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="#ffffff"
-                            android:src="@drawable/email26" />
+                            android:src="@drawable/ic_email_black_24dp" />
 
                         <ImageButton
                             android:id="@+id/btnEdit"
@@ -204,7 +214,7 @@
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="#ffffff"
-                            android:src="@drawable/edit" />
+                            android:src="@drawable/ic_mode_edit_black_24dp" />
                     </LinearLayout>
                 </GridLayout>
 

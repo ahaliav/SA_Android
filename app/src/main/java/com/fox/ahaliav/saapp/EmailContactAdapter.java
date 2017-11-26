@@ -3,9 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,28 +109,8 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
         tvTitle.setText(contact.getTitle());
         tvEmail.setText(contact.getEmail());
 
-
-        ImageButton btnSendMessage=(ImageButton)convertView.findViewById(R.id.btnSendMessage);
         ImageButton btnEmail=(ImageButton)convertView.findViewById(R.id.btnEmail);
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-
-                final FragmentTransaction ft = manager.beginTransaction();
-                EmailDetailsFragment emaildetails = new EmailDetailsFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("email", contact.getEmail());
-                bundle.putString("title", contact.getTitle());
-
-                emaildetails.setArguments(bundle);
-
-                ft.replace(R.id.main_fragment_container, emaildetails, "EmailDetailsFragment");
-                ft.addToBackStack("EmailDetailsFragment");
-                ft.commit();
-            }
-        });
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
 

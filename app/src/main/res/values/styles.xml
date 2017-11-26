@@ -28,6 +28,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/item_popup_style</item>
     </style>
 
     <style name="spinner_style">
@@ -41,4 +42,5 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:popupBackground">#DFFFFFFF</item>
     </style>
+
 </resources>
