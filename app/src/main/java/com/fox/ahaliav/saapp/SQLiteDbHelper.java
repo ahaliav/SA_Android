@@ -39,8 +39,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.execSQL("create table user " +
                 "(id integer primary key, name text, email text, is_registered integer)");
 
-        //insertSettings("notifications","true");
-        //insertSettings("calldialog","true");
+
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //db.execSQL("drop table contacts");
@@ -102,6 +101,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
+
+        if(phone != null && !phone.isEmpty()){
+            phone = phone.replace("-","");
+            phone = phone.replace(" ","");
+        }
+
         contentValues.put("name", name);
         contentValues.put("phone", phone);
         contentValues.put("comments", comments);
@@ -235,6 +240,22 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         }
 
         Cursor res =  db.rawQuery( "select * from settings " + query, null );
+
+        if(res == null || res.getCount() == 0){
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("key_set", "notifications");
+            contentValues.put("value_set", "true");
+            db.insert("settings", null, contentValues);
+
+            contentValues = new ContentValues();
+            contentValues.put("key_set", "calldialog");
+            contentValues.put("value_set", "true");
+            db.insert("settings", null, contentValues);
+
+            res =  db.rawQuery( "select * from settings " + query, null );
+        }
+
         return res;
     }
 

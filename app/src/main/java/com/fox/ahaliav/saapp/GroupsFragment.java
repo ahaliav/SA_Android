@@ -83,6 +83,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         spinner.setVisibility(View.VISIBLE);
 
         searchgroup = (SearchView) v.findViewById(R.id.searchgroup);
+        searchgroup.setOnQueryTextListener(this);
         list = new ArrayList<Group>();
         loadgroups();
 
@@ -282,11 +283,11 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                 list.add(n);
             }
 
-            setGroupList();
+
 
             listview.setTextFilterEnabled(true);
             filter = adapter.getFilter();
-            searchgroup.setOnQueryTextListener(this);
+
 
             SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
             db.insertGroups(list);
@@ -295,6 +296,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             Date currentTime = Calendar.getInstance().getTime();
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             db.insertSettings("group", df.format(currentTime));
+
+            setGroupList();
 
             spinner.setVisibility(View.GONE);
 

@@ -78,4 +78,5 @@
     <string name="news_details">פרטים על החדשות</string>
     <string name="new_news_update_subject">"עדכון חדשות \\ אירוע קיים "</string>
     <string name="news_subject">כותרת חדשות \\ אירוע</string>
+    <string name="field_required">שדה חובה</string>
 </resources>

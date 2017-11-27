@@ -81,8 +81,10 @@ public class CalenderAddFragment extends Fragment {
 
         btnSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                saveCurrentDateOnView();
-                getFragmentManager().popBackStack();
+                if(saveCurrentDateOnView()){
+                    getFragmentManager().popBackStack();
+                }
+
             }
         });
 
@@ -109,20 +111,29 @@ public class CalenderAddFragment extends Fragment {
     }
 
 
-    public void saveCurrentDateOnView() {
+    public boolean saveCurrentDateOnView() {
 
-        dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
-
-        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-
-        name = txtName.getText().toString();
-
-        if(id <=0){
-            db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+        if(txtName.getText().toString().trim().equals("") ){
+            txtName.setError(getResources().getString(R.string.field_required));
         }
         else {
-            db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
+            dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
+
+            SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+
+            name = txtName.getText().toString();
+
+            if(id <=0){
+                db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+            }
+            else {
+                db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
+            }
+
+            return true;
         }
+
+        return false;
     }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){

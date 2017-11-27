@@ -69,8 +69,10 @@ public class ContactDetailsFragment extends Fragment {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                save();
-                getFragmentManager().popBackStack();
+                if(save()){
+                    getFragmentManager().popBackStack();
+                }
+
             }
         });
 
@@ -83,23 +85,34 @@ public class ContactDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public void save() {
+    public boolean save() {
 
-        dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
-
-        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-
-        name = txtName.getText().toString();
-        comments = txtComments.getText().toString();
-        phone = txtPhone.getText().toString();
-        email = txtEmail.getText().toString();
-
-        if(id <=0){
-            db.insertContact(name, phone, comments, email);
+        if(txtName.getText().toString().trim().equals("") ){
+            txtName.setError(getResources().getString(R.string.field_required));
+        }
+        else if(txtPhone.getText().toString().trim().equals("") ){
+            txtPhone.setError(getResources().getString(R.string.field_required));
         }
         else {
-            db.updateContact(id, name, phone, comments, email);
+            dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
+
+            SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+
+            name = txtName.getText().toString();
+            comments = txtComments.getText().toString();
+            phone = txtPhone.getText().toString();
+            email = txtEmail.getText().toString();
+
+            if(id <=0){
+                db.insertContact(name, phone, comments, email);
+            }
+            else {
+                db.updateContact(id, name, phone, comments, email);
+            }
+            return true;
         }
+
+        return false;
     }
 
 }

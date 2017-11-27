@@ -81,6 +81,7 @@
     <string name="news_details">News Details</string>
     <string name="new_news_update_subject">Update Existing News / Event</string>
     <string name="news_subject">News / Event Subject</string>
+    <string name="field_required">Required!</string>
 
 
 </resources>

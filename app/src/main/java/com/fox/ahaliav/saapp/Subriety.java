@@ -110,9 +110,9 @@ public class Subriety {
         // YEAR CALCULATION
         year = toDate.get(Calendar.YEAR) - (fromDate.get(Calendar.YEAR) + increment);
         if (Locale.getDefault().getLanguage().equals("iw"))
-            return year + "\tשנ'\t" + month + "\tחוד'\t" + day + "\tימ'";
+            return year + "\tשנ'\t\t" + month + "\tחוד'\t\t" + day + "\tימ'\t";
         else
-            return year + "\tYrs.\t" + month + "\tMon.\t" + day + "\tDys.";
+            return year + "\tYrs.\t" + month + "\tMon.\t" + day + "\tDys.\t";
 
     }
 }

@@ -3,9 +3,6 @@ package com.fox.ahaliav.saapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,9 +95,13 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
 
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String uri = "https://waze.com/ul?ll=" + dataModel.getLatitude() + "," + dataModel.getLongitude() + "&navigate=yes";
-                mContext.startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse(uri)));
+                String uri = "http://maps.google.com/maps?saddr="
+                        + cur_latitude + ","
+                        + cur_longitude + "&daddr="
+                        + dataModel.getLatitude() + "," + dataModel.getLongitude();
+                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(navigation);
             }
         });
 
@@ -112,6 +113,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                                 + cur_latitude + ","
                                 + cur_longitude + "&daddr="
                                 + dataModel.getLatitude() + "," + dataModel.getLongitude()));
+                navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(navigation);
             }
         });
@@ -130,10 +132,11 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                 message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
                 intent.setData(data);
 
-                mContext.startActivity(Intent.createChooser(intent, ""));
+                mContext.startActivity(intent);
 
             }
         });
@@ -152,9 +155,10 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(data);
 
-                mContext.startActivity(Intent.createChooser(intent, ""));
+                mContext.startActivity(intent);
 
             }
         });

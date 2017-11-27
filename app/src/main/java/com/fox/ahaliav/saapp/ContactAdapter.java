@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -123,18 +122,20 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         tvComments.setText(contact.getComments());
         tvEmail.setText(contact.getEmail());
 
-        ImageButton btnEmail=(ImageButton)convertView.findViewById(R.id.btnEmail);
-        ImageButton btnCall=(ImageButton)convertView.findViewById(R.id.btnCall);
-        ImageButton btnEdit=(ImageButton)convertView.findViewById(R.id.btnEdit);
-        ImageButton btnSms=(ImageButton)convertView.findViewById(R.id.btnSms);
-        ImageButton btnShare=(ImageButton)convertView.findViewById(R.id.btnShare);
+        ImageButton btnEmail = (ImageButton) convertView.findViewById(R.id.btnEmail);
+        ImageButton btnCall = (ImageButton) convertView.findViewById(R.id.btnCall);
+        ImageButton btnEdit = (ImageButton) convertView.findViewById(R.id.btnEdit);
+        ImageButton btnSms = (ImageButton) convertView.findViewById(R.id.btnSms);
+        ImageButton btnShare = (ImageButton) convertView.findViewById(R.id.btnShare);
 
         btnSms.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                manager.findFragmentByTag("ContactsFragment").startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
-                        + contact.getPhoneNumber())));
+                Uri uri = Uri.parse("sms:" + contact.getPhoneNumber());
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                manager.findFragmentByTag("ContactsFragment").startActivity(intent);
 
             }
         });
@@ -152,6 +153,9 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 String shareBody = contact.getName() + "\n" + contact.getPhoneNumber() + "\n" + contact.getEmail();
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, sharecontact);
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+                sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 _context.startActivity(Intent.createChooser(sharingIntent, sharevia));
 
             }
@@ -169,8 +173,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                     ActivityCompat.requestPermissions(activity,
                             new String[]{Manifest.permission.CALL_PHONE},
                             123);
-                }
-                else {
+                } else {
                     Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.getPhoneNumber()));
                     callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     manager.findFragmentByTag("ContactsFragment").startActivity(callIntent);
@@ -208,7 +211,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 Intent testIntent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
                 testIntent.setData(data);
-
+                testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 manager.findFragmentByTag("ContactsFragment").startActivity(testIntent);
             }
         });
