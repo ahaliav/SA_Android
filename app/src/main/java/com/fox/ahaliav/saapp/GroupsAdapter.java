@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -95,26 +96,51 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
 
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String uri = "http://maps.google.com/maps?saddr="
+
+                String w_uri = "waze://?ll=40.761043, -73.980545&navigate=yes";
+
+                String g_uri = "http://maps.google.com/maps?saddr="
                         + cur_latitude + ","
                         + cur_longitude + "&daddr="
                         + dataModel.getLatitude() + "," + dataModel.getLongitude();
-                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(navigation);
+
+                try{
+                    Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(w_uri));
+                    navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(navigation);
+                }
+                catch (Exception ex){
+                    try{
+                        Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
+                        navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(navigation);
+                    }
+                    catch (Exception ex2){
+                        Toast.makeText(mContext, "Error loading navigation",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
             }
         });
 
         viewHolder.btnGooglemaps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri
-                        .parse("http://maps.google.com/maps?saddr="
-                                + cur_latitude + ","
-                                + cur_longitude + "&daddr="
-                                + dataModel.getLatitude() + "," + dataModel.getLongitude()));
-                navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(navigation);
+                String g_uri = "http://maps.google.com/maps?saddr="
+                        + cur_latitude + ","
+                        + cur_longitude + "&daddr="
+                        + dataModel.getLatitude() + "," + dataModel.getLongitude();
+
+                try{
+                    Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
+                    navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(navigation);
+                }
+                catch (Exception ex2){
+                    Toast.makeText(mContext, "Error loading navigation",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 

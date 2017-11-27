@@ -18,6 +18,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,10 +133,18 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("sms:" + contact.getPhoneNumber());
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                manager.findFragmentByTag("ContactsFragment").startActivity(intent);
+
+                try{
+                    Uri uri = Uri.parse("sms:" + contact.getPhoneNumber());
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    manager.findFragmentByTag("ContactsFragment").startActivity(intent);
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -145,18 +154,25 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                String sharevia = _context.getResources().getString(R.string.sharevia);
-                String sharecontact = _context.getResources().getString(R.string.sharecontact);
+                try{
+                    String sharevia = _context.getResources().getString(R.string.sharevia);
+                    String sharecontact = _context.getResources().getString(R.string.sharecontact);
 
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody = contact.getName() + "\n" + contact.getPhoneNumber() + "\n" + contact.getEmail();
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, sharecontact);
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = contact.getName() + "\n" + contact.getPhoneNumber() + "\n" + contact.getEmail();
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, sharecontact);
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
-                sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                _context.startActivity(Intent.createChooser(sharingIntent, sharevia));
+                    _context.startActivity(Intent.createChooser(sharingIntent, sharevia));
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -165,19 +181,27 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                Activity activity = manager.findFragmentByTag("ContactsFragment").getActivity();
-                if (ContextCompat.checkSelfPermission(activity,
-                        Manifest.permission.CALL_PHONE)
-                        != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(activity,
-                            new String[]{Manifest.permission.CALL_PHONE},
-                            123);
-                } else {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.getPhoneNumber()));
-                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    manager.findFragmentByTag("ContactsFragment").startActivity(callIntent);
+                try{
+                    Activity activity = manager.findFragmentByTag("ContactsFragment").getActivity();
+                    if (ContextCompat.checkSelfPermission(activity,
+                            Manifest.permission.CALL_PHONE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(activity,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                123);
+                    } else {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.getPhoneNumber()));
+                        callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        manager.findFragmentByTag("ContactsFragment").startActivity(callIntent);
+                    }
                 }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -185,21 +209,28 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                final FragmentTransaction ft = manager.beginTransaction();
-                ContactDetailsFragment contactdetails = new ContactDetailsFragment();
+                try{
+                    final FragmentTransaction ft = manager.beginTransaction();
+                    ContactDetailsFragment contactdetails = new ContactDetailsFragment();
 
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", contact.getId());
-                bundle.putString("name", contact.getName());
-                bundle.putString("phone", contact.getPhoneNumber());
-                bundle.putString("comments", contact.getComments());
-                bundle.putString("email", contact.getEmail());
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", contact.getId());
+                    bundle.putString("name", contact.getName());
+                    bundle.putString("phone", contact.getPhoneNumber());
+                    bundle.putString("comments", contact.getComments());
+                    bundle.putString("email", contact.getEmail());
 
-                contactdetails.setArguments(bundle);
+                    contactdetails.setArguments(bundle);
 
-                ft.replace(R.id.main_fragment_container, contactdetails, "ContactDetailsFragment");
-                ft.addToBackStack("ContactDetailsFragment");
-                ft.commit();
+                    ft.replace(R.id.main_fragment_container, contactdetails, "ContactDetailsFragment");
+                    ft.addToBackStack("ContactDetailsFragment");
+                    ft.commit();
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -208,11 +239,18 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                Intent testIntent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
-                testIntent.setData(data);
-                testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                manager.findFragmentByTag("ContactsFragment").startActivity(testIntent);
+                try{
+                    Intent testIntent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
+                    testIntent.setData(data);
+                    testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    manager.findFragmentByTag("ContactsFragment").startActivity(testIntent);
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
