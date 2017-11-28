@@ -230,11 +230,6 @@ public class MainActivity extends AppCompatActivity
             tag = "EmailsFragment";
         }
 
-        else if (id == R.id.nav_exit) {
-            fragment = new NewsFragment();
-            tag = "NewsFragment";
-        }
-
         fragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, fragment)
                 .addToBackStack(tag)

@@ -123,6 +123,15 @@ public class CalenderFragment extends Fragment {
                     ft.addToBackStack("CalenderAddFragment");
                     ft.commit();
                 }
+
+                MenuItem item = menu.findItem(R.id.action_delete);
+                if(listSelected.size() == 0){
+                    item.setVisible(false);
+                }
+                else{
+                    item.setVisible(true);
+                }
+
             }
         });
 

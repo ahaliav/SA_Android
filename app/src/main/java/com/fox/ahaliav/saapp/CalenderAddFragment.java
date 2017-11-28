@@ -32,6 +32,7 @@ public class CalenderAddFragment extends Fragment {
     String name = "";
     String date = "";
     String email = "";
+
     public CalenderAddFragment() {
         // Required empty public constructor
     }
@@ -48,10 +49,10 @@ public class CalenderAddFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_calender_add, container, false);
 
-        txtName = (EditText)rootView.findViewById(R.id.txtName);
+        txtName = (EditText) rootView.findViewById(R.id.txtName);
 
-        if(getArguments() != null && getArguments().containsKey("id")){
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.calender_edit_title);
+        if (getArguments() != null && getArguments().containsKey("id")) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.calender_edit_title);
             id = getArguments().getInt("id");
             name = getArguments().getString("name");
             date = getArguments().getString("date");
@@ -70,9 +71,8 @@ public class CalenderAddFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
-        else{
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.calender__add_title);
+        } else {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.calender__add_title);
             setCurrentDateOnView(Calendar.getInstance());
         }
 
@@ -81,7 +81,7 @@ public class CalenderAddFragment extends Fragment {
 
         btnSave.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                if(saveCurrentDateOnView()){
+                if (saveCurrentDateOnView()) {
                     getFragmentManager().popBackStack();
                 }
 
@@ -113,33 +113,25 @@ public class CalenderAddFragment extends Fragment {
 
     public boolean saveCurrentDateOnView() {
 
-        if(txtName.getText().toString().trim().equals("") ){
-            txtName.setError(getResources().getString(R.string.field_required));
-        }
-        else {
-            dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
+        dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
 
-            SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
+        SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
 
-            name = txtName.getText().toString();
+        name = txtName.getText().toString();
 
-            if(id <=0){
-                db.insertSubrieties(name, getDateFromDatePicker(dpResult));
-            }
-            else {
-                db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
-            }
-
-            return true;
+        if (id <= 0) {
+            db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+        } else {
+            db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
         }
 
-        return false;
+        return true;
     }
 
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
+        int year = datePicker.getYear();
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
