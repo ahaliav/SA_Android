@@ -10,12 +10,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements ICallbackMethod {
+
+    Button btnRegister;
+    Button btnCancel;
+    EditText txtPassword;
+    CheckBox chkPassword;
+    EditText txtPhone;
+    EditText txtName;
+    EditText txtComments;
+    Spinner email_address_view;
+    String nonce;
+
+    WebSiteHelper helper;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -31,8 +52,30 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_register, container, false);
+        View v = inflater.inflate(R.layout.fragment_register, container, false);
 
+        btnRegister = (Button) v.findViewById(R.id.btnRegister);
+        btnCancel = (Button) v.findViewById(R.id.btnCancel);
+        txtPassword = (EditText) v.findViewById(R.id.txtPassword);
+        chkPassword = (CheckBox) v.findViewById(R.id.chkPassword);
+        txtPhone = (EditText) v.findViewById(R.id.txtPhone);
+        txtName = (EditText) v.findViewById(R.id.txtName);
+        txtComments = (EditText) v.findViewById(R.id.txtComments);
+        email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
+
+        helper = new WebSiteHelper(this);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                helper.get_nonce();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         loadAccounts(v);
 
         return v;
@@ -58,5 +101,21 @@ public class RegisterFragment extends Fragment {
         ArrayAdapter<String> myAdapter = new AccountsAdapter(getActivity(), R.layout.item_account_spinner, emails);
         expAccounts.setAdapter(myAdapter);
 
+    }
+
+    @Override
+    public void onTaskDone(List<Object> objs) {
+        if (objs != null) {
+            String password= "";
+            String username = email_address_view.getSelectedItem().toString();
+            if(chkPassword.isChecked())
+                password = txtPassword.getText().toString();
+
+            String display_name = txtName.getText().toString();
+            String phone = txtPhone.getText().toString();
+            String comments = txtComments.getText().toString();
+
+            helper.register("", username, password, display_name,phone,comments);
+        }
     }
 }

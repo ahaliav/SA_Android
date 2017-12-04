@@ -44,4 +44,15 @@ public class WebSiteHelper {
         JsonReader reader = new JsonReader(url, this.callback);
         reader.execute();
     }
+
+    public void get_nonce() {
+
+        CsvReader reader = new CsvReader(Constants.getNonceUrl(), this.callback);
+        reader.execute();
+    }
+
+    public void register(String nonce, String username, String password, String display_name,String phone,String comments) {
+        CsvReader reader = new CsvReader(Constants.getRegistrationUrl(nonce, username, password, display_name, phone, comments), this.callback);
+        reader.execute();
+    }
 }

@@ -7,11 +7,16 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -73,16 +78,13 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
 
             return list;
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
 
-        }
-        finally {
-            try{
-                if(is != null)
+        } finally {
+            try {
+                if (is != null)
                     is.close();
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
 
             }
 
@@ -91,6 +93,40 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
         return list;
     }
 
+    private boolean postJson(String url, String data) throws IOException, JSONException {
+        List<Object> list = new ArrayList<Object>();
+        OutputStream out = null;
+        try {
+            URL purl = new URL(url);
+
+            HttpURLConnection connection = (HttpURLConnection) purl.openConnection();
+
+            out = new BufferedOutputStream(connection.getOutputStream());
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(data);
+
+            writer.flush();
+
+            writer.close();
+
+            out.close();
+
+            connection.connect();
+
+        } catch (Exception ex) {
+            return false;
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (Exception ex) {
+
+            }
+        }
+
+        return true;
+    }
 
     @Override
     protected List<Object> doInBackground(Void... voids) {
@@ -111,10 +147,9 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
     protected void onPostExecute(List<Object> result) {
         super.onPostExecute(result);
 
-        try{
+        try {
             callback.onTaskDone(result);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             String e = ex.getMessage();
         }
 
