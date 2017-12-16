@@ -16,16 +16,12 @@ public class Constants {
         return "http://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
     }
 
-    public static String getNonceUrl(){
-        return "http://sa-israel.org/api/get_nonce/?controller=user&method=register";
+    public static String getTokenUrl(){
+        return "https://www.sa-israel.org/wp-json/jwt-auth/v1/token?username=user_creator&password=b(emMih0ySScy6oOGcey4RHI";
     }
 
-    public static String getRegistrationUrl(String nonce, String username, String password, String display_name, String phone,String comments){
-        String pass = "";
-        if(password != null && password.length() > 0)
-            pass = "&user_pass=" + password;
-
-        return "http://sa-israel.org/api/user/register/?username=" + username + "&email=" + username + "&nonce=" + nonce + "&display_name=" + display_name + "&notify=both" + pass + "&comment_shortcuts=" + phone + "&description=" + comments;
+    public static String getRegistrationUrl(String username, String password, String display_name, String phone,String comments){
+        return "https://www.sa-israel.org/wp-json/wp/v2/users?username=" + username + "&email=" + username + "&display_name=" + display_name + "&password=" + password + "&roles=pending&description=" + comments + ", Tel: " + phone;
     }
 
 }

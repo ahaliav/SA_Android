@@ -7,8 +7,13 @@ package com.fox.ahaliav.saapp;
 public class WebSiteHelper {
 
     ICallbackMethod callback;
+    IObjCallbackMethod callback2;
     public WebSiteHelper(ICallbackMethod callback){
         this.callback = callback;
+    }
+
+    public WebSiteHelper(IObjCallbackMethod callback){
+        this.callback2 = callback;
     }
 
     public void getNewsTitles()
@@ -47,12 +52,12 @@ public class WebSiteHelper {
 
     public void get_nonce() {
 
-        CsvReader reader = new CsvReader(Constants.getNonceUrl(), this.callback);
-        reader.execute();
+        //CsvReader reader = new CsvReader(Constants.getNonceUrl(), this.callback);
+        //reader.execute();
     }
 
-    public void register(String nonce, String username, String password, String display_name,String phone,String comments) {
-        CsvReader reader = new CsvReader(Constants.getRegistrationUrl(nonce, username, password, display_name, phone, comments), this.callback);
+    public void register(String username, String password, String display_name,String phone,String comments) {
+        CsvReader reader = new CsvReader(Constants.getRegistrationUrl(username, password, display_name, phone, comments), this.callback);
         reader.execute();
     }
 }

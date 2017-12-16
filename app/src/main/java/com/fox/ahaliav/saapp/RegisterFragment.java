@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class RegisterFragment extends Fragment implements ICallbackMethod {
+public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
     Button btnRegister;
     Button btnCancel;
@@ -67,7 +67,7 @@ public class RegisterFragment extends Fragment implements ICallbackMethod {
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                helper.get_nonce();
+                //helper.register();
             }
         });
 
@@ -104,8 +104,8 @@ public class RegisterFragment extends Fragment implements ICallbackMethod {
     }
 
     @Override
-    public void onTaskDone(List<Object> objs) {
-        if (objs != null) {
+    public void onTaskDone(Object obj) {
+        if (obj != null) {
             String password= "";
             String username = email_address_view.getSelectedItem().toString();
             if(chkPassword.isChecked())
@@ -115,7 +115,7 @@ public class RegisterFragment extends Fragment implements ICallbackMethod {
             String phone = txtPhone.getText().toString();
             String comments = txtComments.getText().toString();
 
-            helper.register("", username, password, display_name,phone,comments);
+            //helper.register("", username, password, display_name,phone,comments);
         }
     }
 }
