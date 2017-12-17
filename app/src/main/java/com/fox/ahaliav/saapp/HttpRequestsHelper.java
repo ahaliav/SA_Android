@@ -1,9 +1,11 @@
 package com.fox.ahaliav.saapp;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
@@ -16,12 +18,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Ahaliav on 11/12/2017.
@@ -100,14 +106,18 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
         return list;
     }
 
-    private Object postJson(String auth_url, String url, String data) throws IOException, JSONException {
+    private Object postJson(String auth_url, String url) throws IOException, JSONException {
         Object result = null;
         OutputStream out = null;
+        Gson gson = new Gson();
         try {
             URL purl = new URL(url);
             String token = getToken(auth_url);
-            HttpURLConnection connection = (HttpURLConnection) purl.openConnection();
-            connection.setRequestProperty("Authorization", "Bearer " + token);
+            Type type = new TypeToken<Map<String, String>>(){}.getType();
+            Map<String, String> map = gson.fromJson(token, type);
+
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestProperty("Authorization", "Bearer " + map.get("token"));
             connection.setRequestMethod("POST");
             int responseCode = connection.getResponseCode();
 
@@ -129,25 +139,22 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
     }
 
     private String getToken(String url) throws IOException, JSONException {
-        Object result;
-        OutputStream out = null;
+
         try {
             URL purl = new URL(url);
 
-            HttpURLConnection connection = (HttpURLConnection) purl.openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestMethod("POST");
+            if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                return readAll(rd);
+            }
 
-            result = connection.getResponseMessage();
         } catch (Exception ex) {
             return "";
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-            } catch (Exception ex) {
-
-            }
         }
-        return result.toString();
+
+        return "";
     }
 
     //
@@ -156,7 +163,7 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
         Object result = null;
 
         try {
-            result = postJson(this.auth_url, this.url, objects[0].toString());
+            result = postJson(this.auth_url, this.url);
         } catch (IOException ex) {
 
         } catch (JSONException ex) {

@@ -31,7 +31,6 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     EditText txtPassword;
     EditText txtPhone;
     EditText txtName;
-    EditText txtUserName;
     EditText txtComments;
     Spinner email_address_view;
     String nonce;
@@ -59,7 +58,6 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         txtPassword = (EditText) v.findViewById(R.id.txtPassword);
         txtPhone = (EditText) v.findViewById(R.id.txtPhone);
         txtName = (EditText) v.findViewById(R.id.txtName);
-        txtUserName = (EditText) v.findViewById(R.id.txtUserName);
         txtComments = (EditText) v.findViewById(R.id.txtComments);
         email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
 
@@ -68,7 +66,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 helper.register(
-                        txtUserName.getText().toString(),
+                        email_address_view.getSelectedItem().toString(),
                         txtPassword.getText().toString(),
                         txtName.getText().toString(),
                         txtPhone.getText().toString(),
