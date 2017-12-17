@@ -29,9 +29,9 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     Button btnRegister;
     Button btnCancel;
     EditText txtPassword;
-    CheckBox chkPassword;
     EditText txtPhone;
     EditText txtName;
+    EditText txtUserName;
     EditText txtComments;
     Spinner email_address_view;
     String nonce;
@@ -57,9 +57,9 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         btnRegister = (Button) v.findViewById(R.id.btnRegister);
         btnCancel = (Button) v.findViewById(R.id.btnCancel);
         txtPassword = (EditText) v.findViewById(R.id.txtPassword);
-        chkPassword = (CheckBox) v.findViewById(R.id.chkPassword);
         txtPhone = (EditText) v.findViewById(R.id.txtPhone);
         txtName = (EditText) v.findViewById(R.id.txtName);
+        txtUserName = (EditText) v.findViewById(R.id.txtUserName);
         txtComments = (EditText) v.findViewById(R.id.txtComments);
         email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
 
@@ -67,7 +67,13 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //helper.register();
+                helper.register(
+                        txtUserName.getText().toString(),
+                        txtPassword.getText().toString(),
+                        txtName.getText().toString(),
+                        txtPhone.getText().toString(),
+                        txtComments.getText().toString()
+                );
             }
         });
 
@@ -106,14 +112,6 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     @Override
     public void onTaskDone(Object obj) {
         if (obj != null) {
-            String password= "";
-            String username = email_address_view.getSelectedItem().toString();
-            if(chkPassword.isChecked())
-                password = txtPassword.getText().toString();
-
-            String display_name = txtName.getText().toString();
-            String phone = txtPhone.getText().toString();
-            String comments = txtComments.getText().toString();
 
             //helper.register("", username, password, display_name,phone,comments);
         }

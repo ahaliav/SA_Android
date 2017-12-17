@@ -81,4 +81,5 @@
     <string name="field_required">שדה חובה</string>
     <string name="password">סיסמה</string>
     <string name="add_login">כניסה עם סיסמה?</string>
+    <string name="username">שם משתמש</string>
 </resources>

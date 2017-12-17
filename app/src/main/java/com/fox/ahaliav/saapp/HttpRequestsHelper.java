@@ -101,27 +101,18 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
     }
 
     private Object postJson(String auth_url, String url, String data) throws IOException, JSONException {
-        Object result;
+        Object result = null;
         OutputStream out = null;
         try {
             URL purl = new URL(url);
-
+            String token = getToken(auth_url);
             HttpURLConnection connection = (HttpURLConnection) purl.openConnection();
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.setRequestMethod("POST");
+            int responseCode = connection.getResponseCode();
 
-            out = new BufferedOutputStream(connection.getOutputStream());
-
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(data);
-
-            writer.flush();
-
-            writer.close();
-
-            out.close();
-
-            connection.connect();
-
-            result = connection.getResponseMessage();
+            if (responseCode >= 200 && responseCode < 300)
+                result = connection.getResponseMessage();
 
         } catch (Exception ex) {
             return false;
@@ -137,6 +128,29 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
         return result;
     }
 
+    private String getToken(String url) throws IOException, JSONException {
+        Object result;
+        OutputStream out = null;
+        try {
+            URL purl = new URL(url);
+
+            HttpURLConnection connection = (HttpURLConnection) purl.openConnection();
+
+            result = connection.getResponseMessage();
+        } catch (Exception ex) {
+            return "";
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (Exception ex) {
+
+            }
+        }
+        return result.toString();
+    }
+
+    //
     @Override
     protected Object doInBackground(Object... objects) {
         Object result = null;

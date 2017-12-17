@@ -84,6 +84,7 @@
     <string name="field_required">Required!</string>
     <string name="password">password</string>
     <string name="add_login">Login with password?</string>
+    <string name="username">User Name</string>
 
 
 </resources>
