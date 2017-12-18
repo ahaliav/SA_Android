@@ -23,7 +23,7 @@ public class Constants {
     }
 
     public static String getRegistrationUrl(String username, String password, String display_name, String phone,String comments){
-        return "https://www.sa-israel.org/wp-json/wp/v2/users?username=" + username + "&email=" + username + "&display_name=" + Uri.encode(display_name) + "&password=" + Uri.encode(password) + "&roles=pending&description=" + Uri.encode(comments) + Uri.encode(", Tel:" + phone);
+        return "https://www.sa-israel.org/wp-json/wp/v2/users?username=" + username + "&email=" + username + "&first_name=" + Uri.encode(display_name) + "&password=" + Uri.encode(password) + "&roles=pending&description=" + Uri.encode(comments) + Uri.encode(", Tel:" + phone);
     }
 
 }

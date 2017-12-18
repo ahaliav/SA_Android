@@ -41,7 +41,7 @@
     <string name="website">SA Website Committee</string>
     <string name="traditions">Ethics and traditions committee</string>
     <string name="contacts">Contacts</string>
-    <string name="contactname">Name</string>
+    <string name="contactname">nickname</string>
     <string name="phone">Phone</string>
     <string name="edit_contact">Edit Contact</string>
 
@@ -85,6 +85,11 @@
     <string name="password">password</string>
     <string name="add_login">Login with password?</string>
     <string name="username">User Name</string>
+    <string name="prison_committee">Prison Committee</string>
+    <string name="literature_committee">Literature Committee</string>
+    <string name="translation_committee">Translation Committee</string>
+    <string name="ok">OK</string>
+    <string name="reg_success_message">You have successfully registered, the information you submitted will be reviewed, please be patient to receive confirmation</string>
 
 
 </resources>

@@ -50,12 +50,6 @@ public class WebSiteHelper {
         reader.execute();
     }
 
-    public void get_nonce() {
-
-        //CsvReader reader = new CsvReader(Constants.getNonceUrl(), this.callback);
-        //reader.execute();
-    }
-
     public void register(String username, String password, String display_name,String phone,String comments) {
         HttpRequestsHelper reader = new HttpRequestsHelper(Constants.getTokenUrl(), Constants.getRegistrationUrl(username, password, display_name, phone, comments), this.callback2);
         reader.execute();

@@ -2,9 +2,11 @@ package com.fox.ahaliav.saapp;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +113,22 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     public void onTaskDone(Object obj) {
         if (obj != null) {
 
-            //helper.register("", username, password, display_name,phone,comments);
+            // 1. Instantiate an AlertDialog.Builder with its constructor
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+            builder1.setMessage(getResources().getString(R.string.reg_success_message));
+            builder1.setCancelable(false);
+
+            builder1.setPositiveButton(
+                    getResources().getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            getFragmentManager().popBackStack();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
     }
 }

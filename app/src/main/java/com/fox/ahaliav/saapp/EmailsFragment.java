@@ -57,10 +57,12 @@ public class EmailsFragment extends Fragment {
         list.add(new EmailContact("office@sa-israel.org",getResources().getString(R.string.mainoffice),"",""));
         list.add(new EmailContact("women@sa-israel.org",getResources().getString(R.string.womenhelp),"",""));
         list.add(new EmailContact("contact@sa-israel.org",getResources().getString(R.string.hotline),"",""));
-        list.add(new EmailContact("office@sa-israel.org",getResources().getString(R.string.mainoffice),"",""));
         list.add(new EmailContact("news@sa-israel.org",getResources().getString(R.string.sanews),"",""));
         list.add(new EmailContact("website@sa-israel.org",getResources().getString(R.string.website),"",""));
         list.add(new EmailContact("12masorot@sa-israel.org",getResources().getString(R.string.traditions),"",""));
+        list.add(new EmailContact("litr@sa-israel.org",getResources().getString(R.string.literature_committee),"",""));
+        list.add(new EmailContact("cfc@sa-israel.org",getResources().getString(R.string.prison_committee),"",""));
+        list.add(new EmailContact("transl@sa-israel.org",getResources().getString(R.string.translation_committee),"",""));
 
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<Integer, EmailContact>();

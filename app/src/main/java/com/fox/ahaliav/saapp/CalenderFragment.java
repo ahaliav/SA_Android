@@ -77,6 +77,15 @@ public class CalenderFragment extends Fragment {
                     listSelected.remove(listSelected.indexOf(sub.getId()));
                 }
 
+                MenuItem item = menu.findItem(R.id.action_delete);
+                if(listSelected.size() == 0){
+                    item.setVisible(false);
+                }
+                else{
+                    item.setVisible(true);
+                }
+
+
                 return true;
             }
         });
@@ -149,6 +158,7 @@ public class CalenderFragment extends Fragment {
 
         list = new ArrayList<Subriety>();
         loadsubrieties();
+        setHasOptionsMenu(true);
 
         return v;
     }
@@ -161,7 +171,7 @@ public class CalenderFragment extends Fragment {
         this.menu = menu;
 
         MenuItem item = menu.findItem(R.id.action_delete);
-        item.setVisible(true);
+        item.setVisible(false);
     }
 
     @Override
