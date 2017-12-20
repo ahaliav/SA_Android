@@ -138,10 +138,31 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
         return result;
     }
 
-    private String getToken(String url) throws IOException, JSONException {
+    public String getToken(String url) throws IOException, JSONException {
 
         try {
             URL purl = new URL(url);
+
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestMethod("POST");
+            if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                return readAll(rd);
+            }
+
+        } catch (Exception ex) {
+            return "";
+        }
+
+        return "";
+    }
+
+
+    public String getToken(String username, String password) throws IOException, JSONException {
+
+        String path = Constants.getTokenBaseUrl() + "username=" + username + "&password=" + password;
+        try {
+            URL purl = new URL(path);
 
             HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
             connection.setRequestMethod("POST");

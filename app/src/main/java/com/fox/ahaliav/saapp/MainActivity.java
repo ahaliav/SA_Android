@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int PERMS_REQUEST_CODE = 1;
+    public static boolean IsLoggedIn = false;
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity
                         getSupportActionBar().setTitle(R.string.contact);
                         getSupportActionBar().setIcon(null);
                         break;
-
                 }
 
 
@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new EmailsFragment();
             tag = "EmailsFragment";
         }
+
 
         fragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, fragment)

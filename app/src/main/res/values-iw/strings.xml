@@ -87,4 +87,8 @@
     <string name="translation_committee">ועדת תרגום</string>
     <string name="ok">בסדר</string>
     <string name="reg_success_message">"נרשמת בהצלחה, הפרטים ששלחת בבדיקה, אנא המתן בסבלנות לקבלת אישור "</string>
+    <string name="login">כניסה</string>
+    <string name="title_activity_login">כניסה</string>
+    <string name="rememeberme">זכור אותי</string>
+    <string name="wellcome_private">ברוכים הבאים! אנא שמור על פרטיות חבריך</string>
 </resources>
