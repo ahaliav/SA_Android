@@ -1,5 +1,6 @@
 package com.fox.ahaliav.saapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -97,29 +98,32 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                String w_uri = "waze://?ll=40.761043, -73.980545&navigate=yes";
+                if (MainActivity.IsLoggedIn) {
+                    String w_uri = "waze://?ll=40.761043, -73.980545&navigate=yes";
 
-                String g_uri = "http://maps.google.com/maps?saddr="
-                        + cur_latitude + ","
-                        + cur_longitude + "&daddr="
-                        + dataModel.getLatitude() + "," + dataModel.getLongitude();
+                    String g_uri = "http://maps.google.com/maps?saddr="
+                            + cur_latitude + ","
+                            + cur_longitude + "&daddr="
+                            + dataModel.getLatitude() + "," + dataModel.getLongitude();
 
-                try{
-                    Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(w_uri));
-                    navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(navigation);
-                }
-                catch (Exception ex){
-                    try{
-                        Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
+                    try {
+                        Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(w_uri));
                         navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(navigation);
+                    } catch (Exception ex) {
+                        try {
+                            Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
+                            navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(navigation);
+                        } catch (Exception ex2) {
+                            Toast.makeText(mContext, "Error loading navigation",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
-                    catch (Exception ex2){
-                        Toast.makeText(mContext, "Error loading navigation",
-                                Toast.LENGTH_LONG).show();
-                    }
+                } else {
+                    shoeLoginMessage();
                 }
+
 
             }
         });
@@ -127,20 +131,24 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnGooglemaps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                String g_uri = "http://maps.google.com/maps?saddr="
-                        + cur_latitude + ","
-                        + cur_longitude + "&daddr="
-                        + dataModel.getLatitude() + "," + dataModel.getLongitude();
+                if (MainActivity.IsLoggedIn) {
+                    String g_uri = "http://maps.google.com/maps?saddr="
+                            + cur_latitude + ","
+                            + cur_longitude + "&daddr="
+                            + dataModel.getLatitude() + "," + dataModel.getLongitude();
 
-                try{
-                    Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
-                    navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(navigation);
+                    try {
+                        Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
+                        navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(navigation);
+                    } catch (Exception ex2) {
+                        Toast.makeText(mContext, "Error loading navigation",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    shoeLoginMessage();
                 }
-                catch (Exception ex2){
-                    Toast.makeText(mContext, "Error loading navigation",
-                            Toast.LENGTH_LONG).show();
-                }
+
             }
         });
 
@@ -148,21 +156,25 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                if (MainActivity.IsLoggedIn) {
+                    String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                    message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                    message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                    message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                    message += mContext.getResources().getString(R.string.mynameis) + ": \n";
+                    message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                    message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
 
-                String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
-                message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
-                message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
-                message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
-                message += mContext.getResources().getString(R.string.mynameis) + ": \n";
-                message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
-                message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                    intent.setData(data);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
-                intent.setData(data);
+                    mContext.startActivity(intent);
+                } else {
+                    shoeLoginMessage();
+                }
 
-                mContext.startActivity(intent);
 
             }
         });
@@ -170,27 +182,35 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                if (MainActivity.IsLoggedIn) {
+                    String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                    message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                    message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                    message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                    message += mContext.getResources().getString(R.string.mynameis) + ": \n";
+                    message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                    message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
 
-                String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
-                message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
-                message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
-                message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
-                message += mContext.getResources().getString(R.string.mynameis) + ": \n";
-                message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
-                message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(data);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setData(data);
-
-                mContext.startActivity(intent);
-
+                    mContext.startActivity(intent);
+                }
+                else {
+                    shoeLoginMessage();
+                }
             }
         });
 
 
         return convertView;
+    }
+
+    private void shoeLoginMessage() {
+        Toast.makeText(mContext, mContext.getResources().getString(R.string.you_are_not_loggedin),
+                Toast.LENGTH_LONG).show();
     }
 }
 

@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -36,10 +37,11 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
-
+    Menu menu;
     AccountsAdapter listAdapter;
     private List<String> listDataHeader; // header titles
     private HashMap<String, List<String>> listDataChild;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,19 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Intent intent = getIntent();
+        String isloggedin = intent.getStringExtra(Constants.IS_LOGEDIN_KEY);
+
+        if (isloggedin == "true") {
+            IsLoggedIn = true;
+        }
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -159,6 +167,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
@@ -171,7 +180,38 @@ public class MainActivity extends AppCompatActivity
         MenuItem action_add = menu.findItem(R.id.action_add);
         action_add.setVisible(false);
 
+        setLoginRegisterBar();
+
         return true;
+    }
+
+    private void setLoginRegisterBar() {
+        SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
+        String isReg = db.selectSettingsString(Constants.IS_REGISTERED_KEY);
+        String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
+
+        if ((isLoggedin.equals("") || isLoggedin.equals("false")) && isReg.equals("true") && IsLoggedIn == false) {
+            MenuItem action_login = menu.findItem(R.id.action_login);
+            action_login.setVisible(true);
+            MenuItem action_register = menu.findItem(R.id.action_register);
+            action_register.setVisible(false);
+            MenuItem action_exit = menu.findItem(R.id.action_exit);
+            action_exit.setVisible(false);
+        } else if (isReg.equals("") || isReg.equals("false") && IsLoggedIn == false) {
+            MenuItem action_register = menu.findItem(R.id.action_register);
+            action_register.setVisible(true);
+            MenuItem action_login = menu.findItem(R.id.action_login);
+            action_login.setVisible(false);
+            MenuItem action_exit = menu.findItem(R.id.action_exit);
+            action_exit.setVisible(false);
+        } else {
+            MenuItem action_exit = menu.findItem(R.id.action_exit);
+            action_exit.setVisible(true);
+            MenuItem action_register = menu.findItem(R.id.action_register);
+            action_register.setVisible(false);
+            MenuItem action_login = menu.findItem(R.id.action_login);
+            action_login.setVisible(false);
+        }
     }
 
     @Override
@@ -190,6 +230,29 @@ public class MainActivity extends AppCompatActivity
                     .commit();
             return true;
         }
+
+        if (id == R.id.action_login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_register) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, new RegisterFragment())
+                    .addToBackStack("RegisterFragment")
+                    .commit();
+            return true;
+        }
+        if (id == R.id.action_exit) {
+            IsLoggedIn = false;
+            SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
+            db.updateSettings(Constants.IS_LOGEDIN_KEY, "false");
+            setLoginRegisterBar();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -219,9 +282,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_news) {
             fragment = new NewsFragment();
             tag = "NewsFragment";
-        } else if (id == R.id.nav_register) {
-            fragment = new RegisterFragment();
-            tag = "RegisterFragment";
         } else if (id == R.id.nav_contacts) {
             fragment = new ContactsFragment();
             tag = "ContactsFragment";
@@ -251,7 +311,7 @@ public class MainActivity extends AppCompatActivity
 
         Boolean emailfound = false;
         String email = "";
-        int i =0;
+        int i = 0;
         if (result != null) {
             while (result.moveToNext()) {
                 int id = result.getInt(0);
@@ -265,7 +325,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        if(listDataHeader.size() == 0){
+        if (listDataHeader.size() == 0) {
             email = getResources().getString(R.string.select_account);
         }
 
@@ -277,9 +337,9 @@ public class MainActivity extends AppCompatActivity
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.GET_ACCOUNTS)) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS,Manifest.permission.CALL_PHONE,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_REQUEST_CODE);
             } else {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS,Manifest.permission.CALL_PHONE,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_REQUEST_CODE);
             }
         } else {
             //do some stuff
@@ -299,7 +359,7 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
         expAccounts.setAdapter(myAdapter);
 
-        if(emailfound)
+        if (emailfound)
             expAccounts.setEnabled(false);
     }
 

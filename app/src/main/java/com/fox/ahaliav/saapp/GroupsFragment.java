@@ -87,35 +87,32 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         list = new ArrayList<Group>();
         loadgroups();
 
-        LocationManager locationManager = (LocationManager)
-                getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     123);
         } else {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location loc) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (loc != null) {
-                                cur_latitude = loc.getLatitude();
-                                cur_longitude = loc.getLongitude();
+            if(MainActivity.IsLoggedIn){
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-                                loadgroups_from_db();
+                mFusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location loc) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (loc != null) {
+                                    cur_latitude = loc.getLatitude();
+                                    cur_longitude = loc.getLongitude();
+
+                                    loadgroups_from_db();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+
         }
 
-
-        // locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, (LocationListener) this);
         setHasOptionsMenu(true);
         return v;
     }

@@ -49,7 +49,7 @@
     <string name="sendmessage">שלח הודעה</string>
     <string name="wellcome">ברוך הבא</string>
     <string name="committeeName">שם:</string>
-    <string name="register">רישום</string>
+    <string name="register">הרשמה</string>
     <string name="send">שלח</string>
     <string name="register_comments">"בבקשה תספר לנו על המפגשים החיים שאתה הולך אליהם וכן שני חברים שאתה מכיר בתוכנית "</string>
     <string name="registration">הרשמה</string>
@@ -91,4 +91,5 @@
     <string name="title_activity_login">כניסה</string>
     <string name="rememeberme">זכור אותי</string>
     <string name="wellcome_private">ברוכים הבאים! אנא שמור על פרטיות חבריך</string>
+    <string name="you_are_not_loggedin">זמין רק עבור משתמשים רשומים</string>
 </resources>

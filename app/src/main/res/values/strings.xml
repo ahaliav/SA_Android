@@ -90,10 +90,10 @@
     <string name="translation_committee">Translation Committee</string>
     <string name="ok">OK</string>
     <string name="reg_success_message">You have successfully registered, the information you submitted will be reviewed, please be patient to receive confirmation</string>
-    <string name="title_activity_login">כניסה</string>
+    <string name="title_activity_login">Enter</string>
     <string name="login">Login</string>
     <string name="rememeberme">Remember Me</string>
     <string name="wellcome_private">Welcome! Please keep your friends privacy</string>
-
+    <string name="you_are_not_loggedin">Available only for logged in members</string>
 
 </resources>

@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,7 +39,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     EditText txtComments;
     Spinner email_address_view;
     String nonce;
-
+    Menu menu;
     WebSiteHelper helper;
 
     public RegisterFragment() {
@@ -44,9 +47,11 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
+        setLoginRegisterBar();
     }
 
     @Override
@@ -113,6 +118,8 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     public void onTaskDone(Object obj) {
         if (obj != null) {
 
+            SQLiteDbHelper db = new SQLiteDbHelper(getContext());
+            db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
             // 1. Instantiate an AlertDialog.Builder with its constructor
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             builder1.setMessage(getResources().getString(R.string.reg_success_message));
@@ -130,5 +137,18 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         }
+    }
+
+    private void setLoginRegisterBar() {
+        SQLiteDbHelper db = new SQLiteDbHelper(getContext());
+        String isReg = db.selectSettingsString(Constants.IS_REGISTERED_KEY);
+        String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
+
+        MenuItem action_register = menu.findItem(R.id.action_register);
+        action_register.setVisible(false);
+        MenuItem action_login = menu.findItem(R.id.action_login);
+        action_login.setVisible(true);
+        MenuItem action_exit = menu.findItem(R.id.action_exit);
+        action_exit.setVisible(false);
     }
 }

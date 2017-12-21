@@ -7,6 +7,8 @@ import android.net.Uri;
  */
 
 public class Constants {
+    public static final String IS_LOGEDIN_KEY = "islogin";
+    public static final String IS_REGISTERED_KEY = "isregistered";
     public static String getPostsUrl(){
         return "http://sa-israel.org/wp-json/wp/v2/posts";
     }
@@ -29,5 +31,4 @@ public class Constants {
     public static String getRegistrationUrl(String username, String password, String display_name, String phone,String comments){
         return "https://www.sa-israel.org/wp-json/wp/v2/users?username=" + username + "&email=" + username + "&first_name=" + Uri.encode(display_name) + "&password=" + Uri.encode(password) + "&roles=pending&description=" + Uri.encode(comments) + Uri.encode(", Tel:" + phone);
     }
-
 }

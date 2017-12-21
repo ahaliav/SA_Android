@@ -241,7 +241,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
         Cursor res =  db.rawQuery( "select * from settings " + query, null );
 
-        if(res == null || res.getCount() == 0){
+        if((res == null || res.getCount() == 0) && (key_set == "notifications" || key_set == "calldialog")){
 
             ContentValues contentValues = new ContentValues();
             contentValues.put("key_set", "notifications");
@@ -258,6 +258,33 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
         return res;
     }
+
+
+    public String selectSettingsString (String key_set) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "";
+        if(!key_set.isEmpty()){
+            query = " where key_set='" + key_set + "'";
+        }
+
+        Cursor result =  db.rawQuery( "select * from settings " + query, null );
+        String val = "";
+        if(result != null) {
+
+            while (result.moveToNext()) {
+                val = result.getString(2);
+                break;
+            }
+
+            if (!result.isClosed())  {
+                result.close();
+            }
+        }
+
+        return val;
+    }
+
 
     //groups
     public Cursor selectGroups () {

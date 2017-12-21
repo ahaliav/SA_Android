@@ -54,4 +54,9 @@ public class WebSiteHelper {
         HttpRequestsHelper reader = new HttpRequestsHelper(Constants.getTokenUrl(), Constants.getRegistrationUrl(username, password, display_name, phone, comments), this.callback2);
         reader.execute();
     }
+
+    public void login(String username, String password) {
+        HttpLoginHelper reader = new HttpLoginHelper(username, password, this.callback2);
+        reader.execute();
+    }
 }

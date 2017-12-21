@@ -31,10 +31,5 @@
             android:icon="@drawable/ic_message_black_24dp"
             android:title="@string/contact"
             />
-        <item
-            android:id="@+id/nav_register"
-            android:icon="@drawable/ic_lock_open_black_24dp"
-            android:title="@string/register"
-            />
     </group>
 </menu>
