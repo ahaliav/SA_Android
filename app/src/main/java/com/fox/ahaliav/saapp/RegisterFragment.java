@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -89,6 +90,8 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         });
         loadAccounts(v);
 
+        setHasOptionsMenu(true);
+
         return v;
     }
 
@@ -130,7 +133,11 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
-                            getFragmentManager().popBackStack();
+                            setLoginRegisterBar();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.main_fragment_container, new MainFragment())
+                                    .commit();
                         }
                     });
 

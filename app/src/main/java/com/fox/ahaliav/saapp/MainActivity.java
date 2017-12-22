@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final int PERMS_REQUEST_CODE = 1;
     public static boolean IsLoggedIn = false;
+    public static boolean IsRegistered = false;
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
@@ -53,9 +54,10 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         String isloggedin = intent.getStringExtra(Constants.IS_LOGEDIN_KEY);
 
-        if (isloggedin == "true") {
+        if (isloggedin != null && isloggedin.equals("true")) {
             IsLoggedIn = true;
         }
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -71,9 +73,20 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
-                .add(R.id.main_fragment_container, fragment, "MainFragment")
-                .commit();
+        String goto_register_page = intent.getStringExtra(Constants.GO_TO_REGISTER_KEY);
+
+        if (goto_register_page != null && goto_register_page.equals("true")) {
+            fragment = new RegisterFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, fragment, "RegisterFragment")
+                    .commit();
+        }
+        else {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, fragment, "MainFragment")
+                    .commit();
+        }
+
 
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -190,7 +203,12 @@ public class MainActivity extends AppCompatActivity
         String isReg = db.selectSettingsString(Constants.IS_REGISTERED_KEY);
         String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
 
-        if ((isLoggedin.equals("") || isLoggedin.equals("false")) && isReg.equals("true") && IsLoggedIn == false) {
+        if(isLoggedin == null)
+            isLoggedin = "";
+        if(isReg == null)
+            isReg = "";
+
+        if ((isLoggedin.equals("") || isLoggedin.equals("false")) && isReg != null && isReg.equals("true") && IsLoggedIn == false) {
             MenuItem action_login = menu.findItem(R.id.action_login);
             action_login.setVisible(true);
             MenuItem action_register = menu.findItem(R.id.action_register);

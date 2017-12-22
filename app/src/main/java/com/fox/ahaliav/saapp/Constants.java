@@ -7,8 +7,10 @@ import android.net.Uri;
  */
 
 public class Constants {
-    public static final String IS_LOGEDIN_KEY = "islogin";
-    public static final String IS_REGISTERED_KEY = "isregistered";
+    public static final String IS_LOGEDIN_KEY = "IS_LOGEDIN";
+    public static final String IS_REGISTERED_KEY = "IS_REGISTERED";
+    public static final String GO_TO_REGISTER_KEY = "GO_TO_REGISTER";
+
     public static String getPostsUrl(){
         return "http://sa-israel.org/wp-json/wp/v2/posts";
     }
@@ -25,6 +27,7 @@ public class Constants {
     }
 
     public static String getTokenBaseUrl(){
+
         return "https://www.sa-israel.org/wp-json/jwt-auth/v1/token?";
     }
 

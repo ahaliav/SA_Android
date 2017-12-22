@@ -23,6 +23,8 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         setContentView(R.layout.activity_login);
 
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
+        Button btnRegister = (Button)findViewById(R.id.btnRegister);
+
         txtUserName = (EditText)findViewById(R.id.txtUserName);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
         chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
@@ -39,6 +41,22 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
                 catch (Exception ex){
                     Toast.makeText(getApplicationContext(), ex.getMessage(),
                             Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                try{
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra(Constants.GO_TO_REGISTER_KEY, "true");
+                    startActivity(intent);
+                }
+                catch (Exception ex){
+
                 }
             }
         });
@@ -66,12 +84,14 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             }
             else {
                 MainActivity.IsLoggedIn = false;
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.bad_username_or_password),
+                        Toast.LENGTH_LONG).show();
+                txtUserName.setText("");
+                txtPassword.setText("");
             }
         }
         catch (Exception ex){
 
         }
-
-
     }
 }

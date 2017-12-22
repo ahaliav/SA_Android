@@ -52,10 +52,11 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
         Object result = null;
         OutputStream out = null;
         Gson gson = new Gson();
+        String authUrl = "https://www.sa-israel.org/wp-json/jwt-auth/v1/token?username=" + username + "&password=" + password;
+        String token = "";
         try {
-            URL purl = new URL(Constants.getTokenBaseUrl() + "?username=" + username + "&password=" + password);
+            URL purl = new URL(authUrl);
 
-            String token = "";
             HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
             connection.setRequestMethod("POST");
             if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
@@ -77,7 +78,7 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
             }
         }
 
-        return true;
+        return token.length() > 0;
     }
 
     @Override

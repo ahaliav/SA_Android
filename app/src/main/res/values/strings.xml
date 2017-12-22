@@ -95,5 +95,6 @@
     <string name="rememeberme">Remember Me</string>
     <string name="wellcome_private">Welcome! Please keep your friends privacy</string>
     <string name="you_are_not_loggedin">Available only for logged in members</string>
+    <string name="bad_username_or_password">Username and password do not match.</string>
 
 </resources>
