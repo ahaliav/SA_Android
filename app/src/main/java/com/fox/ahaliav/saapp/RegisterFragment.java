@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.text.DateFormat;
@@ -42,6 +43,8 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     String nonce;
     Menu menu;
     WebSiteHelper helper;
+    private ProgressBar spinner;
+
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -68,18 +71,26 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         txtName = (EditText) v.findViewById(R.id.txtName);
         txtComments = (EditText) v.findViewById(R.id.txtComments);
         email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
-
+        spinner = (ProgressBar) v.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                helper.register(
-                        email_address_view.getSelectedItem().toString(),
-                        txtPassword.getText().toString(),
-                        txtName.getText().toString(),
-                        txtPhone.getText().toString(),
-                        txtComments.getText().toString()
-                );
+                try{
+                    spinner.setVisibility(View.VISIBLE);
+                    helper.register(
+                            email_address_view.getSelectedItem().toString(),
+                            txtPassword.getText().toString(),
+                            txtName.getText().toString(),
+                            txtPhone.getText().toString(),
+                            txtComments.getText().toString()
+                    );
+                }
+                catch (Exception ex){
+                    spinner.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -120,7 +131,6 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     @Override
     public void onTaskDone(Object obj) {
         if (obj != null) {
-
             SQLiteDbHelper db = new SQLiteDbHelper(getContext());
             db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
             // 1. Instantiate an AlertDialog.Builder with its constructor
@@ -143,6 +153,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
             AlertDialog alert11 = builder1.create();
             alert11.show();
+            spinner.setVisibility(View.GONE);
         }
     }
 

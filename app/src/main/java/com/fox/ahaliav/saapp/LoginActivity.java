@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity implements IObjCallbackMethod {
@@ -17,6 +18,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
     EditText txtUserName;
     EditText txtPassword;
     CheckBox chkRememberMe;
+    private ProgressBar spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,8 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         txtUserName = (EditText)findViewById(R.id.txtUserName);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
         chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -35,13 +39,25 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             @Override
             public void onClick(View v) {
 
-                try{
-                    helper.login(txtUserName.getText().toString(),txtPassword.getText().toString());
+                if(txtUserName.getText().toString().trim().equals("") ){
+                    txtUserName.setError(getResources().getString(R.string.field_required));
                 }
-                catch (Exception ex){
-                    Toast.makeText(getApplicationContext(), ex.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                else if(txtPassword.getText().toString().trim().equals("") ){
+                    txtPassword.setError(getResources().getString(R.string.field_required));
                 }
+                else {
+                    try{
+                        spinner.setVisibility(View.VISIBLE);
+                        helper.login(txtUserName.getText().toString(),txtPassword.getText().toString());
+                    }
+                    catch (Exception ex){
+                        spinner.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), ex.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
             }
         });
 
@@ -89,9 +105,10 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
                 txtUserName.setText("");
                 txtPassword.setText("");
             }
+            spinner.setVisibility(View.GONE);
         }
         catch (Exception ex){
-
+            spinner.setVisibility(View.GONE);
         }
     }
 }

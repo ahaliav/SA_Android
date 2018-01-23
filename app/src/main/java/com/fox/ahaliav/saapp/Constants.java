@@ -12,14 +12,14 @@ public class Constants {
     public static final String GO_TO_REGISTER_KEY = "GO_TO_REGISTER";
 
     public static String getPostsUrl(){
-        return "http://sa-israel.org/wp-json/wp/v2/posts";
+        return "https://sa-israel.org/wp-json/wp/v2/posts";
     }
     public static String getEventsUrl(){
-        return "http://sa-israel.org/wp-json/wp/v2/posts";
+        return "https://sa-israel.org/wp-json/wp/v2/posts";
     }
 
     public static String getGroupsCsv(){
-        return "http://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
+        return "https://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
     }
 
     public static String getTokenUrl(){

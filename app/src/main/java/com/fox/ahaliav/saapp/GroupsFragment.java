@@ -93,7 +93,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                     123);
         } else {
 
-            if(MainActivity.IsLoggedIn){
+            if (MainActivity.IsLoggedIn) {
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
                 mFusedLocationClient.getLastLocation()
@@ -187,16 +187,14 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                 result.close();
             }
 
-            try{
-                if(val == "" || getDays(val) > 1){
+            try {
+                if (val == "" || getDays(val) > 1) {
                     WebSiteHelper helper = new WebSiteHelper(this);
                     helper.getGroups();
-                }
-                else {
+                } else {
                     loadgroups_from_db();
                 }
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
 
             }
         }
@@ -247,9 +245,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
 
-
-    private void setGroupList(){
-        adapter = new GroupsAdapter(list, getActivity().getApplicationContext() ,cur_latitude, cur_longitude);
+    private void setGroupList() {
+        adapter = new GroupsAdapter(list, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
 
         spinner.setVisibility(View.GONE);
@@ -263,7 +260,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             startDate = df.parse(date);
             Date currentTime = Calendar.getInstance().getTime();
             long mills = currentTime.getTime() - startDate.getTime();
-            days = String.valueOf(mills/(24 * 60 * 60 * 1000));
+            days = String.valueOf(mills / (24 * 60 * 60 * 1000));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -281,8 +278,9 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
 
 
-
             listview.setTextFilterEnabled(true);
+            if (adapter == null)
+                setGroupList();
             filter = adapter.getFilter();
 
 
