@@ -1,6 +1,7 @@
 package com.fox.ahaliav.saapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
 
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
         Button btnRegister = (Button)findViewById(R.id.btnRegister);
+        Button btnPasswordReset = (Button)findViewById(R.id.btnPasswordReset);
 
         txtUserName = (EditText)findViewById(R.id.txtUserName);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
@@ -33,6 +35,15 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this);
+
+        btnPasswordReset.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sa-israel.org/password-reset/"));
+                startActivity(browserIntent);
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
 

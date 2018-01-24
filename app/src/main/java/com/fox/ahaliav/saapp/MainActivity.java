@@ -377,6 +377,13 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
         expAccounts.setAdapter(myAdapter);
 
+        for(int j=0; j< expAccounts.getCount();j++){
+            if(((String)expAccounts.getAdapter().getItem(j)).equals(email)){
+                expAccounts.setSelection(j);
+            }
+        }
+
+
         if (emailfound)
             expAccounts.setEnabled(false);
     }

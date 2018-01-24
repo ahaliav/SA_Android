@@ -93,4 +93,5 @@
     <string name="wellcome_private">ברוכים הבאים! אנא שמור על פרטיות חבריך</string>
     <string name="you_are_not_loggedin">זמין רק עבור משתמשים רשומים</string>
     <string name="bad_username_or_password">שם משתמש או סיסמה לא מתאימים</string>
+    <string name="passwordReset">שחזור סיסמה</string>
 </resources>
