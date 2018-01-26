@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +130,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         ImageButton btnEdit = (ImageButton) convertView.findViewById(R.id.btnEdit);
         ImageButton btnSms = (ImageButton) convertView.findViewById(R.id.btnSms);
         ImageButton btnShare = (ImageButton) convertView.findViewById(R.id.btnShare);
+        ImageButton btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
 
         btnSms.setOnClickListener(new View.OnClickListener() {
 
@@ -225,6 +228,50 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                     ft.replace(R.id.main_fragment_container, contactdetails, "ContactDetailsFragment");
                     ft.addToBackStack("ContactDetailsFragment");
                     ft.commit();
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try{
+                    MainActivity main = (MainActivity) manager.findFragmentByTag("ContactsFragment").getActivity();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(main);
+                    builder1.setMessage(_context.getResources().getString(R.string.are_you_sure));
+                    builder1.setCancelable(false);
+
+                    builder1.setPositiveButton(
+                            _context.getResources().getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    SQLiteDbHelper db = new SQLiteDbHelper(_context);
+                                    db.deleteContact(contact.getId());
+                                    final FragmentTransaction ft = manager.beginTransaction();
+                                    ContactsFragment contacts = new ContactsFragment();
+
+                                    ft.replace(R.id.main_fragment_container, contacts, "ContactsFragment");
+                                    ft.addToBackStack("ContactsFragment");
+                                    ft.commit();
+                                    dialog.cancel();
+                                }
+                            });
+                    builder1.setNegativeButton(
+                            _context.getResources().getString(R.string.cancel),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
                 }
                 catch (Exception ex){
                     Toast.makeText(_context, ex.getMessage(),

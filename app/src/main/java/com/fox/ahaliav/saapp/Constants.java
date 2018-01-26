@@ -22,6 +22,14 @@ public class Constants {
         return "https://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
     }
 
+    public static String getAllUsersUrl(){
+        return "https://www.sa-israel.org/wp-json/wp/v2/users";
+    }
+
+    public static String getUserDetailsUrl(int id){
+        return "https://www.sa-israel.org/wp-json/wp/v2/users/" + id + "?context=edit";
+    }
+
     public static String getTokenUrl(){
         return "https://www.sa-israel.org/wp-json/jwt-auth/v1/token?username=user_creator&password=b(emMih0ySScy6oOGcey4RHI";
     }

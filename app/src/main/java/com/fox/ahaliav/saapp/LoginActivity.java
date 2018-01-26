@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
     WebSiteHelper helper;
     EditText txtUserName;
     EditText txtPassword;
-    CheckBox chkRememberMe;
+    //CheckBox chkRememberMe;
     private ProgressBar spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
 
         txtUserName = (EditText)findViewById(R.id.txtUserName);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
-        chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
+        //chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this);
@@ -96,21 +96,22 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
             boolean result = (Boolean) obj;
             if(result){
-                MainActivity.IsLoggedIn = true;
+                db.insertUser(txtUserName.getText().toString(), "true", txtUserName.getText().toString());
+                db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
                 //check if to save login
-                if(chkRememberMe.isChecked()){
+                //if(chkRememberMe.isChecked()){
                     //save to db
                     db.insertSettings(Constants.IS_LOGEDIN_KEY, "true");
-                }
-                else {
-                    db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");
-                }
+                //}
+                //else {
+//                    db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");
+  //              }
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constants.IS_LOGEDIN_KEY, "true");
                 startActivity(intent);
             }
             else {
-                MainActivity.IsLoggedIn = false;
+                db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.bad_username_or_password),
                         Toast.LENGTH_LONG).show();
                 txtUserName.setText("");

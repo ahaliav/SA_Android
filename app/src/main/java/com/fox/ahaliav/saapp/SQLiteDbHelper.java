@@ -22,13 +22,14 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public SQLiteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("create table groups " +
                 "(id integer primary key, day text, fromtime text, tomtime text, location text, comment text, lang text, latitude float,longitude float, km float)");
 
         db.execSQL("create table subrieties " +
-        "(id integer primary key, name text, subrietdate text)");
+                "(id integer primary key, name text, subrietdate text)");
 
         db.execSQL("create table contacts " +
                 "(id integer primary key, name text, phone text, email text,comments text)");
@@ -41,16 +42,18 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
 
     }
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //db.execSQL("drop table contacts");
 
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public boolean insertSubrieties (String name, Date subrietdate) {
+    public boolean insertSubrieties(String name, Date subrietdate) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -63,7 +66,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateSubriety (Integer id, String name, Date subrietdate) {
+    public boolean updateSubriety(Integer id, String name, Date subrietdate) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,39 +75,39 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("subrietdate", date);
-        db.update("subrieties", contentValues,"id="+id.toString(), null);
+        db.update("subrieties", contentValues, "id=" + id.toString(), null);
         return true;
     }
 
-    public boolean deleteSubriety (Integer id) {
+    public boolean deleteSubriety(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete("subrieties", "id="+id.toString(), null);
+        db.delete("subrieties", "id=" + id.toString(), null);
         return true;
     }
 
-    public Cursor selectSubrieties (String id) {
+    public Cursor selectSubrieties(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if(!id.isEmpty()){
+        if (!id.isEmpty()) {
             query = " where id=" + id;
         }
 
-        Cursor res =  db.rawQuery( "select * from subrieties" + query, null );
+        Cursor res = db.rawQuery("select * from subrieties" + query, null);
         return res;
     }
 
     //Contacts
 
-    public boolean insertContact (String name, String phone, String comments, String email) {
+    public boolean insertContact(String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
-        if(phone != null && !phone.isEmpty()){
-            phone = phone.replace("-","");
-            phone = phone.replace(" ","");
+        if (phone != null && !phone.isEmpty()) {
+            phone = phone.replace("-", "");
+            phone = phone.replace(" ", "");
         }
 
         contentValues.put("name", name);
@@ -116,7 +119,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateContact (Integer id, String name, String phone, String comments, String email) {
+    public boolean updateContact(Integer id, String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -125,45 +128,44 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         contentValues.put("comments", comments);
         contentValues.put("email", email);
 
-        db.update("contacts", contentValues,"id="+id.toString(), null);
+        db.update("contacts", contentValues, "id=" + id.toString(), null);
         return true;
     }
 
-    public boolean deleteContact (Integer id) {
+    public boolean deleteContact(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete("contacts", "id="+id.toString(), null);
+        db.delete("contacts", "id=" + id.toString(), null);
         return true;
     }
 
-    public Cursor selectContacts (String id, String phoneNumber) {
+    public Cursor selectContacts(String id, String phoneNumber) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if(!id.isEmpty()){
+        if (!id.isEmpty()) {
             query = " where id=" + id;
         }
 
-        if(phoneNumber.length() > 8){
+        if (phoneNumber.length() > 8) {
             String last9numbers = phoneNumber.substring(phoneNumber.length() - 9);
-            if(!phoneNumber.isEmpty()){
+            if (!phoneNumber.isEmpty()) {
                 query = " where phone LIKE '%" + phoneNumber + "'";
             }
         }
 
 
-        Cursor res =  db.rawQuery( "select * from contacts" + query, null );
+        Cursor res = db.rawQuery("select * from contacts" + query, null);
         return res;
     }
 
     //user
-    public boolean insertUser (String name, String is_registered, String email) {
+    public boolean insertUser(String name, String is_registered, String email) {
 
         Cursor cur = selectUser(email);
-        if(cur != null && cur.getCount() > 0){
+        if (cur != null && cur.getCount() > 0) {
             updateUser(name, is_registered, email);
-        }
-        else {
+        } else {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues contentValues = new ContentValues();
@@ -177,7 +179,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateUser (String name, String is_registered, String email) {
+    public boolean updateUser(String name, String is_registered, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -185,29 +187,28 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         contentValues.put("email", email);
         contentValues.put("is_registered", is_registered);
 
-        db.update("user", contentValues,"email="+email, null);
+        db.update("user", contentValues, "email='" + email + "'", null);
         return true;
     }
 
-    public Cursor selectUser (String email) {
+    public Cursor selectUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if(!email.isEmpty()){
+        if (!email.isEmpty()) {
             query = " where email='" + email + "'";
         }
 
-        Cursor res =  db.rawQuery( "select * from user" + query, null );
+        Cursor res = db.rawQuery("select * from user" + query, null);
         return res;
     }
 
     //settings
-    public boolean insertSettings (String key_set, String value_set) {
+    public boolean insertSettings(String key_set, String value_set) {
         Cursor cur = selectSettings(key_set);
-        if(cur != null && cur.getCount() > 0){
+        if (cur != null && cur.getCount() > 0) {
             updateSettings(key_set, value_set);
-        }
-        else {
+        } else {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues contentValues = new ContentValues();
@@ -220,28 +221,28 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateSettings (String key_set, String value_set) {
+    public boolean updateSettings(String key_set, String value_set) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("key_set", key_set);
         contentValues.put("value_set", value_set);
 
-        db.update("settings", contentValues,"key_set='"+key_set +"'", null);
+        db.update("settings", contentValues, "key_set='" + key_set + "'", null);
         return true;
     }
 
-    public Cursor selectSettings (String key_set) {
+    public Cursor selectSettings(String key_set) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if(!key_set.isEmpty()){
+        if (!key_set.isEmpty()) {
             query = " where key_set='" + key_set + "'";
         }
 
-        Cursor res =  db.rawQuery( "select * from settings " + query, null );
+        Cursor res = db.rawQuery("select * from settings " + query, null);
 
-        if((res == null || res.getCount() == 0) && (key_set == "notifications" || key_set == "calldialog")){
+        if ((res == null || res.getCount() == 0) && (key_set == "notifications" || key_set == "calldialog")) {
 
             ContentValues contentValues = new ContentValues();
             contentValues.put("key_set", "notifications");
@@ -253,31 +254,31 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("value_set", "true");
             db.insert("settings", null, contentValues);
 
-            res =  db.rawQuery( "select * from settings " + query, null );
+            res = db.rawQuery("select * from settings " + query, null);
         }
 
         return res;
     }
 
 
-    public String selectSettingsString (String key_set) {
+    public String selectSettingsString(String key_set) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if(!key_set.isEmpty()){
+        if (!key_set.isEmpty()) {
             query = " where key_set='" + key_set + "'";
         }
 
-        Cursor result =  db.rawQuery( "select * from settings " + query, null );
+        Cursor result = db.rawQuery("select * from settings " + query, null);
         String val = "";
-        if(result != null) {
+        if (result != null) {
 
             while (result.moveToNext()) {
                 val = result.getString(2);
                 break;
             }
 
-            if (!result.isClosed())  {
+            if (!result.isClosed()) {
                 result.close();
             }
         }
@@ -287,21 +288,21 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
 
     //groups
-    public Cursor selectGroups () {
+    public Cursor selectGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
 
-        Cursor res =  db.rawQuery( "select * from groups order by km", null );
+        Cursor res = db.rawQuery("select * from groups order by km", null);
         return res;
     }
 
-    public boolean deleteGroups () {
+    public boolean deleteGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
 
-        Cursor res =  db.rawQuery( "delete from groups", null );
+        Cursor res = db.rawQuery("delete from groups", null);
         return true;
     }
 
@@ -313,7 +314,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
 
-        for(Group g: list){
+        for (Group g : list) {
             contentValues.put("day", g.getDay());
             contentValues.put("fromtime", g.getFromTime());
             contentValues.put("tomtime", g.getToTime());

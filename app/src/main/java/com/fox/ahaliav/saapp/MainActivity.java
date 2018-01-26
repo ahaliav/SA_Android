@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int PERMS_REQUEST_CODE = 1;
-    public static boolean IsLoggedIn = false;
     public static boolean IsRegistered = false;
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     AccountsAdapter listAdapter;
     private List<String> listDataHeader; // header titles
     private HashMap<String, List<String>> listDataChild;
-
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +52,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String isloggedin = intent.getStringExtra(Constants.IS_LOGEDIN_KEY);
 
-        if (isloggedin != null && isloggedin.equals("true")) {
-            IsLoggedIn = true;
-        }
-
+        context = getApplicationContext();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -80,8 +76,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.main_fragment_container, fragment, "RegisterFragment")
                     .commit();
-        }
-        else {
+        } else {
             fragmentManager.beginTransaction()
                     .replace(R.id.main_fragment_container, fragment, "MainFragment")
                     .commit();
@@ -168,6 +163,13 @@ public class MainActivity extends AppCompatActivity
         loadAccounts(navigationView);
     }
 
+    public static boolean IsLoggedIn() {
+        SQLiteDbHelper db = new SQLiteDbHelper(context);
+        String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
+
+        return  isLoggedin.equals("true");
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -203,19 +205,19 @@ public class MainActivity extends AppCompatActivity
         String isReg = db.selectSettingsString(Constants.IS_REGISTERED_KEY);
         String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
 
-        if(isLoggedin == null)
+        if (isLoggedin == null)
             isLoggedin = "";
-        if(isReg == null)
+        if (isReg == null)
             isReg = "";
 
-        if ((isLoggedin.equals("") || isLoggedin.equals("false")) && isReg != null && isReg.equals("true") && IsLoggedIn == false) {
+        if ((isLoggedin.equals("") || isLoggedin.equals("false")) && isReg != null && isReg.equals("true") && IsLoggedIn() == false) {
             MenuItem action_login = menu.findItem(R.id.action_login);
             action_login.setVisible(true);
             MenuItem action_register = menu.findItem(R.id.action_register);
             action_register.setVisible(false);
             MenuItem action_exit = menu.findItem(R.id.action_exit);
             action_exit.setVisible(false);
-        } else if (isReg.equals("") || isReg.equals("false") && IsLoggedIn == false) {
+        } else if (isReg.equals("") || isReg.equals("false") && IsLoggedIn() == false) {
             MenuItem action_register = menu.findItem(R.id.action_register);
             action_register.setVisible(true);
             MenuItem action_login = menu.findItem(R.id.action_login);
@@ -264,7 +266,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.action_exit) {
-            IsLoggedIn = false;
             SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
             db.updateSettings(Constants.IS_LOGEDIN_KEY, "false");
             setLoginRegisterBar();
@@ -377,9 +378,10 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
         expAccounts.setAdapter(myAdapter);
 
-        for(int j=0; j< expAccounts.getCount();j++){
-            if(((String)expAccounts.getAdapter().getItem(j)).equals(email)){
+        for (int j = 0; j < expAccounts.getCount(); j++) {
+            if (((String) expAccounts.getAdapter().getItem(j)).equals(email)) {
                 expAccounts.setSelection(j);
+                break;
             }
         }
 

@@ -94,4 +94,5 @@
     <string name="you_are_not_loggedin">זמין רק עבור משתמשים רשומים</string>
     <string name="bad_username_or_password">שם משתמש או סיסמה לא מתאימים</string>
     <string name="passwordReset">שחזור סיסמה</string>
+    <string name="are_you_sure">"האם אתה בטוח? "</string>
 </resources>

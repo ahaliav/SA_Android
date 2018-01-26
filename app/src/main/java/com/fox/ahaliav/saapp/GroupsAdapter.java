@@ -98,7 +98,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (MainActivity.IsLoggedIn) {
+                if (MainActivity.IsLoggedIn()) {
                     String w_uri = "waze://?ll=40.761043, -73.980545&navigate=yes";
 
                     String g_uri = "http://maps.google.com/maps?saddr="
@@ -131,7 +131,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnGooglemaps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (MainActivity.IsLoggedIn) {
+                if (MainActivity.IsLoggedIn()) {
                     String g_uri = "http://maps.google.com/maps?saddr="
                             + cur_latitude + ","
                             + cur_longitude + "&daddr="
@@ -156,7 +156,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (MainActivity.IsLoggedIn) {
+                if (MainActivity.IsLoggedIn()) {
                     String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
                     message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
                     message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
@@ -182,7 +182,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (MainActivity.IsLoggedIn) {
+                if (MainActivity.IsLoggedIn()) {
                     String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
                     message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
                     message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";

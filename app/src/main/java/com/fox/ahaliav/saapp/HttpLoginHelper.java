@@ -49,23 +49,56 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
     }
 
     private Object checkLogin() throws IOException, JSONException {
+
+        Gson gson = new Gson();
+
+        //1. get all users
+        InputStream is = new URL(Constants.getAllUsersUrl()).openStream();
+        BufferedReader rdUsers = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        String jsonTextUsers = readAll(rdUsers);
+        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Map<String, String> mapAllUsers = gson.fromJson(jsonTextUsers, type);
+
+        //2. find the user
+        int id = 3;
+
+        //4. get token for to check user
+        String token = getToken(Constants.getTokenUrl());
+        Map<String, String> mapUserDetails = gson.fromJson(token, type);
+
+        //5. get user details by id
+        URL purlUserDetails = new URL(Constants.getUserDetailsUrl(id));
+
+        HttpsURLConnection connection = (HttpsURLConnection) purlUserDetails.openConnection();
+        connection.setRequestProperty("Authorization", "Bearer " + mapUserDetails.get("token"));
+        connection.setRequestMethod("POST");
+        int responseCode = connection.getResponseCode();
+
+        Object resultUserdetails = null;
+        if (responseCode >= 200 && responseCode < 300)
+            resultUserdetails = connection.getResponseMessage();
+
+        //6. check the user role
+
+        //7. if role is not approved show message
+
+        //8. else go on....
+
         Object result = null;
         OutputStream out = null;
-        Gson gson = new Gson();
+
         String authUrl = "https://www.sa-israel.org/wp-json/jwt-auth/v1/token?username=" + username + "&password=" + password;
-        String token = "";
+        token = "";
         try {
+
             URL purl = new URL(authUrl);
 
-            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection = (HttpsURLConnection) purl.openConnection();
             connection.setRequestMethod("POST");
             if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 token = readAll(rd);
             }
-
-            Type type = new TypeToken<Map<String, String>>(){}.getType();
-            Map<String, String> map = gson.fromJson(token, type);
 
         } catch (Exception ex) {
             return false;
@@ -79,6 +112,25 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
         }
 
         return token.length() > 0;
+    }
+
+    public String getToken(String url) throws IOException, JSONException {
+
+        try {
+            URL purl = new URL(url);
+
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestMethod("POST");
+            if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                return readAll(rd);
+            }
+
+        } catch (Exception ex) {
+            return "";
+        }
+
+        return "";
     }
 
     @Override

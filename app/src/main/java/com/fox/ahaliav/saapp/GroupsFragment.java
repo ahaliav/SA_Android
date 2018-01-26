@@ -93,7 +93,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                     123);
         } else {
 
-            if (MainActivity.IsLoggedIn) {
+            if (MainActivity.IsLoggedIn()) {
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
                 mFusedLocationClient.getLastLocation()
