@@ -1,9 +1,12 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 
@@ -16,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -23,14 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
 
     private String url = "";
     ICallbackMethod callback;
+    private Context context;
 
-    public JsonReader(String url, ICallbackMethod callback) {
+    public JsonReader(String url, ICallbackMethod callback,Context context) {
         this.url = url;
         this.callback = callback;
+        this.context = context;
     }
 
     private String readAll(Reader rd) throws IOException {
@@ -44,16 +52,42 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
 
     private List<Object> readJsonFromUrl(String url) throws IOException, JSONException {
         List<Object> list = new ArrayList<Object>();
-        InputStream is = null;
         try {
-            is = new URL(url).openStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            SQLiteDbHelper db = new SQLiteDbHelper(context);
+            Cursor result = db.selectUser("");
+
+            String email = "";
+            String password = "";
+            if (result != null) {
+                while (result.moveToNext()) {
+                    int id = result.getInt(0);
+                    email = result.getString(2);
+                    password = result.getString(4);
+                    break;
+                }
+                if (!result.isClosed()) {
+                    result.close();
+                }
+            }
+
+            String path = Constants.getTokenBaseUrl() + "username=" + email + "&password=" + password;
+
+            String token = getToken(path);
+            Gson gson = new Gson();
+            Type type = new TypeToken<Map<String, String>>(){}.getType();
+            Map<String, String> map = gson.fromJson(token, type);
+
+            URL purl = new URL(url);
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestProperty("Authorization", "Bearer " + map.get("token"));
+            connection.setRequestMethod("GET");
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String jsonText = readAll(rd);
 
 
             Object obj;
 
-            Gson gson;
             ListView postList;
             Map<String, Object> mapPost;
             Map<String, Object> mapTitle;
@@ -79,15 +113,7 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
             return list;
 
         } catch (Exception ex) {
-
-        } finally {
-            try {
-                if (is != null)
-                    is.close();
-            } catch (Exception ex) {
-
-            }
-
+            String mess = ex.getMessage();
         }
 
         return list;
@@ -126,6 +152,25 @@ public class JsonReader extends AsyncTask<Void, Void, List<Object>> {
         }
 
         return true;
+    }
+
+    public String getToken(String url) throws IOException, JSONException {
+
+        try {
+            URL purl = new URL(url);
+
+            HttpsURLConnection connection = (HttpsURLConnection) purl.openConnection();
+            connection.setRequestMethod("POST");
+            if (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                return readAll(rd);
+            }
+
+        } catch (Exception ex) {
+            return "";
+        }
+
+        return "";
     }
 
     @Override

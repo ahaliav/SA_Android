@@ -189,7 +189,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
             try {
                 if (val == "" || getDays(val) > 1) {
-                    WebSiteHelper helper = new WebSiteHelper(this);
+                    WebSiteHelper helper = new WebSiteHelper(this, getContext());
                     helper.getGroups();
                 } else {
                     loadgroups_from_db();
@@ -269,7 +269,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public void onTaskDone(List<Object> objs) {
-
+        list = new ArrayList<Group>();
         if (objs != null && objs.size() > 0 && objs.get(0) instanceof Group) {
             for (int i = 0; i < objs.size(); ++i) {
 

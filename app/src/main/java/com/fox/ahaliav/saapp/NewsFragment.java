@@ -37,7 +37,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
     }
 
     private void loadnews() {
-        WebSiteHelper helper = new WebSiteHelper(this);
+        WebSiteHelper helper = new WebSiteHelper(this, getContext());
         helper.getNewsTitles();
     }
 

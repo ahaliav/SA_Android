@@ -1,23 +1,32 @@
 package com.fox.ahaliav.saapp;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity implements IObjCallbackMethod {
     WebSiteHelper helper;
-    EditText txtUserName;
     EditText txtPassword;
+    Spinner email_address_view;
     //CheckBox chkRememberMe;
     private ProgressBar spinner;
     @Override
@@ -29,12 +38,14 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         Button btnRegister = (Button)findViewById(R.id.btnRegister);
         Button btnPasswordReset = (Button)findViewById(R.id.btnPasswordReset);
 
-        txtUserName = (EditText)findViewById(R.id.txtUserName);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
         //chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
+        email_address_view = (Spinner) findViewById(R.id.email_address_view);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
-        helper = new WebSiteHelper(this);
+        helper = new WebSiteHelper(this, getApplicationContext());
+
+        loadAccounts();
 
         btnPasswordReset.setOnClickListener(new View.OnClickListener() {
 
@@ -50,16 +61,13 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             @Override
             public void onClick(View v) {
 
-                if(txtUserName.getText().toString().trim().equals("") ){
-                    txtUserName.setError(getResources().getString(R.string.field_required));
-                }
-                else if(txtPassword.getText().toString().trim().equals("") ){
+                if(txtPassword.getText().toString().trim().equals("") ){
                     txtPassword.setError(getResources().getString(R.string.field_required));
                 }
                 else {
                     try{
                         spinner.setVisibility(View.VISIBLE);
-                        helper.login(txtUserName.getText().toString(),txtPassword.getText().toString());
+                        helper.login(email_address_view.getSelectedItem().toString(),txtPassword.getText().toString());
                     }
                     catch (Exception ex){
                         spinner.setVisibility(View.GONE);
@@ -96,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
             boolean result = (Boolean) obj;
             if(result){
-                db.insertUser(txtUserName.getText().toString(), "true", txtUserName.getText().toString());
+                db.insertUser(email_address_view.getSelectedItem().toString(), "true", email_address_view.getSelectedItem().toString(), txtPassword.getText().toString());
                 db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
                 //check if to save login
                 //if(chkRememberMe.isChecked()){
@@ -114,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
                 db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.bad_username_or_password),
                         Toast.LENGTH_LONG).show();
-                txtUserName.setText("");
+
                 txtPassword.setText("");
             }
             spinner.setVisibility(View.GONE);
@@ -122,5 +130,26 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         catch (Exception ex){
             spinner.setVisibility(View.GONE);
         }
+    }
+
+    private void loadAccounts() {
+
+        SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
+        Cursor result = db.selectUser("");
+
+        ArrayList<String> emails = new ArrayList<>();
+
+        Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (gmailPattern.matcher(account.name).matches()) {
+                emails.add(account.name);
+            }
+        }
+
+        Spinner expAccounts = (Spinner) findViewById(R.id.email_address_view);
+
+        ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
+        expAccounts.setAdapter(myAdapter);
     }
 }

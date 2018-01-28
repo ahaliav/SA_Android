@@ -89,7 +89,7 @@
     <string name="literature_committee">Literature Committee</string>
     <string name="translation_committee">Translation Committee</string>
     <string name="ok">OK</string>
-    <string name="reg_success_message">You have successfully registered, the information you submitted will be reviewed, please be patient to receive confirmation</string>
+    <string name="reg_success_message">You have successfully registered, the information you submitted will be reviewed, please be patient! this can take 48 hours until we confirm your details</string>
     <string name="title_activity_login">Enter</string>
     <string name="login">Login</string>
     <string name="rememeberme">Remember Me</string>

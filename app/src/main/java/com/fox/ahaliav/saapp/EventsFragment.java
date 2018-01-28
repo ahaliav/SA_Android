@@ -71,7 +71,7 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
     }
 
     private void loadevents() {
-        WebSiteHelper helper = new WebSiteHelper(this);
+        WebSiteHelper helper = new WebSiteHelper(this, getContext());
         helper.getEventsTitles();
     }
 

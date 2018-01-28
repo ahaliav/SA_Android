@@ -38,7 +38,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 "(id integer primary key, key_set text, value_set text)");
 
         db.execSQL("create table user " +
-                "(id integer primary key, name text, email text, is_registered integer)");
+                "(id integer primary key, name text, email text, is_registered integer, password text)");
 
 
     }
@@ -160,34 +160,22 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     }
 
     //user
-    public boolean insertUser(String name, String is_registered, String email) {
-
-        Cursor cur = selectUser(email);
-        if (cur != null && cur.getCount() > 0) {
-            updateUser(name, is_registered, email);
-        } else {
-            SQLiteDatabase db = this.getWritableDatabase();
-
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("name", name);
-            contentValues.put("email", email);
-            contentValues.put("is_registered", is_registered);
-
-            db.insert("user", null, contentValues);
-        }
-
-        return true;
-    }
-
-    public boolean updateUser(String name, String is_registered, String email) {
+    public boolean insertUser(String name, String is_registered, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("delete from user");
+
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("email", email);
         contentValues.put("is_registered", is_registered);
+        contentValues.put("password", password);
 
-        db.update("user", contentValues, "email='" + email + "'", null);
+        db.insert("user", null, contentValues);
+
+        db.close();
+
         return true;
     }
 
@@ -291,8 +279,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public Cursor selectGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "";
-
         Cursor res = db.rawQuery("select * from groups order by km", null);
         return res;
     }
@@ -300,9 +286,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public boolean deleteGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "";
+        db.execSQL("delete from groups");
 
-        Cursor res = db.rawQuery("delete from groups", null);
         return true;
     }
 

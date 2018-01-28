@@ -25,6 +25,7 @@ import android.widget.Spinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -73,7 +74,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
-        helper = new WebSiteHelper(this);
+        helper = new WebSiteHelper(this, getContext());
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -133,6 +134,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         if (obj != null) {
             SQLiteDbHelper db = new SQLiteDbHelper(getContext());
             db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
+
             // 1. Instantiate an AlertDialog.Builder with its constructor
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             builder1.setMessage(getResources().getString(R.string.reg_success_message));

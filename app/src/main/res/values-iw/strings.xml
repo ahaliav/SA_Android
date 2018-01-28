@@ -86,7 +86,6 @@
     <string name="literature_committee">ועדת ספרות</string>
     <string name="translation_committee">ועדת תרגום</string>
     <string name="ok">אישור</string>
-    <string name="reg_success_message">"נרשמת בהצלחה, הפרטים ששלחת בבדיקה, אנא המתן בסבלנות לקבלת אישור "</string>
     <string name="login">כניסה</string>
     <string name="title_activity_login">כניסה</string>
     <string name="rememeberme">זכור אותי</string>
@@ -95,4 +94,5 @@
     <string name="bad_username_or_password">שם משתמש או סיסמה לא מתאימים</string>
     <string name="passwordReset">שחזור סיסמה</string>
     <string name="are_you_sure">"האם אתה בטוח? "</string>
+    <string name="reg_success_message">נרשמת בהצלחה, המידע ששלחת ייבדק, אנא המתן בסבלנות! זה יכול לקחת 48 שעות עד שאנו מאשרים את הפרטים שלך</string>
 </resources>

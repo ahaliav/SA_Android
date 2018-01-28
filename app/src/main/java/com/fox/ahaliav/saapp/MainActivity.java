@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        if (listDataHeader.size() == 0) {
+        if (email.equals("")) {
             email = getResources().getString(R.string.select_account);
         }
 
