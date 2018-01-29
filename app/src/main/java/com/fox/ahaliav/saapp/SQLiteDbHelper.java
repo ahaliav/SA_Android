@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -38,9 +40,10 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 "(id integer primary key, key_set text, value_set text)");
 
         db.execSQL("create table user " +
-                "(id integer primary key, name text, email text, is_registered integer, password text)");
+                "(id integer primary key, name text, email text, is_registered integer, password text, isconfirmed text)");
 
-
+        db.execSQL("create table token " +
+                "(token text, tokendate text)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -171,6 +174,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         contentValues.put("email", email);
         contentValues.put("is_registered", is_registered);
         contentValues.put("password", password);
+        contentValues.put("isconfirmed", "true");
 
         db.insert("user", null, contentValues);
 
@@ -313,5 +317,57 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         }
 
         return true;
+    }
+
+    public boolean insertToken(String token, Date tokendate) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("delete from token");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String date = sdf.format(tokendate);
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("token", token);
+        contentValues.put("tokendate", date);
+        db.insert("token", null, contentValues);
+        return true;
+    }
+
+
+    public String selectToken() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor result = db.rawQuery("select * from token", null);
+        String token = "";
+        String tokendate = "";
+        if (result != null) {
+
+            while (result.moveToNext()) {
+                token = result.getString(0);
+                tokendate = result.getString(1);
+                break;
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            Date date = sdf.parse(tokendate);
+            Date currentTime = Calendar.getInstance().getTime();
+            long mills = date.getTime() - currentTime.getTime();
+            int hours = (int) (mills/(1000 * 60 * 60));
+            if(hours < 2)
+                return  token;
+            else
+                return "";
+        } catch (ParseException e) {
+            return "";
+        }
     }
 }

@@ -2,12 +2,14 @@ package com.fox.ahaliav.saapp;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
@@ -103,20 +105,31 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         try{
             SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
             boolean result = (Boolean) obj;
+            final Intent intent = new Intent(this, MainActivity.class);
             if(result){
-                db.insertUser(email_address_view.getSelectedItem().toString(), "true", email_address_view.getSelectedItem().toString(), txtPassword.getText().toString());
-                db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
-                //check if to save login
-                //if(chkRememberMe.isChecked()){
-                    //save to db
+
+                if(MainActivity.IsConfirmed(email_address_view.getSelectedItem().toString())){
+                    db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
                     db.insertSettings(Constants.IS_LOGEDIN_KEY, "true");
-                //}
-                //else {
-//                    db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");
-  //              }
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constants.IS_LOGEDIN_KEY, "true");
-                startActivity(intent);
+                    startActivity(intent);
+                }
+                else {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                    builder1.setMessage(getResources().getString(R.string.you_are_note_confirmed));
+                    builder1.setCancelable(false);
+
+                    builder1.setPositiveButton(
+                            getResources().getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(intent);
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
             }
             else {
                 db.insertSettings(Constants.IS_LOGEDIN_KEY, "false");

@@ -24,20 +24,26 @@ public class WebSiteHelper {
 
     public void getNewsTitles()
     {
-        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=30&fields=id,title", this.callback, context);
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=30&fields=id,title", this.callback, context, false);
         reader.execute();
     }
 
 
+    public void getRegisteredUsers()
+    {
+        JsonReader reader = new JsonReader(Constants.getUsersConfirmedUrl(), this.callback, context, false);
+        reader.execute();
+    }
+
     public void getNewsDetails(Float id)
     {
-        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "/" + Math.round(id), this.callback, context);
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "/" + Math.round(id) + "?password=Awsy567FbCdeS", this.callback, context, false);
         reader.execute();
     }
 
     public void getEventsTitles() {
 
-        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=31&fields=id,title", this.callback, context);
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=31&fields=id,title", this.callback, context, false);
         reader.execute();
     }
 
@@ -52,7 +58,7 @@ public class WebSiteHelper {
     {
         String url ="http://maps.googleapis.com/maps/api/distancematrix/json?origins=" + latitude + "," + longitude + "&destinations=" + prelatitute + "," + prelongitude + "&mode=driving&language=en-EN&sensor=false";
 
-        JsonReader reader = new JsonReader(url, this.callback, context);
+        JsonReader reader = new JsonReader(url, this.callback, context, false);
         reader.execute();
     }
 
@@ -62,7 +68,7 @@ public class WebSiteHelper {
     }
 
     public void login(String username, String password) {
-        HttpLoginHelper reader = new HttpLoginHelper(username, password, this.callback2);
+        HttpLoginHelper reader = new HttpLoginHelper(username, password, this.callback2, context);
         reader.execute();
     }
 }

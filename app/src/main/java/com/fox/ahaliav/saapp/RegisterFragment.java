@@ -78,6 +78,23 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                if(txtName.getText().toString().trim().equals("") ){
+                    txtName.setError(getResources().getString(R.string.field_required));
+                }
+
+                if(txtPassword.getText().toString().trim().equals("") ){
+                    txtPassword.setError(getResources().getString(R.string.password_required));
+                }
+
+                if(txtPhone.getText().toString().trim().equals("") ){
+                    txtPhone.setError(getResources().getString(R.string.field_required));
+                }
+
+                if(txtComments.getText().toString().trim().equals("") ){
+                    txtComments.setError(getResources().getString(R.string.field_required));
+                }
+
                 try{
                     spinner.setVisibility(View.VISIBLE);
                     helper.register(

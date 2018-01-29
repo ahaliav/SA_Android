@@ -95,4 +95,8 @@
     <string name="passwordReset">שחזור סיסמה</string>
     <string name="are_you_sure">"האם אתה בטוח? "</string>
     <string name="reg_success_message">נרשמת בהצלחה, המידע ששלחת ייבדק, אנא המתן בסבלנות! זה יכול לקחת 48 שעות עד שאנו מאשרים את הפרטים שלך</string>
+    <string name="password_required">הסיסמה שלך צריכה להיות לפחות 6 תווים</string>
+    <string name="are_you_sure_you_want_to_exit">אתה בטוח שאתה רוצה לצאת?</string>
+    <string name="locked_content">תוכן זה גלוי רק עבור משתמשים מחוברים</string>
+    <string name="you_are_note_confirmed">חבר SA יקר הפרטים שלך עדיין לא אומתו, אנא המתן בסבלנות עד אשר נאשר את פרטיך, אם לאחר 48 שעות לא קיבלת אישור אנא צור קשר עם website@sa-israel.com</string>
 </resources>

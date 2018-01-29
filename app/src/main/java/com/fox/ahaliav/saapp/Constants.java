@@ -13,6 +13,10 @@ public class Constants {
     public static final String REGISTERED_DATE_KEY = "REGISTERED_DATE_KEY";
 
 
+    public static String getUsersConfirmedUrl(){
+        return "https://sa-israel.org/wp-json/wp/v2/posts/1470/?password=d400b147-b12d-40b6-8593-9110cd06cd5f";
+    }
+
     public static String getPostsUrl(){
         return "https://sa-israel.org/wp-json/wp/v2/posts";
     }

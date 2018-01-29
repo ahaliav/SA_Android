@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,10 +13,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
@@ -167,7 +170,38 @@ public class MainActivity extends AppCompatActivity
         SQLiteDbHelper db = new SQLiteDbHelper(context);
         String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
 
-        return  isLoggedin.equals("true");
+        Cursor result = db.selectUser("");
+
+        String isconfirmed = "";
+        if (result != null) {
+            while (result.moveToNext()) {
+                isconfirmed = result.getString(5);
+                break;
+            }
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        return  isLoggedin.equals("true") && isconfirmed.equals("true");
+    }
+
+    public static boolean IsConfirmed(String email) {
+        SQLiteDbHelper db = new SQLiteDbHelper(context);
+        Cursor result = db.selectUser(email);
+
+        String isconfirmed = "";
+        if (result != null) {
+            while (result.moveToNext()) {
+                isconfirmed = result.getString(5);
+                break;
+            }
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        return  isconfirmed.equals("true");
     }
 
     @Override
@@ -266,9 +300,31 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.action_exit) {
-            SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
-            db.updateSettings(Constants.IS_LOGEDIN_KEY, "false");
-            setLoginRegisterBar();
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage(getResources().getString(R.string.are_you_sure_you_want_to_exit));
+            builder1.setCancelable(false);
+
+            builder1.setPositiveButton(
+                    getResources().getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
+                            db.updateSettings(Constants.IS_LOGEDIN_KEY, "false");
+                            setLoginRegisterBar();
+                            dialog.cancel();
+                        }
+                    });
+            builder1.setNegativeButton(
+                    getResources().getString(R.string.cancel),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
             return true;
         }
 

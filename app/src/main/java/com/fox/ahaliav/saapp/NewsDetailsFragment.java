@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -50,10 +51,20 @@ public class NewsDetailsFragment extends Fragment implements ICallbackMethod {
         webview = (WebView) v.findViewById(R.id.webview);
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
-        spinner.setVisibility(View.VISIBLE);
-        list = new ArrayList<News>();
+        FrameLayout frNotLoggedin = (FrameLayout)v.findViewById(R.id.frNotLoggedin);
+        FrameLayout frLoggedin = (FrameLayout)v.findViewById(R.id.frLoggedin);
+        if(MainActivity.IsLoggedIn()){
+            frLoggedin.setVisibility(View.VISIBLE);
+            frNotLoggedin.setVisibility(View.GONE);
+            spinner.setVisibility(View.VISIBLE);
+            list = new ArrayList<News>();
+            loadnews();
+        }
+        else {
+            frLoggedin.setVisibility(View.GONE);
+            frNotLoggedin.setVisibility(View.VISIBLE);
+        }
 
-        loadnews();
 
         setHasOptionsMenu(true);
 

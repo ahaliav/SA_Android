@@ -1,5 +1,6 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ListView;
 
@@ -30,13 +31,14 @@ import javax.net.ssl.HttpsURLConnection;
 public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
     private String username = "";
     private String password = "";
-
+    private Context context;
     IObjCallbackMethod callback;
 
-    public HttpLoginHelper(String username, String password, IObjCallbackMethod callback) {
+    public HttpLoginHelper(String username, String password, IObjCallbackMethod callback, Context context) {
         this.callback = callback;
         this.username = username;
         this.password = password;
+        this.context = context;
     }
 
     private String readAll(Reader rd) throws IOException {
@@ -52,7 +54,8 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
 
         Gson gson = new Gson();
 
-        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
 
         Object result = null;
         OutputStream out = null;
@@ -81,7 +84,58 @@ public class HttpLoginHelper extends AsyncTask<Object, Void, Object> {
             }
         }
 
+        if (token.length() > 0) {
+            checkConfirmation(username, password);
+        }
+
         return token.length() > 0;
+    }
+
+
+    private void checkConfirmation(String username, String password) throws IOException, JSONException {
+
+        InputStream is = null;
+        try {
+            is = new URL(Constants.getUsersConfirmedUrl()).openStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+
+
+            Object obj;
+
+            Gson gson;
+            ListView postList;
+            Map<String, Object> mapPost;
+            Map<String, Object> mapTitle;
+            int postID;
+            String postTitle[];
+
+            gson = new Gson();
+
+            obj = (Object) gson.fromJson(jsonText, Object.class);
+            mapPost = (Map<String, Object>) obj;
+            mapTitle = (Map<String, Object>) mapPost.get("title");
+            String url = (String) mapTitle.get("rendered");
+            is = new URL(url).openStream();
+            rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            jsonText = readAll(rd);
+            if (jsonText.contains(username)) {
+                SQLiteDbHelper db = new SQLiteDbHelper(context);
+                db.insertUser(username, "true", username, password);
+            }
+
+        } catch (Exception ex) {
+            String err = ex.getMessage();
+
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+            } catch (Exception ex) {
+
+            }
+
+        }
     }
 
     public String getToken(String url) throws IOException, JSONException {

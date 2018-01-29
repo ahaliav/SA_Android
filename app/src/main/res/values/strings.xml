@@ -98,5 +98,9 @@
     <string name="bad_username_or_password">Username and password do not match.</string>
     <string name="passwordReset">Password Reset</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="password_required">Your Password Must Be at Least 6 Characters</string>
+    <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
+    <string name="locked_content">this content is visible only for logged in users</string>
+    <string name="you_are_note_confirmed">dear SA member you are not confirmed yet, please be patient until we confirm your details, if after 48 hours you did not get confirmed please contact website@sa-israel.com</string>
 
 </resources>
