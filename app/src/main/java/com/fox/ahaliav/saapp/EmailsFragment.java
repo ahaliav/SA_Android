@@ -73,7 +73,7 @@ public class EmailsFragment extends Fragment {
             listDataHeader.add(list.get(i).getTitle());
         }
 
-        listAdapter = new EmailContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild,getFragmentManager());
+        listAdapter = new EmailContactAdapter(getActivity(), getContext(), listDataHeader, listDataChild,getFragmentManager());
         expContacts.setAdapter(listAdapter);
     }
 }

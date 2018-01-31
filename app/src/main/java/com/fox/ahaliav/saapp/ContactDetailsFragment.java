@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ContactDetailsFragment extends Fragment {
@@ -29,6 +30,7 @@ public class ContactDetailsFragment extends Fragment {
     String phone = "";
     String comments = "";
     String email = "";
+
     public ContactDetailsFragment() {
         // Required empty public constructor
     }
@@ -39,29 +41,32 @@ public class ContactDetailsFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_contact_details, container, false);
 
-        txtName = (EditText)rootView.findViewById(R.id.txtName);
-        txtComments = (EditText)rootView.findViewById(R.id.txtComments);
-        txtPhone = (EditText)rootView.findViewById(R.id.txtPhone);
-        tvTitle =  (TextView)rootView.findViewById(R.id.tvTitle);
-        txtEmail =  (EditText)rootView.findViewById(R.id.txtEmail);
+        txtName = (EditText) rootView.findViewById(R.id.txtName);
+        txtComments = (EditText) rootView.findViewById(R.id.txtComments);
+        txtPhone = (EditText) rootView.findViewById(R.id.txtPhone);
+        tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
+        txtEmail = (EditText) rootView.findViewById(R.id.txtEmail);
+        try {
+            if (getArguments() != null && getArguments().containsKey("id")) {
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.contact_edit_title);
+                tvTitle.setText(R.string.contact_edit_title);
+                id = getArguments().getInt("id");
+                name = getArguments().getString("name");
+                phone = getArguments().getString("phone");
+                comments = getArguments().getString("comments");
+                email = getArguments().getString("email");
 
-        if(getArguments() != null && getArguments().containsKey("id")){
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_edit_title);
-            tvTitle.setText(R.string.contact_edit_title);
-            id = getArguments().getInt("id");
-            name = getArguments().getString("name");
-            phone = getArguments().getString("phone");
-            comments = getArguments().getString("comments");
-            email = getArguments().getString("email");
-
-            txtName.setText(name);
-            txtComments.setText(comments);
-            txtPhone.setText(phone);
-            txtEmail.setText(email);
-        }
-        else{
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.contact_add_title);
-            tvTitle.setText(R.string.contact_add_title);
+                txtName.setText(name);
+                txtComments.setText(comments);
+                txtPhone.setText(phone);
+                txtEmail.setText(email);
+            } else {
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.contact_add_title);
+                tvTitle.setText(R.string.contact_add_title);
+            }
+        } catch (Exception ex) {
+            Toast.makeText(getContext(), ex.getMessage(),
+                    Toast.LENGTH_LONG).show();
         }
 
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
@@ -69,7 +74,7 @@ public class ContactDetailsFragment extends Fragment {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(save()){
+                if (save()) {
                     getFragmentManager().popBackStack();
                 }
 
@@ -87,13 +92,11 @@ public class ContactDetailsFragment extends Fragment {
 
     public boolean save() {
 
-        if(txtName.getText().toString().trim().equals("") ){
+        if (txtName.getText().toString().trim().equals("")) {
             txtName.setError(getResources().getString(R.string.field_required));
-        }
-        else if(txtPhone.getText().toString().trim().equals("") ){
+        } else if (txtPhone.getText().toString().trim().equals("")) {
             txtPhone.setError(getResources().getString(R.string.field_required));
-        }
-        else {
+        } else {
             dpResult = (DatePicker) rootView.findViewById(R.id.dpResult);
 
             SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
@@ -103,10 +106,9 @@ public class ContactDetailsFragment extends Fragment {
             phone = txtPhone.getText().toString();
             email = txtEmail.getText().toString();
 
-            if(id <=0){
+            if (id <= 0) {
                 db.insertContact(name, phone, comments, email);
-            }
-            else {
+            } else {
                 db.updateContact(id, name, phone, comments, email);
             }
             return true;

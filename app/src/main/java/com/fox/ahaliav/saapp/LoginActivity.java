@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,6 +71,11 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
                     try{
                         spinner.setVisibility(View.VISIBLE);
                         helper.login(email_address_view.getSelectedItem().toString(),txtPassword.getText().toString());
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                     catch (Exception ex){
                         spinner.setVisibility(View.GONE);

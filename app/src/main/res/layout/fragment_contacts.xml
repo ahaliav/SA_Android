@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.fox.ahaliav.saapp.ContactsFragment">
 
     <ExpandableListView
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="35dp"
+        app:backgroundTint="#27ae60"
         android:src="@drawable/ic_add_black_24dp" />
 
 </FrameLayout>

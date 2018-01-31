@@ -1,5 +1,6 @@
 package com.fox.ahaliav.saapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,15 +28,16 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     private HashMap<Integer, EmailContact> _listDataChild;
     FragmentManager manager;
-
+    Activity activity;
     private ArrayList<EmailContact> dataSet;
 
-    public EmailContactAdapter(Context context, List<String> listDataHeader,
+    public EmailContactAdapter(Activity activity, Context context, List<String> listDataHeader,
                                HashMap<Integer, EmailContact> listChildData, FragmentManager manager) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.manager = manager;
+        this.activity = activity;
     }
 
     @Override
@@ -75,17 +78,24 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_emailcontact_group, null);
+        try{
+            String headerTitle = (String) getGroup(groupPosition);
+            if (convertView == null) {
+                LayoutInflater infalInflater = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.item_emailcontact_group, null);
+            }
+
+            TextView tvListHeader = (TextView) convertView
+                    .findViewById(R.id.tvListHeader);
+            //tvListHeader.setTypeface(null, Typeface.BOLD);
+            tvListHeader.setText(headerTitle);
+        }
+        catch (Exception ex){
+            Toast.makeText(_context, ex.getMessage(),
+                    Toast.LENGTH_LONG).show();
         }
 
-        TextView tvListHeader = (TextView) convertView
-                .findViewById(R.id.tvListHeader);
-        //tvListHeader.setTypeface(null, Typeface.BOLD);
-        tvListHeader.setText(headerTitle);
 
         return convertView;
     }
@@ -117,10 +127,18 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                Intent testIntent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
-                testIntent.setData(data);
-                manager.findFragmentByTag("EmailsFragment").startActivity(testIntent);
+                try{
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
+                    intent.setData(data);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(Intent.createChooser(intent, ""));
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

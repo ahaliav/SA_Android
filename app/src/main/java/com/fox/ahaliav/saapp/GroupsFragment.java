@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -85,6 +86,26 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         searchgroup = (SearchView) v.findViewById(R.id.searchgroup);
         searchgroup.setOnQueryTextListener(this);
         list = new ArrayList<Group>();
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = getResources().getString(R.string.city) + ": \n";
+                message += getResources().getString(R.string.day) + ": \n";
+                message += getResources().getString(R.string.fromtime) + ": \n";
+                message += getResources().getString(R.string.totime) + ": \n";
+                message += getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.hisaiwouldliketoupdatenewgoup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                intent.setData(data);
+
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
+
         loadgroups();
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -125,7 +146,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         this.menu = menu;
 
         MenuItem action_add = menu.findItem(R.id.action_add);
-        action_add.setVisible(true);
+        action_add.setVisible(false);
     }
 
     @Override

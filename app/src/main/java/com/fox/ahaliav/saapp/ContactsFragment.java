@@ -153,7 +153,7 @@ public class ContactsFragment extends Fragment {
                 result.close();
             }
 
-            listAdapter = new ContactAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild, getFragmentManager());
+            listAdapter = new ContactAdapter(getActivity(),getActivity().getApplicationContext(), listDataHeader, listDataChild, getFragmentManager());
             expContacts.setAdapter(listAdapter);
         }
     }

@@ -99,7 +99,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
             public void onClick(View v) {
 
                 if (MainActivity.IsLoggedIn()) {
-                    String w_uri = "waze://?ll=40.761043, -73.980545&navigate=yes";
+                    String w_uri = "geo: " + dataModel.getLatitude() + "," + dataModel.getLongitude() + "&navigate=yes";
 
                     String g_uri = "http://maps.google.com/maps?saddr="
                             + cur_latitude + ","
@@ -170,7 +170,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                     Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
                     intent.setData(data);
 
-                    mContext.startActivity(intent);
+                    mContext.startActivity(Intent.createChooser(intent, ""));
                 } else {
                     shoeLoginMessage();
                 }
@@ -196,7 +196,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setData(data);
 
-                    mContext.startActivity(intent);
+                    mContext.startActivity(Intent.createChooser(intent, ""));
                 }
                 else {
                     shoeLoginMessage();

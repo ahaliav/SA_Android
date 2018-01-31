@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -46,7 +47,7 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
         this.menu = menu;
 
         MenuItem action_add = menu.findItem(R.id.action_add);
-        action_add.setVisible(true);
+        action_add.setVisible(false);
     }
 
     @Override
@@ -92,6 +93,23 @@ public class EventsFragment extends Fragment implements ICallbackMethod {
 
         listview = (ListView)v.findViewById(R.id.listviewEvents);
         list = new ArrayList<News>();
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+                message += getResources().getString(R.string.event_details) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.new_event_subject) + "&body=" + message + "&to=news@sa-israel.org");
+                intent.setData(data);
+
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
+
         loadevents();
 
         setHasOptionsMenu(true);

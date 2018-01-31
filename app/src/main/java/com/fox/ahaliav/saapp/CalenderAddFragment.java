@@ -118,11 +118,17 @@ public class CalenderAddFragment extends Fragment {
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
 
         name = txtName.getText().toString();
+        Date date = getDateFromDatePicker(dpResult);
+
+        if(date.compareTo(Calendar.getInstance().getTime()) > 0){
+            setCurrentDateOnView(Calendar.getInstance());
+            return false;
+        }
 
         if (id <= 0) {
-            db.insertSubrieties(name, getDateFromDatePicker(dpResult));
+            db.insertSubrieties(name, date);
         } else {
-            db.updateSubriety(id, name, getDateFromDatePicker(dpResult));
+            db.updateSubriety(id, name, date);
         }
 
         return true;

@@ -79,33 +79,39 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(txtName.getText().toString().trim().equals("") ){
+                boolean containsErrors = false;
+                if (txtName.getText().toString().trim().equals("")) {
                     txtName.setError(getResources().getString(R.string.field_required));
+                    containsErrors = true;
                 }
 
-                if(txtPassword.getText().toString().trim().equals("") ){
+                if (txtPassword.getText().toString().trim().equals("") || txtPassword.getText().toString().trim().length() < 6) {
                     txtPassword.setError(getResources().getString(R.string.password_required));
+                    containsErrors = true;
                 }
 
-                if(txtPhone.getText().toString().trim().equals("") ){
+                if (txtPhone.getText().toString().trim().equals("")) {
                     txtPhone.setError(getResources().getString(R.string.field_required));
+                    containsErrors = true;
                 }
 
-                if(txtComments.getText().toString().trim().equals("") ){
+                if (txtComments.getText().toString().trim().equals("")) {
                     txtComments.setError(getResources().getString(R.string.field_required));
+                    containsErrors = true;
                 }
 
-                try{
-                    spinner.setVisibility(View.VISIBLE);
-                    helper.register(
-                            email_address_view.getSelectedItem().toString(),
-                            txtPassword.getText().toString(),
-                            txtName.getText().toString(),
-                            txtPhone.getText().toString(),
-                            txtComments.getText().toString()
-                    );
-                }
-                catch (Exception ex){
+                try {
+                    if (containsErrors == false) {
+                        spinner.setVisibility(View.VISIBLE);
+                        helper.register(
+                                email_address_view.getSelectedItem().toString(),
+                                txtPassword.getText().toString(),
+                                txtName.getText().toString(),
+                                txtPhone.getText().toString(),
+                                txtComments.getText().toString()
+                        );
+                    }
+                } catch (Exception ex) {
                     spinner.setVisibility(View.GONE);
                 }
 

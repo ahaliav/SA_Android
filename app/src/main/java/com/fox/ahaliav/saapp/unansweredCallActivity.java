@@ -91,10 +91,10 @@ public class unansweredCallActivity extends AppCompatActivity implements View.On
 
                 @Override
                 public void onClick(View v) {
-                    Intent testIntent = new Intent(Intent.ACTION_VIEW);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + email);
-                    testIntent.setData(data);
-                    startActivity(testIntent);
+                    intent.setData(data);
+                    startActivity(Intent.createChooser(intent, ""));
                 }
             });
 

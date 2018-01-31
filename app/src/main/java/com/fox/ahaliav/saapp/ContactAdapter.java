@@ -36,17 +36,17 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     private HashMap<Integer, Contact> _listDataChild;
     FragmentManager manager;
-
+    Activity activity;
 
     private ArrayList<Contact> dataSet;
 
-    public ContactAdapter(Context context, List<String> listDataHeader,
+    public ContactAdapter(Activity activity, Context context, List<String> listDataHeader,
                           HashMap<Integer, Contact> listChildData, FragmentManager manager) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.manager = manager;
-
+        this.activity = activity;
     }
 
     @Override
@@ -137,13 +137,12 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                try{
+                try {
                     Uri uri = Uri.parse("sms:" + contact.getPhoneNumber());
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    manager.findFragmentByTag("ContactsFragment").startActivity(intent);
-                }
-                catch (Exception ex){
+                    activity.startActivity(intent);
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
@@ -157,7 +156,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                try{
+                try {
                     String sharevia = _context.getResources().getString(R.string.sharevia);
                     String sharecontact = _context.getResources().getString(R.string.sharecontact);
 
@@ -168,10 +167,8 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
                     sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    _context.startActivity(Intent.createChooser(sharingIntent, sharevia));
-                }
-                catch (Exception ex){
+                    activity.startActivity(Intent.createChooser(sharingIntent, sharevia));
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
@@ -185,7 +182,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                try{
+                try {
                     Activity activity = manager.findFragmentByTag("ContactsFragment").getActivity();
                     if (ContextCompat.checkSelfPermission(activity,
                             Manifest.permission.CALL_PHONE)
@@ -197,10 +194,9 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                     } else {
                         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact.getPhoneNumber()));
                         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        manager.findFragmentByTag("ContactsFragment").startActivity(callIntent);
+                        activity.startActivity(callIntent);
                     }
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
@@ -212,7 +208,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     final FragmentTransaction ft = manager.beginTransaction();
                     ContactDetailsFragment contactdetails = new ContactDetailsFragment();
 
@@ -228,8 +224,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                     ft.replace(R.id.main_fragment_container, contactdetails, "ContactDetailsFragment");
                     ft.addToBackStack("ContactDetailsFragment");
                     ft.commit();
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
@@ -241,7 +236,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     MainActivity main = (MainActivity) manager.findFragmentByTag("ContactsFragment").getActivity();
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(main);
                     builder1.setMessage(_context.getResources().getString(R.string.are_you_sure));
@@ -272,8 +267,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
@@ -286,14 +280,13 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                try{
-                    Intent testIntent = new Intent(Intent.ACTION_VIEW);
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
-                    testIntent.setData(data);
-                    testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    manager.findFragmentByTag("ContactsFragment").startActivity(testIntent);
-                }
-                catch (Exception ex){
+                    intent.setData(data);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(Intent.createChooser(intent, ""));
+                } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }

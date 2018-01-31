@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -53,6 +54,22 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
+        FloatingActionButton floatingActionButton = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = getResources().getString(R.string.mynameis) + ": \n";
+                message += getResources().getString(R.string.myphoneis) + ": \n";
+                message += getResources().getString(R.string.news_details) + ": \n";
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + getResources().getString(R.string.new_news_subject) + "&body=" + message + "&to=news@sa-israel.org");
+                intent.setData(data);
+
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
+
         listview = (ListView) v.findViewById(R.id.listviewNews);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
@@ -72,7 +89,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         this.menu = menu;
 
         MenuItem action_add = menu.findItem(R.id.action_add);
-        action_add.setVisible(true);
+        action_add.setVisible(false);
     }
 
     @Override
