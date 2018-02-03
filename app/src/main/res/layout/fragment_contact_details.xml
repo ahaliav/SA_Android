@@ -20,6 +20,7 @@
             android:layout_column="0"
             android:layout_gravity="center"
             android:layout_row="0"
+            android:textColor="#11783c"
             android:text="@string/edit_contact"
             android:textSize="30sp" />
 
@@ -119,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_style"
+                android:textColor="#ffffff"
+                android:background="@drawable/grn_button_style"
                 android:text="@string/save" />
 
             <Button
@@ -128,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_style"
+                android:textColor="#ffffff"
+                android:background="@drawable/grn_button_style"
                 android:text="@string/cancel" />
         </LinearLayout>
 

@@ -102,5 +102,8 @@
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
     <string name="locked_content">this content is visible only for logged in users</string>
     <string name="you_are_note_confirmed">dear SA member you are not confirmed yet, please be patient until we confirm your details, if after 48 hours you did not get confirmed please contact website@sa-israel.com</string>
+    <string name="reg_failed_message">Registration failed, please try again later</string>
+    <string name="confirmpassword">Confirm Password</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
 
 </resources>

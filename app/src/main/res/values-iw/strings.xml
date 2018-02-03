@@ -99,4 +99,7 @@
     <string name="are_you_sure_you_want_to_exit">אתה בטוח שאתה רוצה לצאת?</string>
     <string name="locked_content">תוכן זה גלוי רק עבור משתמשים מחוברים</string>
     <string name="you_are_note_confirmed">חבר SA יקר הפרטים שלך עדיין לא אומתו, אנא המתן בסבלנות עד אשר נאשר את פרטיך, אם לאחר 48 שעות לא קיבלת אישור אנא צור קשר עם website@sa-israel.com</string>
+    <string name="reg_failed_message">ההרשמה נכשלה אנא נסה שוב מאוחר יותר</string>
+    <string name="confirmpassword">אשר סיסמה</string>
+    <string name="passwords_do_not_match">סיסמאות לא תואמות</string>
 </resources>

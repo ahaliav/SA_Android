@@ -1,8 +1,10 @@
 package com.fox.ahaliav.saapp;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,12 +40,14 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
     private String url = "";
     private String auth_url = "";
 
+    Context context;
     IObjCallbackMethod callback;
 
-    public HttpRequestsHelper(String auth_url, String url, IObjCallbackMethod callback) {
+    public HttpRequestsHelper(Context context, String auth_url, String url, IObjCallbackMethod callback) {
         this.callback = callback;
         this.auth_url = auth_url;
         this.url = url;
+        this.context = context;
     }
 
     private String readAll(Reader rd) throws IOException {
@@ -123,8 +127,12 @@ public class HttpRequestsHelper extends AsyncTask<Object, Void, Object> {
 
             if (responseCode >= 200 && responseCode < 300)
                 result = connection.getResponseMessage();
+            else {
+                result = connection.getResponseMessage();
+            }
 
         } catch (Exception ex) {
+
             return false;
         } finally {
             try {

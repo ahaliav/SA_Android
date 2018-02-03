@@ -63,7 +63,7 @@ public class WebSiteHelper {
     }
 
     public void register(String username, String password, String display_name,String phone,String comments) {
-        HttpRequestsHelper reader = new HttpRequestsHelper(Constants.getTokenUrl(), Constants.getRegistrationUrl(username, password, display_name, phone, comments), this.callback2);
+        HttpRequestsHelper reader = new HttpRequestsHelper(context, Constants.getTokenUrl(), Constants.getRegistrationUrl(username, password, display_name, phone, comments), this.callback2);
         reader.execute();
     }
 

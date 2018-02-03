@@ -267,7 +267,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
     private void setGroupList() {
-        adapter = new GroupsAdapter(list, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
+        adapter = new GroupsAdapter(list, getActivity(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
 
         spinner.setVisibility(View.GONE);
@@ -336,7 +336,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         }
 
-        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
+        adapter = new GroupsAdapter(filterList, getActivity(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
         return false;
     }
@@ -354,7 +354,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         }
 
-        adapter = new GroupsAdapter(filterList, getActivity().getApplicationContext(), cur_latitude, cur_longitude);
+        adapter = new GroupsAdapter(filterList, getActivity(), cur_latitude, cur_longitude);
         listview.setAdapter(adapter);
 
 

@@ -1,6 +1,7 @@
 package com.fox.ahaliav.saapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,11 +22,10 @@ import java.util.ArrayList;
 
 public class GroupsAdapter extends ArrayAdapter<Group> {
     ArrayList<Group> dataSet;
-    Context mContext;
     Group dataModel;
     double cur_latitude = 0;
     double cur_longitude = 0;
-
+    Activity activity;
     //FragmentManager manager;
     private static class ViewHolder {
         TextView tvDay;
@@ -42,12 +42,12 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         FrameLayout mainframe;
     }
 
-    public GroupsAdapter(ArrayList<Group> data, Context context, double cur_latitude, double cur_longitude) {
-        super(context, R.layout.item_group, data);
+    public GroupsAdapter(ArrayList<Group> data, Activity activity, double cur_latitude, double cur_longitude) {
+        super(activity.getApplicationContext(), R.layout.item_group, data);
         this.dataSet = data;
-        this.mContext = context;
         this.cur_latitude = cur_latitude;
         this.cur_longitude = cur_longitude;
+        this.activity = activity;
         //this.manager = manager;
     }
 
@@ -90,10 +90,10 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.tvLang.setText(dataModel.getLang());
         viewHolder.tvLocation.setText(dataModel.getLocation());
 
-        if (mContext.getResources().getString(R.string.local) == "he")
+        if (activity.getResources().getString(R.string.local) == "he")
             viewHolder.tvKm.setText(" קמ" + String.valueOf(dataModel.getKm()));
         else
-            viewHolder.tvKm.setText(String.valueOf(dataModel.getKm()) + " " + mContext.getResources().getString(R.string.KM));
+            viewHolder.tvKm.setText(String.valueOf(dataModel.getKm()) + " " + activity.getResources().getString(R.string.KM));
 
         viewHolder.btnWaze.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -109,14 +109,14 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                     try {
                         Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(w_uri));
                         navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(navigation);
+                        activity.startActivity(navigation);
                     } catch (Exception ex) {
                         try {
                             Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
                             navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(navigation);
+                            activity.startActivity(navigation);
                         } catch (Exception ex2) {
-                            Toast.makeText(mContext, "Error loading navigation",
+                            Toast.makeText(activity, "Error loading navigation",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -140,9 +140,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                     try {
                         Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(g_uri));
                         navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(navigation);
+                        activity.startActivity(navigation);
                     } catch (Exception ex2) {
-                        Toast.makeText(mContext, "Error loading navigation",
+                        Toast.makeText(activity, "Error loading navigation",
                                 Toast.LENGTH_LONG).show();
                     }
                 } else {
@@ -157,20 +157,27 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
             public void onClick(View v) {
 
                 if (MainActivity.IsLoggedIn()) {
-                    String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
-                    message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
-                    message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
-                    message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
-                    message += mContext.getResources().getString(R.string.mynameis) + ": \n";
-                    message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
-                    message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
 
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
-                    intent.setData(data);
+                    try{
+                        String message = activity.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                        message += activity.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                        message += activity.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                        message += activity.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                        message += activity.getResources().getString(R.string.mynameis) + ": \n";
+                        message += activity.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                        message += activity.getResources().getString(R.string.myphoneis) + ": \n";
 
-                    mContext.startActivity(Intent.createChooser(intent, ""));
+                        Uri uri = Uri.parse("mailto:?subject=" + activity.getResources().getString(R.string.hisaiwouldliketoupdateagroup) + "&body=" + message + "&to=website@sa-israel.org");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.startActivity(Intent.createChooser(intent, ""));
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast.makeText(activity, ex.getMessage().toString(),
+                                Toast.LENGTH_LONG).show();
+                    }
+
                 } else {
                     shoeLoginMessage();
                 }
@@ -183,20 +190,26 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
             public void onClick(View v) {
 
                 if (MainActivity.IsLoggedIn()) {
-                    String message = mContext.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
-                    message += mContext.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
-                    message += mContext.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
-                    message += mContext.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
-                    message += mContext.getResources().getString(R.string.mynameis) + ": \n";
-                    message += mContext.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
-                    message += mContext.getResources().getString(R.string.myphoneis) + ": \n";
+                    try
+                    {
+                        String message = activity.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
+                        message += activity.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
+                        message += activity.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
+                        message += activity.getResources().getString(R.string.totime) + ": " + dataModel.getToTime() + "\n";
+                        message += activity.getResources().getString(R.string.mynameis) + ": \n";
+                        message += activity.getResources().getString(R.string.iwoulsliketoupdate) + ": \n";
+                        message += activity.getResources().getString(R.string.myphoneis) + ": \n";
 
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri data = Uri.parse("mailto:?subject=" + mContext.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setData(data);
-
-                    mContext.startActivity(Intent.createChooser(intent, ""));
+                        Uri data = Uri.parse("mailto:?subject=" + activity.getResources().getString(R.string.hisaiwouldliketoupdatethisremoved) + "&body=" + message + "&to=office@sa-israel.org;website@sa-israel.org");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, data);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.startActivity(Intent.createChooser(intent, ""));
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast.makeText(activity, ex.getMessage().toString(),
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
                 else {
                     shoeLoginMessage();
@@ -209,7 +222,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
     }
 
     private void shoeLoginMessage() {
-        Toast.makeText(mContext, mContext.getResources().getString(R.string.you_are_not_loggedin),
+        Toast.makeText(activity, activity.getResources().getString(R.string.you_are_not_loggedin),
                 Toast.LENGTH_LONG).show();
     }
 }

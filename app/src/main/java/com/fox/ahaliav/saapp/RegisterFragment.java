@@ -3,6 +3,7 @@ package com.fox.ahaliav.saapp;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,7 +38,9 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
     Button btnRegister;
     Button btnCancel;
+    Button btnLogin;
     EditText txtPassword;
+    EditText txtPasswordConf;
     EditText txtPhone;
     EditText txtName;
     EditText txtComments;
@@ -67,7 +71,10 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
         btnRegister = (Button) v.findViewById(R.id.btnRegister);
         btnCancel = (Button) v.findViewById(R.id.btnCancel);
+        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+
         txtPassword = (EditText) v.findViewById(R.id.txtPassword);
+        txtPasswordConf = (EditText) v.findViewById(R.id.txtPasswordConf);
         txtPhone = (EditText) v.findViewById(R.id.txtPhone);
         txtName = (EditText) v.findViewById(R.id.txtName);
         txtComments = (EditText) v.findViewById(R.id.txtComments);
@@ -87,6 +94,11 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
                 if (txtPassword.getText().toString().trim().equals("") || txtPassword.getText().toString().trim().length() < 6) {
                     txtPassword.setError(getResources().getString(R.string.password_required));
+                    containsErrors = true;
+                }
+
+                if (txtPasswordConf.getText().toString().trim().equals("") || !txtPassword.getText().toString().equals(txtPasswordConf.getText().toString().trim())) {
+                    txtPassword.setError(getResources().getString(R.string.passwords_do_not_match));
                     containsErrors = true;
                 }
 
@@ -112,6 +124,8 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
                         );
                     }
                 } catch (Exception ex) {
+                    Toast.makeText(getContext(), ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
                     spinner.setVisibility(View.GONE);
                 }
 
@@ -120,9 +134,21 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                getFragmentManager().popBackStack();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_container, new MainFragment())
+                        .commit();
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         loadAccounts(v);
 
         setHasOptionsMenu(true);
@@ -154,7 +180,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
     @Override
     public void onTaskDone(Object obj) {
-        if (obj != null) {
+        if (obj != null && !obj.toString().toLowerCase().contains("error")) {
             SQLiteDbHelper db = new SQLiteDbHelper(getContext());
             db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
 
@@ -179,6 +205,27 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
             AlertDialog alert11 = builder1.create();
             alert11.show();
             spinner.setVisibility(View.GONE);
+        }
+        else {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+            builder1.setMessage(getResources().getString(R.string.reg_failed_message) + "Message: " + obj.toString());
+            builder1.setCancelable(false);
+
+            builder1.setPositiveButton(
+                    getResources().getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            setLoginRegisterBar();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.main_fragment_container, new MainFragment())
+                                    .commit();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
     }
 

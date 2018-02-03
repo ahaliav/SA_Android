@@ -40,7 +40,7 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
     private List<Object> readCsvFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("Windows-1255")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 
             List<Object> list = new ArrayList<Object>();
 
