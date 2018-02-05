@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/item_popup_style"
-    tools:context="com.fox.ahaliav.saapp.IncomingCallActivity">
+    tools:context="sa.israel.org.IncomingCallActivity">
 
 
     <LinearLayout
