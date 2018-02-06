@@ -1,5 +1,6 @@
 package sa.israel.org;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 /**
  * Created by Ahaliav on 19/11/2017.
@@ -175,7 +178,6 @@ public class IncomingCallReciever extends BroadcastReceiver {
         }
 
         private void openIncomingCallActivity() {
-
             Intent curintent = new Intent(mContext, IncomingCallActivity.class);
             mIntent.putExtra("name", name);
             curintent.putExtras(mIntent);

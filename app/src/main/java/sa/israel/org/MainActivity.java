@@ -39,14 +39,52 @@ public class MainActivity extends AppCompatActivity
 
     public static final int PERMS_REQUEST_CODE = 1;
     public static boolean IsRegistered = false;
+    private static Context context;
+    Menu menu;
+    AccountsAdapter listAdapter;
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
-    Menu menu;
-    AccountsAdapter listAdapter;
     private List<String> listDataHeader; // header titles
     private HashMap<String, List<String>> listDataChild;
-    private static Context context;
+
+    public static boolean IsLoggedIn() {
+        SQLiteDbHelper db = new SQLiteDbHelper(context);
+        String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
+
+        Cursor result = db.selectUser("");
+
+        String isconfirmed = "";
+        if (result != null) {
+            while (result.moveToNext()) {
+                isconfirmed = result.getString(5);
+                break;
+            }
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        return isLoggedin.equals("true") && isconfirmed.equals("true");
+    }
+
+    public static boolean IsConfirmed(String email) {
+        SQLiteDbHelper db = new SQLiteDbHelper(context);
+        Cursor result = db.selectUser(email);
+
+        String isconfirmed = "";
+        if (result != null) {
+            while (result.moveToNext()) {
+                isconfirmed = result.getString(5);
+                break;
+            }
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        return isconfirmed.equals("true");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,44 +203,6 @@ public class MainActivity extends AppCompatActivity
         });
 
         loadAccounts(navigationView);
-    }
-
-    public static boolean IsLoggedIn() {
-        SQLiteDbHelper db = new SQLiteDbHelper(context);
-        String isLoggedin = db.selectSettingsString(Constants.IS_LOGEDIN_KEY);
-
-        Cursor result = db.selectUser("");
-
-        String isconfirmed = "";
-        if (result != null) {
-            while (result.moveToNext()) {
-                isconfirmed = result.getString(5);
-                break;
-            }
-            if (!result.isClosed()) {
-                result.close();
-            }
-        }
-
-        return  isLoggedin.equals("true") && isconfirmed.equals("true");
-    }
-
-    public static boolean IsConfirmed(String email) {
-        SQLiteDbHelper db = new SQLiteDbHelper(context);
-        Cursor result = db.selectUser(email);
-
-        String isconfirmed = "";
-        if (result != null) {
-            while (result.moveToNext()) {
-                isconfirmed = result.getString(5);
-                break;
-            }
-            if (!result.isClosed()) {
-                result.close();
-            }
-        }
-
-        return  isconfirmed.equals("true");
     }
 
     @Override

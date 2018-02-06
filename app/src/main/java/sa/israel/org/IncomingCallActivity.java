@@ -1,12 +1,17 @@
 package sa.israel.org;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import sa.israel.org.R;
@@ -25,26 +30,46 @@ public class IncomingCallActivity extends AppCompatActivity implements View.OnCl
 
         }
 
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         try {
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+            //setContentView(R.layout.activity_incoming_call);
 
-            setContentView(R.layout.activity_incoming_call);
+            this.setFinishOnTouchOutside(true);
 
-            this.setFinishOnTouchOutside(false);
+            displayAlert();
 
-            String number = getIntent().getStringExtra(
-                    TelephonyManager.EXTRA_INCOMING_NUMBER);
-            String name = getIntent().getStringExtra("name");
-            TextView tvName = (TextView) findViewById(R.id.tvName);
-            TextView tvPhoneNumber = (TextView) findViewById(R.id.tvPhoneNumber);
-
-            tvPhoneNumber.setText(number);
-            tvName.setText(name);
         } catch (Exception ex) {
             Log.d("Exception", ex.toString());
         }
+    }
+
+    private void displayAlert()
+    {
+        Window window = this.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
+        final Dialog dialog = new Dialog(IncomingCallActivity.this);
+        dialog.setContentView(R.layout.activity_incoming_call);
+        dialog.setCanceledOnTouchOutside(true);
+        TextView tvName = (TextView) dialog.findViewById(R.id.tvName);
+        TextView tvPhoneNumber = (TextView) dialog.findViewById(R.id.tvPhoneNumber);
+
+        String number = getIntent().getStringExtra(
+                TelephonyManager.EXTRA_INCOMING_NUMBER);
+        String name = getIntent().getStringExtra("name");
+
+        tvName.setText(name);
+        tvPhoneNumber.setText(number);
+
+        dialog.show();
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+            public void onCancel(DialogInterface dialog) {
+                dialog.dismiss();
+                finish();
+            }
+        });
     }
 
     @Override
