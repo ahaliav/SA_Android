@@ -11,7 +11,8 @@ public class Constants {
     public static final String IS_REGISTERED_KEY = "IS_REGISTERED";
     public static final String GO_TO_REGISTER_KEY = "GO_TO_REGISTER";
     public static final String REGISTERED_DATE_KEY = "REGISTERED_DATE_KEY";
-
+    public static final String ENABLE_LOCK_APP = "ENABLE_LOCK_APP";
+    public static final String PIN_KEY = "PIN_KEY";
 
     public static String getUsersConfirmedUrl(){
         return "https://sa-israel.org/wp-json/wp/v2/posts/1470/?password=d400b147-b12d-40b6-8593-9110cd06cd5f";

@@ -27,6 +27,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.andrognito.pinlockview.IndicatorDots;
+import com.andrognito.pinlockview.PinLockListener;
+import com.andrognito.pinlockview.PinLockView;
+
 import sa.israel.org.R;
 
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static boolean IS_OPEN_LOCKED = false;
     public static final int PERMS_REQUEST_CODE = 1;
     public static boolean IsRegistered = false;
     private static Context context;
@@ -68,6 +73,17 @@ public class MainActivity extends AppCompatActivity
         return isLoggedin.equals("true") && isconfirmed.equals("true");
     }
 
+    public void checkLockScreen() {
+        SQLiteDbHelper db = new SQLiteDbHelper(context);
+        String isLockAppEnabled = db.selectSettingsString(Constants.ENABLE_LOCK_APP);
+
+        if(isLockAppEnabled.equals("true") && IS_OPEN_LOCKED == false) {
+            Intent intent = new Intent(this, LockActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
     public static boolean IsConfirmed(String email) {
         SQLiteDbHelper db = new SQLiteDbHelper(context);
         Cursor result = db.selectUser(email);
@@ -90,6 +106,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -103,7 +120,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -203,6 +219,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         loadAccounts(navigationView);
+
+        checkLockScreen();
     }
 
     @Override

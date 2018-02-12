@@ -83,6 +83,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
         return v;
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Do something that differs the Activity's menu here

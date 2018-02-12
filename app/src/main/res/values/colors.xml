@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#63277c</color>
     <color name="colorAccent">#3c98da</color>
     <color name="red">#431854</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

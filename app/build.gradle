@@ -7,8 +7,8 @@ android {
         applicationId "sa.israel.org"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 14
-        versionName "1.14"
+        versionCode 16
+        versionName "1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -32,4 +32,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
+    compile 'com.andrognito.pinlockview:pinlockview:2.1.0'
 }

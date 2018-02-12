@@ -60,6 +60,7 @@ public class EmailsFragment extends Fragment {
         list.add(new EmailContact("women@sa-israel.org",getResources().getString(R.string.womenhelp),"",""));
         list.add(new EmailContact("contact@sa-israel.org",getResources().getString(R.string.hotline),"",""));
         list.add(new EmailContact("news@sa-israel.org",getResources().getString(R.string.sanews),"",""));
+        list.add(new EmailContact("pic@sa-israel.org",getResources().getString(R.string.public_information_committee),"",""));
         list.add(new EmailContact("website@sa-israel.org",getResources().getString(R.string.website),"",""));
         list.add(new EmailContact("12masorot@sa-israel.org",getResources().getString(R.string.traditions),"",""));
         list.add(new EmailContact("litr@sa-israel.org",getResources().getString(R.string.literature_committee),"",""));

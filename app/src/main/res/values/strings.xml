@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SA Israel</string>
+    <string name="app_name">S-12</string>
     <string name="groups">Groups</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -105,5 +105,12 @@
     <string name="reg_failed_message">Registration failed, please try again later</string>
     <string name="confirmpassword">Confirm Password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="lock_app_on_entry">Enable app lock</string>
+    <string name="create_your_pin">SET PIN</string>
+    <string name="re_enter_your_pin">RE ENTER PIN</string>
+    <string name="seconds_left">"Please Try  In "</string>
+    <string name="seconds">seconds</string>
+    <string name="public_information_committee">Public Information Committee</string>
+    <string name="title_activity_lock">lock</string>
 
 </resources>

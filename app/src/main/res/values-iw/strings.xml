@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SA</string>
+    <string name="app_name">S-12</string>
     <string name="action_settings">הגדרות</string>
     <string name="calculator">יומן נקיות</string>
     <string name="groups">קבוצות</string>
@@ -102,4 +102,11 @@
     <string name="reg_failed_message">ההרשמה נכשלה אנא נסה שוב מאוחר יותר</string>
     <string name="confirmpassword">אשר סיסמה</string>
     <string name="passwords_do_not_match">סיסמאות לא תואמות</string>
+    <string name="lock_app_on_entry">אפשר נעילת אפליקציה</string>
+    <string name="create_your_pin">הגדר קוד</string>
+    <string name="re_enter_your_pin">הגדר קוד שנית</string>
+    <string name="seconds_left">נסה שוב בעוד</string>
+    <string name="seconds">שניות</string>
+    <string name="public_information_committee">ועדת מידע לציבור</string>
+    <string name="title_activity_lock">נעילה</string>
 </resources>

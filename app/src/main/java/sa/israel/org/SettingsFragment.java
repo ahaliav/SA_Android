@@ -15,6 +15,7 @@ public class SettingsFragment extends Fragment {
 
     Switch swShowCallDialog;
     Switch swAllowNotifications;
+    Switch swLockScreen;
     SQLiteDbHelper db;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class SettingsFragment extends Fragment {
 
         swShowCallDialog = (Switch) v.findViewById(R.id.swShowCallDialog);
         swAllowNotifications = (Switch) v.findViewById(R.id.swAllowNotifications);
+        swLockScreen = (Switch) v.findViewById(R.id.swLockScreen);
 
         loadvalues();
 
@@ -44,6 +46,12 @@ public class SettingsFragment extends Fragment {
         swAllowNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 db.insertSettings("notifications", (swAllowNotifications.isChecked() == true)? "true":"false");
+            }
+        });
+
+        swLockScreen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                db.insertSettings(Constants.ENABLE_LOCK_APP, (swLockScreen.isChecked() == true)? "true":"false");
             }
         });
 
@@ -73,6 +81,13 @@ public class SettingsFragment extends Fragment {
                         swAllowNotifications.setChecked(true);
                     else
                         swAllowNotifications.setChecked(false);
+                }
+
+                if(key.equals(Constants.ENABLE_LOCK_APP)){
+                    if(val.equals("true"))
+                        swLockScreen.setChecked(true);
+                    else
+                        swLockScreen.setChecked(false);
                 }
             }
 

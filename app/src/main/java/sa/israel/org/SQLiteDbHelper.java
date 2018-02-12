@@ -254,25 +254,33 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
 
     public String selectSettingsString(String key_set) {
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "";
-        if (!key_set.isEmpty()) {
-            query = " where key_set='" + key_set + "'";
-        }
-
-        Cursor result = db.rawQuery("select * from settings " + query, null);
         String val = "";
-        if (result != null) {
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
 
-            while (result.moveToNext()) {
-                val = result.getString(2);
-                break;
+            String query = "";
+            if (!key_set.isEmpty()) {
+                query = " where key_set='" + key_set + "'";
             }
 
-            if (!result.isClosed()) {
-                result.close();
+            Cursor result = db.rawQuery("select * from settings " + query, null);
+
+            if (result != null) {
+
+                while (result.moveToNext()) {
+                    val = result.getString(2);
+                    break;
+                }
+
+                if (!result.isClosed()) {
+                    result.close();
+                }
             }
+        }
+        catch (Exception ex){
+            String err = ex.getMessage();
+
         }
 
         return val;

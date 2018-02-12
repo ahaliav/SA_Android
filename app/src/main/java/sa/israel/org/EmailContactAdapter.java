@@ -119,7 +119,25 @@ public class EmailContactAdapter  extends BaseExpandableListAdapter {
         tvEmail.setText(contact.getEmail());
 
         ImageButton btnEmail=(ImageButton)convertView.findViewById(R.id.btnEmail);
+        tvEmail.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+
+                try{
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:?subject=" + "" + "&body=" + "" + "&to=" + contact.getEmail());
+                    intent.setData(data);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(Intent.createChooser(intent, ""));
+                }
+                catch (Exception ex){
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
 

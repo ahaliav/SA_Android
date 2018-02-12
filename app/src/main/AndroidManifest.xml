@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sa.israel.org">
 
@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver
-            android:name="sa.israel.org.IncomingCallReciever"
+            android:name=".IncomingCallReciever"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -29,7 +29,7 @@
         </receiver>
 
         <activity
-            android:name="sa.israel.org.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,17 +45,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="sa.israel.org.IncomingCallActivity"
-            android:noHistory="true"
-            android:theme="@style/Theme.CallDialog"></activity>
+            android:name=".LockActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
-            android:name="sa.israel.org.unansweredCallActivity"
+            android:name=".IncomingCallActivity"
             android:noHistory="true"
-            android:theme="@style/Theme.CallDialog"></activity>
+            android:theme="@style/Theme.CallDialog" />
         <activity
-            android:name="sa.israel.org.LoginActivity"
+            android:name=".unansweredCallActivity"
+            android:noHistory="true"
+            android:theme="@style/Theme.CallDialog" />
+        <activity
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
