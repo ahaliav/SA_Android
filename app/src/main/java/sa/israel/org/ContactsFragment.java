@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.FrameLayout;
@@ -33,7 +34,7 @@ public class ContactsFragment extends Fragment {
     private ProgressBar spinner;
     FloatingActionButton floatingActionButton = null;
     ArrayList<Integer> listSelected = null;
-
+    FloatingActionButton floatingActionButtonImport;
     ContactAdapter listAdapter;
     ExpandableListView expContacts;
     List<String> listDataHeader;
@@ -60,7 +61,7 @@ public class ContactsFragment extends Fragment {
 
         spinner = (ProgressBar)v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
-
+        floatingActionButtonImport = (FloatingActionButton)v.findViewById(R.id.floatingActionButtonImport);
         searchgroup = (SearchView)v.findViewById(R.id.searchgroup);
 
         expContacts.setOnItemClickListener(new OnItemClickListener() {
@@ -117,6 +118,15 @@ public class ContactsFragment extends Fragment {
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_fragment_container, new ContactDetailsFragment(), "ContactDetailsFragment");
                 ft.addToBackStack("ContactDetailsFragment");
+                ft.commit();
+            }
+        });
+
+        floatingActionButtonImport.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main_fragment_container, new ImportContactsFragment(), "ImportContactsFragment");
+                ft.addToBackStack("ImportContactsFragment");
                 ft.commit();
             }
         });

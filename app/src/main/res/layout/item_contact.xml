@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,21 +92,32 @@
 
                     </FrameLayout>
 
-
-                    <TextView
-                        android:id="@+id/tvPhoneNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_column="1"
                         android:layout_row="1"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="10dp"
-                        android:textIsSelectable="true"
-                        android:textColor="#363330"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tvPhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            android:textIsSelectable="true"
+                            android:textColor="#363330"
+                            android:textSize="18sp" />
+                        <ImageButton
+                            android:id="@+id/btnCall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:src="@drawable/ic_local_phone_black_24dp" />
 
+                    </LinearLayout>
 
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -177,12 +187,12 @@
                         android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/btnCall"
+                            android:id="@+id/btnWup"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="#ffffff"
-                            android:src="@drawable/ic_local_phone_black_24dp" />
+                            android:src="@drawable/whatsapp" />
 
                         <ImageButton
                             android:id="@+id/btnShare"

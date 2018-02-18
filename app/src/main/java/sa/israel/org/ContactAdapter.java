@@ -133,6 +133,27 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         ImageButton btnSms = (ImageButton) convertView.findViewById(R.id.btnSms);
         ImageButton btnShare = (ImageButton) convertView.findViewById(R.id.btnShare);
         ImageButton btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
+        ImageButton btnWup = (ImageButton) convertView.findViewById(R.id.btnWup);
+
+        btnWup.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    Intent intent = activity.getPackageManager().getLaunchIntentForPackage("com.whatsapp");
+                    intent.putExtra("jid", contact.getPhoneNumber() + "@s.whatsapp.net");
+
+                    activity.startActivity(intent);
+
+                } catch (Exception ex) {
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        });
 
         btnSms.setOnClickListener(new View.OnClickListener() {
 

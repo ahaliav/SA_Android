@@ -158,7 +158,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         }
 
 
-        Cursor res = db.rawQuery("select * from contacts" + query, null);
+        Cursor res = db.rawQuery("select * from contacts order by name" + query, null);
         return res;
     }
 
