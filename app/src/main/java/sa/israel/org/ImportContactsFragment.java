@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,9 @@ import java.util.ArrayList;
 public class ImportContactsFragment extends Fragment {
 
     ListView listview = null;
+    ProgressBar progressBar;
     ArrayList<ImportContact> contactsToImport;
+
     public ImportContactsFragment() {
         // Required empty public constructor
     }
@@ -36,6 +40,7 @@ public class ImportContactsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_import_contacts, container, false);
         listview = (ListView) v.findViewById(R.id.listviewConatcts);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_CONTACTS)) {
@@ -45,11 +50,69 @@ public class ImportContactsFragment extends Fragment {
             }
         }
 
-        ArrayList<ImportContact> list = getContactList();
-        final ImportContactsAdapter adapter = new ImportContactsAdapter(this, list, getActivity().getApplicationContext());
-        listview.setAdapter(adapter);
+        progressBar.setVisibility(View.VISIBLE);
+        startHeavyProcessing();
 
         return v;
+    }
+
+    public void setResultContacts(ArrayList<ImportContact> list){
+        final ImportContactsAdapter adapter = new ImportContactsAdapter(ImportContactsFragment.this, list, getActivity().getApplicationContext());
+        listview.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void startHeavyProcessing() {
+        new LongOperation(this).execute();
+
+    }
+
+    private class LongOperation extends AsyncTask<Void, Void, ArrayList<ImportContact>> {
+
+        ImportContactsFragment _fragment;
+        public LongOperation(ImportContactsFragment fragment){
+            _fragment = fragment;
+        }
+
+        public LongOperation() {
+            super();
+        }
+
+        @Override
+        protected ArrayList<ImportContact> doInBackground(Void... params) {
+            ArrayList<ImportContact> list = null;
+            try {
+                list = getContactList();
+            } catch (Exception ex) {
+
+            } finally {
+            }
+
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute( ArrayList<ImportContact> result) {
+            super.onPostExecute(result);
+            try {
+                _fragment.setResultContacts(result);
+            } catch (Exception ex) {
+                String e = ex.getMessage();
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+
+
+
     }
 
 
@@ -88,10 +151,10 @@ public class ImportContactsFragment extends Fragment {
                         break;
                     }
 
-                    if(!name.equals(phoneNo)){
+                    SQLiteDbHelper db = new SQLiteDbHelper(getContext());
+                    if (!name.equals(phoneNo) && !db.isContactExist(phoneNo)) {
                         contacts.add(new ImportContact(name, phoneNo, email));
                     }
-
 
                     pCur.close();
                     eCur1.close();

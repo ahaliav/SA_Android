@@ -143,7 +143,7 @@ public class ContactsFragment extends Fragment {
         listDataChild = new HashMap<Integer, Contact>();
 
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-        Cursor result = db.selectContacts("", "");
+        Cursor result = db.selectContacts(-1, "");
 
         int i =0;
         if (result != null) {

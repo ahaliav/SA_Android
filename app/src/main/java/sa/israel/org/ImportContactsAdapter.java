@@ -83,9 +83,13 @@ public class ImportContactsAdapter extends ArrayAdapter<ImportContact> {
                     if(viewHolder.chkImport.isChecked()){
                         mCheckedState[selectedPosition] = true;
                         imports.add(model);
+                        SQLiteDbHelper db = new SQLiteDbHelper(mContext);
+                        db.insertContact(model.getName(),model.getPhoneNumber(),"", model.getEmail());
                     }else {
                         mCheckedState[selectedPosition] = false;
                         imports.remove(model);
+                        SQLiteDbHelper db = new SQLiteDbHelper(mContext);
+                        db.deleteContact(-1,model.getPhoneNumber());
                     }
                 }
                 catch (Exception ex){

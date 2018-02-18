@@ -255,7 +255,7 @@ public class MainFragment extends Fragment  {
         ArrayList<Contact> list = new ArrayList<Contact>();
 
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-        Cursor result = db.selectContacts("", "");
+        Cursor result = db.selectContacts(-1, "");
 
         if (result != null) {
             while (result.moveToNext()) {

@@ -1,24 +1,52 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="sa.israel.org.ContactsFragment">
 
-    <ExpandableListView
-        android:id="@+id/expContacts"
-        android:layout_marginTop="60dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center_vertical|center_horizontal|center" />
+        android:orientation="vertical">
 
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="#ffffff"
+            android:orientation="vertical">
+
+            <SearchView
+                android:id="@+id/searchgroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:queryHint="@string/searchgroups"></SearchView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_overlay"></View>
+
+        <ExpandableListView
+            android:id="@+id/expContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal|center" />
+    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButtonImport"
         android:layout_width="wrap_content"
@@ -27,8 +55,8 @@
         android:layout_marginBottom="120dp"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="35dp"
-        app:backgroundTint="#27ae60"
-        android:src="@drawable/ic_vertical_align_bottom_black_24dp" />
+        android:src="@drawable/ic_vertical_align_bottom_black_24dp"
+        app:backgroundTint="#27ae60" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -36,6 +64,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="35dp"
-        app:backgroundTint="#27ae60"
-        android:src="@drawable/ic_add_black_24dp" />
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="#27ae60" />
 </FrameLayout>

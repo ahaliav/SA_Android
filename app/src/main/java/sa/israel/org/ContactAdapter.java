@@ -270,7 +270,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     SQLiteDbHelper db = new SQLiteDbHelper(_context);
-                                    db.deleteContact(contact.getId());
+                                    db.deleteContact(contact.getId(),"");
                                     final FragmentTransaction ft = manager.beginTransaction();
                                     ContactsFragment contacts = new ContactsFragment();
 

@@ -127,7 +127,7 @@ public class IncomingCallReciever extends BroadcastReceiver {
                         result.close();
                 }
 
-                result = db.selectContacts("", incomingNumber);
+                result = db.selectContacts(-1, incomingNumber);
 
                 if (result != null) {
                     while (result.moveToNext()) {

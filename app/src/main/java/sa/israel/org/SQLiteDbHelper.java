@@ -106,6 +106,21 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public boolean insertContact(String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor result = selectContacts(-1, phone);
+
+        if (result != null) {
+
+            while (result.moveToNext()) {
+                int id = result.getInt(0);
+                deleteContact(id, "");
+                break;
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
         ContentValues contentValues = new ContentValues();
 
         if (phone != null && !phone.isEmpty()) {
@@ -135,21 +150,27 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean deleteContact(Integer id) {
+    public boolean deleteContact(Integer id, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete("contacts", "id=" + id.toString(), null);
+        if (id > 0) {
+            db.delete("contacts", "id=" + id.toString(), null);
+        } else {
+            db.delete("contacts", "phone='" + phone + "'", null);
+        }
+
+
         return true;
     }
 
-    public Cursor selectContacts(String id, String phoneNumber) {
+    public Cursor selectContacts(int id, String phoneNumber) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "";
-        if (!id.isEmpty()) {
+        if (id > 0) {
             query = " where id=" + id;
         }
-
+        phoneNumber = phoneNumber.replace("-","").replace(" ","");
         if (phoneNumber.length() > 8) {
             String last9numbers = phoneNumber.substring(phoneNumber.length() - 9);
             if (!phoneNumber.isEmpty()) {
@@ -157,9 +178,22 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             }
         }
 
+        Cursor res;
+        if (query.equals(""))
+            res = db.rawQuery("select * from contacts order by name", null);
+        else
+            res = db.rawQuery("select * from contacts " + query, null);
 
-        Cursor res = db.rawQuery("select * from contacts order by name" + query, null);
         return res;
+    }
+
+    public boolean isContactExist(String phoneNumber) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        phoneNumber = phoneNumber.replace("-","").replace(" ","");
+        Cursor res = db.rawQuery("select * from contacts where phone like'%" + phoneNumber + "%'", null);
+
+        return (res != null && res.getCount() > 0);
     }
 
     //user
@@ -256,7 +290,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public String selectSettingsString(String key_set) {
 
         String val = "";
-        try{
+        try {
             SQLiteDatabase db = this.getReadableDatabase();
 
             String query = "";
@@ -277,8 +311,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     result.close();
                 }
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             String err = ex.getMessage();
 
         }
@@ -369,9 +402,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             Date date = sdf.parse(tokendate);
             Date currentTime = Calendar.getInstance().getTime();
             long mills = date.getTime() - currentTime.getTime();
-            int hours = (int) (mills/(1000 * 60 * 60));
-            if(hours < 2)
-                return  token;
+            int hours = (int) (mills / (1000 * 60 * 60));
+            if (hours < 2)
+                return token;
             else
                 return "";
         } catch (ParseException e) {
