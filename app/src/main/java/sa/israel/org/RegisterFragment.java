@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,12 +22,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.AccountPicker;
 
 import sa.israel.org.R;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
@@ -38,12 +45,14 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
     EditText txtPhone;
     EditText txtName;
     EditText txtComments;
+    TextView tvMessage;
     Spinner email_address_view;
     String nonce;
     Menu menu;
     WebSiteHelper helper;
     private ProgressBar spinner;
-
+    Button btnSelectAccount;
+    TextView txtAccountError;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -72,14 +81,35 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         txtPhone = (EditText) v.findViewById(R.id.txtPhone);
         txtName = (EditText) v.findViewById(R.id.txtName);
         txtComments = (EditText) v.findViewById(R.id.txtComments);
+        tvMessage = (TextView) v.findViewById(R.id.tvMessage);
+        txtAccountError = (TextView) v.findViewById(R.id.txtAccountError);
         email_address_view = (Spinner) v.findViewById(R.id.email_address_view);
         spinner = (ProgressBar) v.findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this, getContext());
+        btnSelectAccount = (Button) v.findViewById(R.id.btnSelectAccount);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            email_address_view.setVisibility(View.GONE);
+            btnSelectAccount.setVisibility(View.VISIBLE);
+        } else {
+            email_address_view.setVisibility(View.VISIBLE);
+            btnSelectAccount.setVisibility(View.GONE);
+            loadAccounts(v);
+        }
+
+
+        btnSelectAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickUserAccount();
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                btnRegister.setEnabled(false);
+                tvMessage.setVisibility(View.VISIBLE);
                 boolean containsErrors = false;
                 if (txtName.getText().toString().trim().equals("")) {
                     txtName.setError(getResources().getString(R.string.field_required));
@@ -106,11 +136,26 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
                     containsErrors = true;
                 }
 
+                String userName = "";
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    userName = btnSelectAccount.getText().toString();
+                } else {
+                    userName = email_address_view.getSelectedItem().toString();
+                }
+
+                if (!userName.contains("@")) {
+                    txtAccountError.setText(getResources().getString(R.string.select_account));
+                    containsErrors = true;
+                }
+                else {
+                    txtAccountError.setText("");
+                }
+
                 try {
                     if (containsErrors == false) {
                         spinner.setVisibility(View.VISIBLE);
                         helper.register(
-                                email_address_view.getSelectedItem().toString(),
+                                userName,
                                 txtPassword.getText().toString(),
                                 txtName.getText().toString(),
                                 txtPhone.getText().toString(),
@@ -142,9 +187,6 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
             }
         });
 
-
-        loadAccounts(v);
-
         setHasOptionsMenu(true);
 
         return v;
@@ -174,6 +216,8 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
 
     @Override
     public void onTaskDone(Object obj) {
+        tvMessage.setVisibility(View.GONE);
+        btnRegister.setEnabled(true);
         if (obj != null && !obj.toString().toLowerCase().contains("error")) {
             SQLiteDbHelper db = new SQLiteDbHelper(getContext());
             db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
@@ -199,8 +243,7 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
             AlertDialog alert11 = builder1.create();
             alert11.show();
             spinner.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             builder1.setMessage(getResources().getString(R.string.reg_failed_message) + "Message: " + obj.toString());
             builder1.setCancelable(false);
@@ -235,4 +278,26 @@ public class RegisterFragment extends Fragment implements IObjCallbackMethod {
         MenuItem action_exit = menu.findItem(R.id.action_exit);
         action_exit.setVisible(false);
     }
+
+    public void pickUserAccount() {
+        /*This will list all available accounts on device without any filtering*/
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                null, false, null, null, null, null);
+        startActivityForResult(intent, 23);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 23) {
+            // Receiving a result from the AccountPicker
+            if (resultCode == RESULT_OK) {
+                txtAccountError.setText("");
+                btnSelectAccount.setText(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
+            } else if (resultCode == RESULT_CANCELED) {
+                btnSelectAccount.setText(getResources().getString(R.string.select_account));
+            }
+        }
+    }
+
 }

@@ -2,17 +2,22 @@ package sa.israel.org;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +26,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import sa.israel.org.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ahaliav_fox on 15 נובמבר 2017.
@@ -35,20 +42,25 @@ import java.util.List;
 public class ContactAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private ArrayList<Contact> _listDataHeader; // header titles
     private HashMap<Integer, Contact> _listDataChild;
     FragmentManager manager;
     Activity activity;
-
+    HashMap<String, String> watsupContacts;
     private ArrayList<Contact> dataSet;
-
-    public ContactAdapter(Activity activity, Context context, List<String> listDataHeader,
-                          HashMap<Integer, Contact> listChildData, FragmentManager manager) {
+    private final boolean[] mCheckedState;
+    private int selectedPosition = -1;
+    ContactsFragment _fragment;
+    public ContactAdapter(Activity activity,ContactsFragment fragment, Context context, ArrayList<Contact> listDataHeader,
+                          HashMap<Integer, Contact> listChildData, FragmentManager manager, HashMap<String, String> whatsupNumbers) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.manager = manager;
         this.activity = activity;
+        watsupContacts = whatsupNumbers;
+        _fragment = fragment;
+        mCheckedState = new boolean[listDataHeader.size()];
     }
 
     @Override
@@ -89,17 +101,49 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        Contact headerTitle = (Contact) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_contact_group, null);
         }
 
-        TextView tvListHeader = (TextView) convertView
-                .findViewById(R.id.tvListHeader);
+        TextView tvListHeader = (TextView) convertView.findViewById(R.id.tvListHeader);
+        final ToggleButton btnFavorites = (ToggleButton) convertView.findViewById(R.id.btnFavorites);
+
+
+        if(headerTitle.getOrderby() < 3000){
+            btnFavorites.setChecked(true);
+        }else {
+            btnFavorites.setChecked(false);
+        }
+        btnFavorites.setTag(groupPosition);
+
+        btnFavorites.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                SQLiteDbHelper db = new SQLiteDbHelper(_context);
+
+                selectedPosition = (int) v.getTag();
+                Contact tt = (Contact) getGroup(selectedPosition);
+                try {
+                    if(btnFavorites.isChecked()){
+                        db.updateContactOrderBy(tt.getName(), 0);
+                    }
+                    else{
+                        db.updateContactOrderBy(tt.getName(), 3000);
+                    }
+                    _fragment.loadcontacts("");
+                    //Button is OFF
+                } catch (Exception ex) {
+                    Toast.makeText(_context, ex.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         //tvListHeader.setTypeface(null, Typeface.BOLD);
-        tvListHeader.setText(headerTitle);
+        tvListHeader.setText(headerTitle.getName());
 
         return convertView;
     }
@@ -108,6 +152,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+        final View view = convertView;
         final Contact contact = (Contact) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
@@ -135,23 +180,49 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         ImageButton btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
         ImageButton btnWup = (ImageButton) convertView.findViewById(R.id.btnWup);
 
+        String phone = contact.getPhoneNumber();
+        try{
+            if(phone.length() > 9){
+                btnWup.setVisibility(View.VISIBLE);
+                boolean found = false;
+                for(Map.Entry<String, String> entry : watsupContacts.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    if (key.substring(key.length()-8).contains(phone.substring(phone.length() -8))){
+                        found = true;
+                    }
+                }
+
+                if(found == false)
+                    btnWup.setVisibility(View.GONE);
+            }
+            else {
+                btnWup.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception ex){
+            btnWup.setVisibility(View.GONE);
+        }
+
+
         btnWup.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 try {
-                    Intent intent = activity.getPackageManager().getLaunchIntentForPackage("com.whatsapp");
-                    intent.putExtra("jid", contact.getPhoneNumber() + "@s.whatsapp.net");
+                    String wUphone = "";
+                    String phone = contact.getPhoneNumber();
 
-                    activity.startActivity(intent);
-
+                    if (phone.length() >= 9) {
+                        Intent whatsup = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + GetFixedPhoneZipCode(phone)));
+                        whatsup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        activity.startActivity(whatsup);
+                    }
                 } catch (Exception ex) {
                     Toast.makeText(_context, ex.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
@@ -270,7 +341,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     SQLiteDbHelper db = new SQLiteDbHelper(_context);
-                                    db.deleteContact(contact.getId(),"");
+                                    db.deleteContact(contact.getId(), "");
                                     final FragmentTransaction ft = manager.beginTransaction();
                                     ContactsFragment contacts = new ContactsFragment();
 
@@ -318,6 +389,32 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         });
 
         return convertView;
+    }
+
+    public String GetFixedPhoneZipCode(String phone) {
+        String CountryID="";
+        String CountryZipCode="";
+
+        TelephonyManager manager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        //getNetworkCountryIso
+        CountryID= manager.getSimCountryIso().toUpperCase();
+        String[] rl=activity.getResources().getStringArray(R.array.CountryCodes);
+        for(int i=0;i<rl.length;i++){
+            String[] g=rl[i].split(",");
+            if(g[1].trim().equals(CountryID.trim())){
+                CountryZipCode=g[0];
+                break;
+            }
+        }
+        CountryZipCode = CountryZipCode.replace("+", "");
+        //phone = phone.replace("+","").replace(" ","").replace("-","");
+        phone = phone.replaceFirst ("^0*", "");
+        if(phone.length() < 10 && !phone.replace("+","").replace(" ","").startsWith(CountryZipCode)) {
+            return CountryZipCode + phone;
+        }
+        else {
+            return phone.replace("+","");
+        }
     }
 
     @Override

@@ -5,18 +5,26 @@ package sa.israel.org;
  */
 
 public class Contact {
-    public Contact(int id, String name, String phoneNumber, String comments, String email){
+    public Contact(int id, String name, String phoneNumber, String comments, String email, int orderby){
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
         this.email = email;
+        this.orderby = orderby;
     }
 
     private int id = 0;
 
     public int getId() {
         return id;
+    }
+
+
+    private int orderby = 3000;
+
+    public int getOrderby() {
+        return orderby;
     }
 
 

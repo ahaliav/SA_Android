@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1967567520",
+    "firebase_url": "https://sa-israe-org.firebaseio.com",
+    "project_id": "sa-israe-org",
+    "storage_bucket": "sa-israe-org.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1967567520:android:fd43c506de5853cc",
+        "android_client_info": {
+          "package_name": "sa.israel.org"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1967567520-b0mf17kbpvidple9p340grcvfc0v4odm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAReTX5ZVyPtYBy9LN_zZqwqWewe9Txx6A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

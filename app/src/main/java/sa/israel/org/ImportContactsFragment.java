@@ -11,11 +11,14 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,10 +26,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ImportContactsFragment extends Fragment {
+public class ImportContactsFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    SearchView searchgroup = null;
     ListView listview = null;
     ProgressBar progressBar;
+    TextView tvLoadText;
     ArrayList<ImportContact> contactsToImport;
 
     public ImportContactsFragment() {
@@ -41,7 +46,9 @@ public class ImportContactsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_import_contacts, container, false);
         listview = (ListView) v.findViewById(R.id.listviewConatcts);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
-
+        tvLoadText = (TextView) v.findViewById(R.id.tvLoadText);
+        searchgroup = (SearchView)v.findViewById(R.id.searchgroup);
+        searchgroup.setOnQueryTextListener(this);
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_CONTACTS)) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS}, 12);
@@ -50,8 +57,8 @@ public class ImportContactsFragment extends Fragment {
             }
         }
 
-        progressBar.setVisibility(View.VISIBLE);
         startHeavyProcessing();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.importPhoneContacts));
 
         return v;
     }
@@ -60,10 +67,19 @@ public class ImportContactsFragment extends Fragment {
         final ImportContactsAdapter adapter = new ImportContactsAdapter(ImportContactsFragment.this, list, getActivity().getApplicationContext());
         listview.setAdapter(adapter);
         progressBar.setVisibility(View.GONE);
+        tvLoadText.setVisibility(View.GONE);
     }
 
     private void startHeavyProcessing() {
-        new LongOperation(this).execute();
+
+        if(MainActivity.Contacts == null){
+            progressBar.setVisibility(View.VISIBLE);
+            tvLoadText.setVisibility(View.VISIBLE);
+            new LongOperation(this).execute();
+        }
+        else {
+            setResultContacts(MainActivity.Contacts);
+        }
 
     }
 
@@ -95,6 +111,7 @@ public class ImportContactsFragment extends Fragment {
         protected void onPostExecute( ArrayList<ImportContact> result) {
             super.onPostExecute(result);
             try {
+                MainActivity.Contacts = result;
                 _fragment.setResultContacts(result);
             } catch (Exception ex) {
                 String e = ex.getMessage();
@@ -166,6 +183,31 @@ public class ImportContactsFragment extends Fragment {
         }
 
         return contacts;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        ArrayList<ImportContact> searchContacts = new ArrayList<ImportContact>();
+        for(int i=0; i< MainActivity.Contacts.size(); i++){
+            if(MainActivity.Contacts.get(i).getName().contains(s)){
+                searchContacts.add(MainActivity.Contacts.get(i));
+            }
+        }
+        setResultContacts(searchContacts);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        ArrayList<ImportContact> searchContacts = new ArrayList<ImportContact>();
+        for(int i=0; i< MainActivity.Contacts.size(); i++){
+            if(MainActivity.Contacts.get(i).getName().contains(s)){
+                searchContacts.add(MainActivity.Contacts.get(i));
+            }
+        }
+        setResultContacts(searchContacts);
+
+        return false;
     }
 
 }

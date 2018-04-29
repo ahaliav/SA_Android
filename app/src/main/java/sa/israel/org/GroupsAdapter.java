@@ -26,6 +26,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
     double cur_latitude = 0;
     double cur_longitude = 0;
     Activity activity;
+
     //FragmentManager manager;
     private static class ViewHolder {
         TextView tvDay;
@@ -91,7 +92,12 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         viewHolder.tvDay.setText(dataModel.getDay());
         viewHolder.tvFromTime.setText(dataModel.getFromTime());
         viewHolder.tvToTime.setText(dataModel.getToTime());
-        viewHolder.tvComment.setText(dataModel.getComment());
+
+        if (MainActivity.IsLoggedIn())
+            viewHolder.tvComment.setText(dataModel.getComment());
+        else
+            viewHolder.tvComment.setText("");
+
         viewHolder.tvLang.setText(dataModel.getLang());
         viewHolder.tvLocation.setText(dataModel.getLocation());
 
@@ -169,7 +175,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                     final int position = (int) v.getTag();
                     Group dataModel = getItem(position);
 
-                    try{
+                    try {
                         String message = activity.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
                         message += activity.getResources().getString(R.string.day) + ": " + dataModel.getDay() + "\n";
                         message += activity.getResources().getString(R.string.fromtime) + ": " + dataModel.getFromTime() + "\n";
@@ -182,9 +188,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(Intent.createChooser(intent, ""));
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         Toast.makeText(activity, ex.getMessage().toString(),
                                 Toast.LENGTH_LONG).show();
                     }
@@ -201,8 +205,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
             public void onClick(View v) {
 
                 if (MainActivity.IsLoggedIn()) {
-                    try
-                    {
+                    try {
                         final int position = (int) v.getTag();
                         Group dataModel = getItem(position);
                         String message = activity.getResources().getString(R.string.city) + ": " + dataModel.getLocation() + "\n";
@@ -217,14 +220,11 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
                         Intent intent = new Intent(Intent.ACTION_VIEW, data);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(Intent.createChooser(intent, ""));
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         Toast.makeText(activity, ex.getMessage().toString(),
                                 Toast.LENGTH_LONG).show();
                     }
-                }
-                else {
+                } else {
                     shoeLoginMessage();
                 }
             }

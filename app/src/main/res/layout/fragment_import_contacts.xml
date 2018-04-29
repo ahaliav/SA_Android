@@ -36,7 +36,18 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tvLoadText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/loadingcontacts"
+            android:textSize="18sp" />
+
         <ListView
             android:id="@+id/listviewConatcts"
             android:layout_width="match_parent"

@@ -6,18 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.gms.common.AccountPicker;
 
 import sa.israel.org.R;
 
@@ -28,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
     WebSiteHelper helper;
     EditText txtPassword;
     Spinner email_address_view;
+    Button btnSelectAccount;
     //CheckBox chkRememberMe;
     private ProgressBar spinner;
     @Override
@@ -38,15 +43,33 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
         Button btnRegister = (Button)findViewById(R.id.btnRegister);
         Button btnPasswordReset = (Button)findViewById(R.id.btnPasswordReset);
+        btnSelectAccount = (Button)findViewById(R.id.btnSelectAccount);
 
         txtPassword = (EditText)findViewById(R.id.txtPassword);
         //chkRememberMe = (CheckBox)findViewById(R.id.chkRememberMe);
         email_address_view = (Spinner) findViewById(R.id.email_address_view);
+
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         helper = new WebSiteHelper(this, getApplicationContext());
 
-        loadAccounts();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            email_address_view.setVisibility(View.GONE);
+            btnSelectAccount.setVisibility(View.VISIBLE);
+        }
+        else {
+            email_address_view.setVisibility(View.VISIBLE);
+            btnSelectAccount.setVisibility(View.GONE);
+            loadAccounts();
+        }
+
+
+        btnSelectAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickUserAccount();
+            }
+        });
 
         btnPasswordReset.setOnClickListener(new View.OnClickListener() {
 
@@ -68,7 +91,14 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
                 else {
                     try{
                         spinner.setVisibility(View.VISIBLE);
-                        helper.login(email_address_view.getSelectedItem().toString(),txtPassword.getText().toString());
+                        String userName = "";
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            userName = btnSelectAccount.getText().toString();
+                        } else {
+                            userName = email_address_view.getSelectedItem().toString();
+                        }
+
+                        helper.login(userName,txtPassword.getText().toString());
                         InputMethodManager inputManager = (InputMethodManager)
                                 getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
 
@@ -112,7 +142,14 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
             final Intent intent = new Intent(this, MainActivity.class);
             if(result){
 
-                if(MainActivity.IsConfirmed(email_address_view.getSelectedItem().toString())){
+                String userName = "";
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    userName = btnSelectAccount.getText().toString();
+                } else {
+                    userName = email_address_view.getSelectedItem().toString();
+                }
+
+                if(MainActivity.IsConfirmed(userName)){
                     db.insertSettings(Constants.IS_REGISTERED_KEY, "true");
                     db.insertSettings(Constants.IS_LOGEDIN_KEY, "true");
                     startActivity(intent);
@@ -150,10 +187,6 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
     }
 
     private void loadAccounts() {
-
-        SQLiteDbHelper db = new SQLiteDbHelper(getApplicationContext());
-        Cursor result = db.selectUser("");
-
         ArrayList<String> emails = new ArrayList<>();
 
         Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
@@ -168,5 +201,24 @@ public class LoginActivity extends AppCompatActivity implements IObjCallbackMeth
 
         ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
         expAccounts.setAdapter(myAdapter);
+    }
+
+    public void pickUserAccount() {
+        /*This will list all available accounts on device without any filtering*/
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                null, false, null, null, null, null);
+        startActivityForResult(intent, 23);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 23) {
+            // Receiving a result from the AccountPicker
+            if (resultCode == RESULT_OK) {
+                btnSelectAccount.setText(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
+            } else if (resultCode == RESULT_CANCELED) {
+                btnSelectAccount.setText(getResources().getString(R.string.select_account));
+            }
+        }
     }
 }

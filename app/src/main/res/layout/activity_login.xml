@@ -21,6 +21,18 @@
             android:text="@string/wellcome_private"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/btnSelectAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_style"
+            android:text="@string/select_account"
+            android:textColor="#ffffff" />
+
         <Spinner
             android:id="@+id/email_address_view"
             style="@style/spinner_style"

@@ -125,7 +125,27 @@
                 android:layout_column="0"
                 android:layout_row="6"
                 android:gravity="top|center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/txtAccountError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    />
+
+                <Button
+                    android:id="@+id/btnSelectAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_style"
+                    android:text="@string/select_account"
+                    android:textColor="#ffffff" />
 
                 <Spinner
                     android:id="@+id/email_address_view"
@@ -142,7 +162,7 @@
                 android:layout_column="0"
                 android:layout_row="7"
                 android:gravity="top|center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/txtComments"
@@ -158,6 +178,15 @@
                     android:lines="5"
                     android:padding="10dp"
                     android:textColor="#21275c" />
+
+                <TextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/savingdata"
+                    android:visibility="gone"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout

@@ -255,14 +255,14 @@ public class MainFragment extends Fragment  {
         ArrayList<Contact> list = new ArrayList<Contact>();
 
         SQLiteDbHelper db = new SQLiteDbHelper(this.getContext());
-        Cursor result = db.selectContacts(-1, "");
+        Cursor result = db.selectContacts(-1, "", "");
 
         if (result != null) {
             while (result.moveToNext()) {
                 int id = result.getInt(0);
                 String name = result.getString(1);
                 String phone = result.getString(2);
-                Contact s = new Contact(id, name, phone, "","");
+                Contact s = new Contact(id, name, phone, "","",0);
                 list.add(s);
             }
 

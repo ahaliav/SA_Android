@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
-    private List<String> listDataHeader; // header titles
-    private HashMap<String, List<String>> listDataChild;
+    public static HashMap<String, String> WhatsupNumbers;
+    public static ArrayList<ImportContact> Contacts;
 
     public static boolean IsLoggedIn() {
         SQLiteDbHelper db = new SQLiteDbHelper(context);
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         SQLiteDbHelper db = new SQLiteDbHelper(context);
         String isLockAppEnabled = db.selectSettingsString(Constants.ENABLE_LOCK_APP);
 
-        if(isLockAppEnabled.equals("true") && IS_OPEN_LOCKED == false) {
+        if (isLockAppEnabled.equals("true") && IS_OPEN_LOCKED == false) {
             Intent intent = new Intent(this, LockActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -397,9 +398,6 @@ public class MainActivity extends AppCompatActivity
 
     private void loadAccounts(NavigationView navigationView) {
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
         SQLiteDbHelper db = new SQLiteDbHelper(this.getApplicationContext());
         Cursor result = db.selectUser("");
 
@@ -418,16 +416,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-
-        if (email.equals("")) {
-            email = getResources().getString(R.string.select_account);
-        }
-
-        listDataHeader.add(email);
-
         View headerView = navigationView.getHeaderView(0); //navigationView.inflateHeaderView(R.layout.nav_header_main);
-
-        ArrayList<String> emails = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.GET_ACCOUNTS)) {
@@ -435,34 +424,10 @@ public class MainActivity extends AppCompatActivity
             } else {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.GET_ACCOUNTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMS_REQUEST_CODE);
             }
-        } else {
-            //do some stuff
-            Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
-            Account[] accounts = AccountManager.get(this).getAccounts();
-            for (Account account : accounts) {
-                if (gmailPattern.matcher(account.name).matches()) {
-                    emails.add(account.name);
-                }
-            }
-
-            listDataChild.put(email, emails);
         }
 
-        Spinner expAccounts = (Spinner) headerView.findViewById(R.id.email_address_view);
-
-        ArrayAdapter<String> myAdapter = new AccountsAdapter(this, R.layout.item_account_spinner, emails);
-        expAccounts.setAdapter(myAdapter);
-
-        for (int j = 0; j < expAccounts.getCount(); j++) {
-            if (((String) expAccounts.getAdapter().getItem(j)).equals(email)) {
-                expAccounts.setSelection(j);
-                break;
-            }
-        }
-
-
-        if (emailfound)
-            expAccounts.setEnabled(false);
+        TextView txtUserName = (TextView) headerView.findViewById(R.id.txtUserName);
+        txtUserName.setText(email);
     }
 
     @Override

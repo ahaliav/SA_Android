@@ -360,6 +360,4 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         return false;
     }
-
-
 }

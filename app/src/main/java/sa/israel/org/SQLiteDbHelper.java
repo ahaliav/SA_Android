@@ -34,7 +34,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                 "(id integer primary key, name text, subrietdate text)");
 
         db.execSQL("create table contacts " +
-                "(id integer primary key, name text, phone text, email text,comments text)");
+                "(id integer primary key, name text, phone text, email text, comments text, orderby INTEGER DEFAULT 3000)");
 
         db.execSQL("create table settings " +
                 "(id integer primary key, key_set text, value_set text)");
@@ -47,8 +47,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("drop table contacts");
-
         onCreate(db);
     }
 
@@ -57,6 +55,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertSubrieties(String name, Date subrietdate) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -106,10 +105,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public boolean insertContact(String name, String phone, String comments, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor result = selectContacts(-1, phone);
+        Cursor result = selectContacts(-1, phone, "");
 
         if (result != null) {
-
             while (result.moveToNext()) {
                 int id = result.getInt(0);
                 deleteContact(id, "");
@@ -150,6 +148,32 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateContactOrderBy(String name, int orderby) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("orderby", orderby);
+
+        Cursor result = db.rawQuery("select * from contacts where orderby < 3000 order by orderby", null);
+        int order=1;
+        if (result != null) {
+            while (result.moveToNext()) {
+                ContentValues content = new ContentValues();
+                content.put("orderby",order++);
+                int id = result.getInt(0);
+                db.update("contacts", content, "id=" + id, null);
+                break;
+            }
+
+            if (!result.isClosed()) {
+                result.close();
+            }
+        }
+
+        db.update("contacts", contentValues, "name='" + name + "'", null);
+        return true;
+    }
+
     public boolean deleteContact(Integer id, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -163,24 +187,37 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor selectContacts(int id, String phoneNumber) {
+    public Cursor selectContacts(int id, String phoneNumber, String name) {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor dbCursor = db.query("contacts", null, null, null, null, null, null);
+        String[] columnNames = dbCursor.getColumnNames();
+
+        boolean found = false;
+        for(int i=0; i< columnNames.length;i++){
+            if(columnNames[i].equals("orderby")){
+                found = true;
+            }
+        }
+        if(found == false)
+            db.execSQL("ALTER TABLE contacts ADD COLUMN orderby INTEGER DEFAULT 3000");
 
         String query = "";
         if (id > 0) {
             query = " where id=" + id;
         }
-        phoneNumber = phoneNumber.replace("-","").replace(" ","");
-        if (phoneNumber.length() > 8) {
-            String last9numbers = phoneNumber.substring(phoneNumber.length() - 9);
+        else if (phoneNumber.length() > 0) {
             if (!phoneNumber.isEmpty()) {
                 query = " where phone LIKE '%" + phoneNumber + "'";
             }
         }
+        else if (name.length() > 1) {
+             query = " where name LIKE '%" + name + "%' OR comments LIKE '%" + name + "%' order by orderby, name";
+        }
 
         Cursor res;
         if (query.equals(""))
-            res = db.rawQuery("select * from contacts order by name", null);
+            res = db.rawQuery("select * from contacts order by orderby, name", null);
         else
             res = db.rawQuery("select * from contacts " + query, null);
 
