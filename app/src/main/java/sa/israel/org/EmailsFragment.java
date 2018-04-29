@@ -66,6 +66,15 @@ public class EmailsFragment extends Fragment {
         list.add(new EmailContact("litr@sa-israel.org",getResources().getString(R.string.literature_committee),"",""));
         list.add(new EmailContact("cfc@sa-israel.org",getResources().getString(R.string.prison_committee),"",""));
         list.add(new EmailContact("transl@sa-israel.org",getResources().getString(R.string.translation_committee),"",""));
+        list.add(new EmailContact("aad@sa-israel.org",getResources().getString(R.string.aad),"",""));
+        list.add(new EmailContact("gad@sa-israel.org",getResources().getString(R.string.gad),"",""));
+        list.add(new EmailContact("ig-jrslm@sa-israel.org",getResources().getString(R.string.ig_jerusaem),"",""));
+        list.add(new EmailContact("ig-center@sa-israel.org",getResources().getString(R.string.ig_center),"",""));
+        list.add(new EmailContact("ig-bsh@sa-israel.org",getResources().getString(R.string.ig_baitshemesh),"",""));
+        list.add(new EmailContact("ig-north@sa-israel.org",getResources().getString(R.string.ig_northh),"",""));
+        list.add(new EmailContact("ig-eng@sa-israel.org",getResources().getString(R.string.ig_eng),"",""));
+        list.add(new EmailContact("ig-south@sa-israel.org",getResources().getString(R.string.ig_south),"",""));
+        list.add(new EmailContact("trsr@sa-israel.org",getResources().getString(R.string.trsr),"",""));
 
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<Integer, EmailContact>();

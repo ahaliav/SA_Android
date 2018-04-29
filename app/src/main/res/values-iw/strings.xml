@@ -320,4 +320,13 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="gad">ציר (שליח) לאסיפה המרכזית של sa</string>
+    <string name="aad">נציג מחליף לאסיפה</string>
+    <string name="ig_jerusaem">אינטרגרופ ירושלים</string>
+    <string name="ig_center">אינטרגרופ מרכז</string>
+    <string name="ig_baitshemesh">אינטרגרופ בית שמש</string>
+    <string name="ig_northh">אינטרגרופ צפון</string>
+    <string name="ig_eng">אינטרגרופ אנגלית</string>
+    <string name="trsr">גזבר</string>
+    <string name="ig_south">אינטרגרופ דרום</string>
 </resources>

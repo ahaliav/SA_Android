@@ -115,6 +115,14 @@
     <string name="loadingcontacts">Loading Contacts...</string>
     <string name="importPhoneContacts">Import Phone Contacts</string>
     <string name="savingdata">Saving...</string>
+    <string name="aad">Alternate assembly delegate</string>
+    <string name="gad">General assembly delegate</string>
+    <string name="ig_jerusaem">Jerusalem Zone</string>
+    <string name="ig_center">Central Zone</string>
+    <string name="ig_baitshemesh">Beit Shemesh Zone</string>
+    <string name="ig_northh">North Zone</string>
+    <string name="ig_eng">English Groups</string>
+    <string name="trsr">Treasurer</string>
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>
@@ -323,4 +331,5 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="ig_south">South Zone</string>
 </resources>

@@ -7,8 +7,8 @@ android {
         applicationId "sa.israel.org"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 23
-        versionName "1.23"
+        versionCode 24
+        versionName "1.24"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

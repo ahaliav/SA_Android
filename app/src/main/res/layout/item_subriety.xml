@@ -7,7 +7,7 @@
     <FrameLayout
         android:id="@+id/mainframe"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         android:layout_margin="10dp"
 
         android:background="@drawable/subriety_item_style"
