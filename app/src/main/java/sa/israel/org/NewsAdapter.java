@@ -37,35 +37,43 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        News dataModel = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
 
-        final View result;
+        try{
+            News dataModel = getItem(position);
+            // Check if an existing view is being reused, otherwise inflate the view
+            ViewHolder viewHolder; // view lookup cache stored in tag
 
-        if (convertView == null) {
+            final View result;
 
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_news, parent, false);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-            viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
-            result = convertView;
+            if (convertView == null) {
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-            result = convertView;
+                viewHolder = new ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.item_news, parent, false);
+                viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+                viewHolder.mainframe = (FrameLayout) convertView.findViewById(R.id.mainframe);
+                result = convertView;
+
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+                result = convertView;
+            }
+
+            lastPosition = position;
+
+            viewHolder.tvTitle.setText(dataModel.getTitle());
+            viewHolder.ID = dataModel.getId();
+            viewHolder.mainframe.setTag(position);
+
+            // Return the completed view to render on screen
+        }
+        catch (Exception ex){
+           String err = ex.getMessage();
         }
 
-        lastPosition = position;
-
-        viewHolder.tvTitle.setText(dataModel.getTitle());
-        viewHolder.ID = dataModel.getId();
-        viewHolder.mainframe.setTag(position);
-
-        // Return the completed view to render on screen
         return convertView;
+        // Get the data item for this position
+
     }
 }

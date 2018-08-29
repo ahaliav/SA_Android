@@ -24,7 +24,7 @@ public class WebSiteHelper {
 
     public void getNewsTitles()
     {
-        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=30&fields=id,title", this.callback, context, false);
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?per_page=30&categories=30&fields=id,title", this.callback, context, false);
         reader.execute();
     }
 
@@ -43,7 +43,7 @@ public class WebSiteHelper {
 
     public void getEventsTitles() {
 
-        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?categories=31&fields=id,title", this.callback, context, false);
+        JsonReader reader = new JsonReader(Constants.getPostsUrl() + "?per_page=30&categories=31&fields=id,title", this.callback, context, false);
         reader.execute();
     }
 

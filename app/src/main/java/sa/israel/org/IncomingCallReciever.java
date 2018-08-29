@@ -47,6 +47,9 @@ public class IncomingCallReciever extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
+            if (incomingNumber == null || incomingNumber.length() < 9)
+                return;
+
             checkIfToShowPopup(incomingNumber);
 
             if (exite || contactExsits == false)

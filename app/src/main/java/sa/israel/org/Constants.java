@@ -10,6 +10,7 @@ public class Constants {
     public static final String IS_LOGEDIN_KEY = "IS_LOGEDIN";
     public static final String IS_REGISTERED_KEY = "IS_REGISTERED";
     public static final String GO_TO_REGISTER_KEY = "GO_TO_REGISTER";
+    public static final String GO_TO_NEWS_KEY = "GO_TO_NEWS_KEY";
     public static final String REGISTERED_DATE_KEY = "REGISTERED_DATE_KEY";
     public static final String ENABLE_LOCK_APP = "ENABLE_LOCK_APP";
     public static final String PIN_KEY = "PIN_KEY";

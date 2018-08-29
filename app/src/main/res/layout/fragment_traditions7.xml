@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context="sa.israel.org.MainFragment">
+    tools:context=".Traditions7Fragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#ffffff">
 
 
         <LinearLayout
@@ -27,7 +27,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/linearGroups"
+                    android:id="@+id/linearOneTimeR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
@@ -39,7 +39,7 @@
                     android:paddingRight="20dp">
 
                     <ImageView
-                        android:id="@+id/btnGroups"
+                        android:id="@+id/btnOneTimeR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
@@ -50,20 +50,21 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/group" />
+                        android:src="@drawable/ontimep" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="117dp"
+                        android:layout_height="69dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/groups"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.20"
+                        android:text="@string/onetimedonationregion"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearCalender"
+                    android:id="@+id/linearOneTimeI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
@@ -72,10 +73,10 @@
                     android:background="@drawable/linear_layout_selector"
                     android:orientation="vertical"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"                    >
+                    android:paddingRight="20dp">
 
                     <ImageView
-                        android:id="@+id/btnCalender"
+                        android:id="@+id/btnOneTimeI"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
@@ -86,20 +87,21 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/calender" />
+                        android:src="@drawable/ontimeb" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="117dp"
+                        android:layout_height="69dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/calculator"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.20"
+                        android:text="@string/onetimedonationintergroup"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearNews"
+                    android:id="@+id/linearStandingOrderR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
@@ -112,7 +114,7 @@
                     android:paddingTop="10dp">
 
                     <ImageView
-                        android:id="@+id/btnNews"
+                        android:id="@+id/btnStandingOrderR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
@@ -123,20 +125,21 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/news" />
+                        android:src="@drawable/directdebitp" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="117dp"
+                        android:layout_height="69dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/news"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.20"
+                        android:text="@string/standingorderregion"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearEvents"
+                    android:id="@+id/linearStandingOrderI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
@@ -160,89 +163,16 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/circled7" />
+                        android:src="@drawable/directdebitb" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="117dp"
+                        android:layout_height="69dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/tradition7"
-                        android:textAlignment="center" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_margin="10dp"
-                    android:layout_row="3"
-                    android:background="@drawable/linear_layout_selector"
-                    android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp">
-
-                    <ImageView
-                        android:id="@+id/btnEmails"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="0.14"
-                        android:background="#ffffff"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/email" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/contact"
-                        android:textAlignment="center" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearContacts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_margin="10dp"
-                    android:layout_row="3"
-                    android:background="@drawable/linear_layout_selector"
-                    android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp">
-
-                    <ImageView
-                        android:id="@+id/btnContacts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="0.14"
-                        android:background="#ffffff"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/contacts" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="0.14"
-                        android:text="@string/contacts"
-                        android:textAlignment="center" />
+                        android:layout_weight="0.20"
+                        android:text="@string/standingorderintergroup"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
             </GridLayout>

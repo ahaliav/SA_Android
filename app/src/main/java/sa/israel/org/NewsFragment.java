@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
     ListView listview = null;
     ArrayList<News> list = null;
     private ProgressBar spinner;
+    private ViewPager mViewPager;
     Menu menu;
     public NewsFragment() {
         // Required empty public constructor
@@ -55,7 +57,7 @@ public class NewsFragment extends Fragment implements ICallbackMethod {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
-
+        mViewPager =  (ViewPager) v.findViewById(R.id.pager);
         FloatingActionButton floatingActionButton = (FloatingActionButton) v.findViewById(R.id.floatingActionButton);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

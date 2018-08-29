@@ -3,6 +3,9 @@ package sa.israel.org;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,11 +41,13 @@ import sa.israel.org.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private Timer timer;
     public static boolean IS_OPEN_LOCKED = false;
     public static final int PERMS_REQUEST_CODE = 1;
     public static boolean IsRegistered = false;
@@ -75,13 +81,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void checkLockScreen() {
+
         SQLiteDbHelper db = new SQLiteDbHelper(context);
         String isLockAppEnabled = db.selectSettingsString(Constants.ENABLE_LOCK_APP);
-
+        String goto_news_page = getIntent().getStringExtra(Constants.GO_TO_NEWS_KEY);
         if (isLockAppEnabled.equals("true") && IS_OPEN_LOCKED == false) {
-            Intent intent = new Intent(this, LockActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            Intent lockIntent = new Intent(this, LockActivity.class);
+            lockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            if (goto_news_page != null && goto_news_page.equals("true")) {
+                lockIntent.putExtra(Constants.GO_TO_NEWS_KEY, "true");
+            }
+
+            startActivity(lockIntent);
+        }
+        else{
+            if(goto_news_page != null && goto_news_page.equals("true")) {
+                getSupportActionBar().setTitle(R.string.news_title);
+                getSupportActionBar().setIcon(null);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                Fragment fragment = new EventsFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment, "EventsFragment")
+                        .commit();
+            }
         }
     }
 
@@ -129,13 +151,24 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         String goto_register_page = intent.getStringExtra(Constants.GO_TO_REGISTER_KEY);
+        String goto_news_page = intent.getStringExtra(Constants.GO_TO_NEWS_KEY);
 
         if (goto_register_page != null && goto_register_page.equals("true")) {
             fragment = new RegisterFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.main_fragment_container, fragment, "RegisterFragment")
                     .commit();
-        } else {
+        }
+        else if(goto_news_page != null && goto_news_page.equals("true")) {
+            getSupportActionBar().setTitle(R.string.news_title);
+            getSupportActionBar().setIcon(null);
+
+            fragment = new EventsFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, fragment, "EventsFragment")
+                    .commit();
+        }
+        else {
             fragmentManager.beginTransaction()
                     .replace(R.id.main_fragment_container, fragment, "MainFragment")
                     .commit();
@@ -160,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                         getSupportActionBar().setTitle(R.string.groups_title);
                         getSupportActionBar().setIcon(null);
                         break;
-                    case "NewsFragment":
+                    case "EventsFragment":
                         getSupportActionBar().setTitle(R.string.news_title);
                         getSupportActionBar().setIcon(null);
                         break;
@@ -170,10 +203,6 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case "CalenderAddFragment":
                         //getSupportActionBar().setTitle(R.string.calender__add_title);
-                        getSupportActionBar().setIcon(null);
-                        break;
-                    case "EventsFragment":
-                        getSupportActionBar().setTitle(R.string.events_title);
                         getSupportActionBar().setIcon(null);
                         break;
                     case "NewsDetailsFragment":
@@ -224,6 +253,7 @@ public class MainActivity extends AppCompatActivity
         checkLockScreen();
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -232,6 +262,18 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
+        checkLockScreen();
     }
 
     @Override
@@ -371,12 +413,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_calender) {
             fragment = new CalenderFragment();
             tag = "CalenderFragment";
-        } else if (id == R.id.nav_events) {
+        } else if (id == R.id.nav_news) {
             fragment = new EventsFragment();
             tag = "EventsFragment";
-        } else if (id == R.id.nav_news) {
-            fragment = new NewsFragment();
-            tag = "NewsFragment";
         } else if (id == R.id.nav_contacts) {
             fragment = new ContactsFragment();
             tag = "ContactsFragment";
@@ -450,6 +489,25 @@ public class MainActivity extends AppCompatActivity
 
             // other 'switch' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        timer = new Timer();
+        LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
+        timer.schedule(logoutTimeTask, 150000); //auto logout in 2.5 minutes
+
+    }
+
+    private class LogOutTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            IS_OPEN_LOCKED = false;
+            finish();
         }
     }
 }

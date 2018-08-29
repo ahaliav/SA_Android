@@ -101,7 +101,7 @@
     <string name="password_required">Your Password Must Be at Least 6 Characters</string>
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
     <string name="locked_content">this content is visible only for logged in users</string>
-    <string name="you_are_note_confirmed">dear SA member you are not confirmed yet, please be patient until we confirm your details, if after 48 hours you did not get confirmed please contact website@sa-israel.com</string>
+    <string name="you_are_note_confirmed">dear SA member you are not confirmed yet, please be patient until we confirm your details, if after 48 hours you did not get confirmed please contact website@sa-israel.org</string>
     <string name="reg_failed_message">Registration failed, please try again later</string>
     <string name="confirmpassword">Confirm Password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
@@ -332,4 +332,9 @@
         <item>263,ZW</item>
     </string-array>
     <string name="ig_south">South Zone</string>
+    <string name="tradition7">Tradition 7</string>
+    <string name="standingorderregion">Standing Order Region</string>
+    <string name="standingorderintergroup">Standing Order Intergroup</string>
+    <string name="onetimedonationregion">One time donation region</string>
+    <string name="onetimedonationintergroup">One time donation Intergroup</string>
 </resources>

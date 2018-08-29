@@ -23,9 +23,10 @@ public class SaFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if(isShowNotifications()){
+        if(isShowNotifications() && MainActivity.IsLoggedIn()){
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.GO_TO_NEWS_KEY, "true");
             PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder notificationBuilder = new  NotificationCompat.Builder(this);
 
@@ -33,6 +34,7 @@ public class SaFirebaseMessagingService extends FirebaseMessagingService {
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
+                    .setContentIntent(pendingIntent)
                     .setTicker("Hearty365")
                     .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
                     .setContentTitle(remoteMessage.getNotification().getTitle())
@@ -71,4 +73,6 @@ public class SaFirebaseMessagingService extends FirebaseMessagingService {
 
         return false;
     }
+
+
 }

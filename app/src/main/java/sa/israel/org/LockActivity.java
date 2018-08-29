@@ -132,6 +132,12 @@ public class LockActivity extends AppCompatActivity {
     private void goToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        String goto_news_page = getIntent().getStringExtra(Constants.GO_TO_NEWS_KEY);
+        if (goto_news_page != null && goto_news_page.equals("true")) {
+            intent.putExtra(Constants.GO_TO_NEWS_KEY, "true");
+        }
+
         startActivity(intent);
     }
 

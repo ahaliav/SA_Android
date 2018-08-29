@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -115,6 +116,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         } else {
 
             if (MainActivity.IsLoggedIn()) {
+
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
                 mFusedLocationClient.getLastLocation()
@@ -316,6 +318,8 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             setGroupList();
 
             spinner.setVisibility(View.GONE);
+
+            loadgroups_from_db();
 
         } else {
 

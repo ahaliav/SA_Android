@@ -1,34 +1,27 @@
 package sa.israel.org;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.andrognito.pinlockview.IndicatorDots;
-import com.andrognito.pinlockview.PinLockListener;
-import com.andrognito.pinlockview.PinLockView;
-
-import sa.israel.org.R;
-
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment  {
-
+public class Traditions7Fragment extends Fragment {
     View rootView = null;
     Menu menu;
-    public MainFragment() {
+    public Traditions7Fragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +34,11 @@ public class MainFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_traditions7, container, false);
 
         addListenerOnButton();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.favicon_sa);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.tradition7);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(null);
 
         setHasOptionsMenu(true);
 
@@ -59,151 +52,120 @@ public class MainFragment extends Fragment  {
     }
 
     public void addListenerOnButton() {
-        LinearLayout linearGroups = (LinearLayout) rootView.findViewById(R.id.linearGroups);
+        LinearLayout linearStandingOrderI = (LinearLayout) rootView.findViewById(R.id.linearStandingOrderI);
 
-        linearGroups.setOnTouchListener( new View.OnTouchListener()
+        linearStandingOrderI.setOnTouchListener( new View.OnTouchListener()
         {
-            LinearLayout linearGroups = (LinearLayout) rootView.findViewById(R.id.linearGroups);
+            LinearLayout linearStandingOrderI = (LinearLayout) rootView.findViewById(R.id.linearStandingOrderI);
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        linearGroups.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        linearStandingOrderI.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", "https://app.icount.co.il/m/976be");
+                        Tradition7Fragment frag = new Tradition7Fragment();
+                        frag.setArguments(bundle);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new GroupsFragment(), "GroupsFragment");
-                        ft.addToBackStack("GroupsFragment");
+                        ft.replace(R.id.main_fragment_container, frag, "Tradition7Fragment");
+                        ft.addToBackStack("Tradition7Fragment");
                         ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
-                        linearGroups.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        linearStandingOrderI.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
                 return true;
             }
         });
 
-        LinearLayout linearCalender = (LinearLayout) rootView.findViewById(R.id.linearCalender);
+        LinearLayout linearStandingOrderR = (LinearLayout) rootView.findViewById(R.id.linearStandingOrderR);
 
-        linearCalender.setOnTouchListener( new View.OnTouchListener()
+        linearStandingOrderR.setOnTouchListener( new View.OnTouchListener()
         {
-            LinearLayout linearCalender = (LinearLayout) rootView.findViewById(R.id.linearCalender);
+            LinearLayout linearStandingOrderR = (LinearLayout) rootView.findViewById(R.id.linearStandingOrderR);
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        loadsubrieties();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        //set color back to default
-                        linearCalender.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
-                        break;
-                }
-                return true;
-            }
-        });
-
-        LinearLayout linearNews = (LinearLayout) rootView.findViewById(R.id.linearNews);
-
-        linearNews.setOnTouchListener( new View.OnTouchListener()
-        {
-            LinearLayout linearNews = (LinearLayout) rootView.findViewById(R.id.linearNews);
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                switch(event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        linearNews.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        linearStandingOrderR.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", "https://app.icount.co.il/m/3b61a");
+                        Tradition7Fragment frag = new Tradition7Fragment();
+                        frag.setArguments(bundle);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new EventsFragment(), "EventsFragment");
-                        ft.addToBackStack("EventsFragment");
+                        ft.replace(R.id.main_fragment_container, frag, "Tradition7Fragment");
+                        ft.addToBackStack("Tradition7Fragment");
                         ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
-                        linearNews.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        linearStandingOrderR.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
                 return true;
             }
         });
 
-        LinearLayout linearEvents = (LinearLayout) rootView.findViewById(R.id.linearEvents);
+        LinearLayout linearOneTimeI = (LinearLayout) rootView.findViewById(R.id.linearOneTimeI);
 
-        linearEvents.setOnTouchListener( new View.OnTouchListener()
+        linearOneTimeI.setOnTouchListener( new View.OnTouchListener()
         {
-            LinearLayout linearEvents = (LinearLayout) rootView.findViewById(R.id.linearEvents);
+            LinearLayout linearOneTimeI = (LinearLayout) rootView.findViewById(R.id.linearOneTimeI);
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        linearEvents.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        linearOneTimeI.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", "https://app.icount.co.il/m/d44bc");
+                        Tradition7Fragment frag = new Tradition7Fragment();
+                        frag.setArguments(bundle);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new Traditions7Fragment(), "Traditions7Fragment");
-                        ft.addToBackStack("Traditions7Fragment");
+                        ft.replace(R.id.main_fragment_container, frag, "Tradition7Fragment");
+                        ft.addToBackStack("Tradition7Fragment");
                         ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
-                        linearEvents.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        linearOneTimeI.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
-
-
                 return true;
             }
         });
 
-        LinearLayout linearContacts = (LinearLayout) rootView.findViewById(R.id.linearContacts);
+        LinearLayout linearOneTimeR = (LinearLayout) rootView.findViewById(R.id.linearOneTimeR);
 
-        linearContacts.setOnTouchListener( new View.OnTouchListener()
+        linearOneTimeR.setOnTouchListener( new View.OnTouchListener()
         {
-            LinearLayout linearContacts = (LinearLayout) rootView.findViewById(R.id.linearContacts);
+            LinearLayout linearOneTimeR = (LinearLayout) rootView.findViewById(R.id.linearOneTimeR);
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        loadcontacts();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        //set color back to default
-                        linearContacts.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
-                        break;
-                }
-
-                return true;
-            }
-        });
-
-        LinearLayout linearEmail = (LinearLayout) rootView.findViewById(R.id.linearEmail);
-
-        linearEmail.setOnTouchListener( new View.OnTouchListener()
-        {
-            LinearLayout linearEmail = (LinearLayout) rootView.findViewById(R.id.linearEmail);
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                switch(event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        linearEmail.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        linearOneTimeR.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border_click, null));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", "https://app.icount.co.il/m/a23fd");
+                        Tradition7Fragment frag = new Tradition7Fragment();
+                        frag.setArguments(bundle);
                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.main_fragment_container, new EmailsFragment(), "EmailsFragment");
-                        ft.addToBackStack("EmailsFragment");
+                        ft.replace(R.id.main_fragment_container, frag, "Tradition7Fragment");
+                        ft.addToBackStack("Tradition7Fragment");
                         ft.commit();
                         break;
                     case MotionEvent.ACTION_UP:
                         //set color back to default
-                        linearEmail.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
+                        linearOneTimeR.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.linear_layout_border, null));
                         break;
                 }
 
@@ -211,6 +173,7 @@ public class MainFragment extends Fragment  {
                 return true;
             }
         });
+
     }
 
     private void loadsubrieties() {
