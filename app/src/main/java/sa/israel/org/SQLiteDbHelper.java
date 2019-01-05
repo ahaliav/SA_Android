@@ -28,7 +28,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("create table groups " +
-                "(id integer primary key, day text, fromtime text, tomtime text, location text, comment text, lang text, latitude float,longitude float, km float)");
+                "(id integer primary key, day text, fromtime text, tomtime text, location text, comment text, lang text, latitude float,longitude float, km float, dayNum integer DEFAULT 0)");
 
         db.execSQL("create table subrieties " +
                 "(id integer primary key, name text, subrietdate text)");
@@ -361,12 +361,43 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     public Cursor selectGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor res = db.rawQuery("select * from groups order by km", null);
+        Cursor dbCursor = db.query("groups", null, null, null, null, null, null);
+        String[] columnNames = dbCursor.getColumnNames();
+
+        boolean found = false;
+        for(int i=0; i< columnNames.length;i++){
+            if(columnNames[i].equals("dayNum")){
+                found = true;
+            }
+        }
+        if(found == false)
+            db.execSQL("ALTER TABLE groups ADD COLUMN dayNum integer DEFAULT 0");
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("dayNum", 0);
+        db.update("groups", contentValues, "dayNum=" + Integer.toString(day), null);
+
+        Cursor res = db.rawQuery("select * from groups order by dayNum", null);
         return res;
     }
 
     public boolean deleteGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor dbCursor = db.query("groups", null, null, null, null, null, null);
+        String[] columnNames = dbCursor.getColumnNames();
+
+        boolean found = false;
+        for(int i=0; i< columnNames.length;i++){
+            if(columnNames[i].equals("dayNum")){
+                found = true;
+            }
+        }
+        if(found == false)
+            db.execSQL("ALTER TABLE groups ADD COLUMN dayNum integer DEFAULT 0");
 
         db.execSQL("delete from groups");
 
@@ -391,6 +422,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             contentValues.put("latitude", g.getLatitude());
             contentValues.put("longitude", g.getLongitude());
             contentValues.put("km", g.getKm());
+            contentValues.put("dayNum", g.getDayNum());
             db.insert("groups", null, contentValues);
         }
 

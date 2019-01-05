@@ -60,6 +60,7 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
                     String lang = "";
                     String latitude = "";
                     String longitude = "";
+                    String dayNum = "";
                     if (RowData.length > 0)
                         day = RowData[0];
                     if (RowData.length > 1)
@@ -76,14 +77,17 @@ public class CsvReader extends AsyncTask<Void, Void, List<Object>> {
                         latitude = RowData[6];
                     if (RowData.length > 7)
                         longitude = RowData[7];
+                    if (RowData.length > 8)
+                        dayNum = RowData[8];
 
                     latitude = pad(latitude, 8, '0');
                     longitude = pad(longitude, 8, '0');
 
                     float f_latitude = Float.parseFloat(latitude);
                     float f_longitude = Float.parseFloat(longitude);
+                    int l_dayNum = Integer.parseInt(dayNum);
 
-                    g = new Group(day, fromtime, tomtime, comment, location, lang, f_latitude, f_longitude, 0);
+                    g = new Group(day, fromtime, tomtime, comment, location, lang, f_latitude, f_longitude, 0,l_dayNum);
                     list.add(g);
                 }
             }

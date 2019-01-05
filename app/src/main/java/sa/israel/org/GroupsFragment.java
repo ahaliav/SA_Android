@@ -1,6 +1,7 @@
 package sa.israel.org;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -38,6 +41,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 
 public class GroupsFragment extends Fragment implements SearchView.OnQueryTextListener, ICallbackMethod {
@@ -52,6 +58,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
     Menu menu;
     double cur_latitude = 0;
     double cur_longitude = 0;
+    ImageButton btnExcelDownloadFile;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -104,6 +111,34 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                 intent.setData(data);
 
                 startActivity(Intent.createChooser(intent, ""));
+            }
+        });
+
+        btnExcelDownloadFile = (ImageButton)v.findViewById(R.id.btnExcelDownloadFile);
+        btnExcelDownloadFile.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Permission is not granted
+                    // Request for permission
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MainActivity.PERMS_REQUEST_CODE);
+
+                }
+                else {
+                    Uri uri = Uri.parse("https://www.sa-israel.org/wp-content/uploads/2018/01/groups.xls");
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "fileName");
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // to notify when download is complete
+                    request.allowScanningByMediaScanner();// if you want to be available from media players
+                    DownloadManager manager = (DownloadManager)getActivity().getSystemService(DOWNLOAD_SERVICE);
+                    manager.enqueue(request);
+                }
+
             }
         });
 
@@ -211,7 +246,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
             }
 
             try {
-                if (val == "" || getDays(val) > 1) {
+                if (val == "" || getHourse(val) > 4) {
                     WebSiteHelper helper = new WebSiteHelper(this, getContext());
                     helper.getGroups();
                 } else {
@@ -246,7 +281,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                 String lang = result.getString(6);
                 float latitude = result.getFloat(7);
                 float longitude = result.getFloat(8);
-                float db_km = result.getFloat(8);
+                int dayNum = result.getInt(10);
 
                 float km = 0;
 
@@ -255,7 +290,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
                 }
 
 
-                Group g = new Group(day, fromtime, tomtime, comment, location, lang, latitude, longitude, km);
+                Group g = new Group(day, fromtime, tomtime, comment, location, lang, latitude, longitude, km, dayNum);
                 list.add(g);
             }
 
@@ -275,19 +310,25 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
         spinner.setVisibility(View.GONE);
     }
 
-    public Integer getDays(String date) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public long getHourse(String date) {
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date startDate = null;
         String days = "";
+        long hours = 5;
         try {
             startDate = df.parse(date);
             Date currentTime = Calendar.getInstance().getTime();
-            long mills = currentTime.getTime() - startDate.getTime();
-            days = String.valueOf(mills / (24 * 60 * 60 * 1000));
+            long diff = currentTime.getTime() - startDate.getTime();//as given
+
+            hours = TimeUnit.MILLISECONDS.toHours(diff);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return Integer.parseInt(days);
+
+        return hours;
     }
 
     @Override
@@ -312,7 +353,7 @@ public class GroupsFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
             Date currentTime = Calendar.getInstance().getTime();
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             db.insertSettings("group", df.format(currentTime));
 
             setGroupList();

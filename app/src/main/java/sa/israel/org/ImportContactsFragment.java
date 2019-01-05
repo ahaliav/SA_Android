@@ -2,11 +2,16 @@ package sa.israel.org;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -15,12 +20,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 
 /**
@@ -56,6 +64,8 @@ public class ImportContactsFragment extends Fragment implements SearchView.OnQue
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS}, 12);
             }
         }
+
+
 
         startHeavyProcessing();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.importPhoneContacts));

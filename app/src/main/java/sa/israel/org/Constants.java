@@ -27,7 +27,7 @@ public class Constants {
     }
 
     public static String getGroupsCsv(){
-        return "https://www.sa-israel.org/wp-content/uploads/2017/11/wpdt_export.csv";
+        return "https://www.sa-israel.org/wp-content/uploads/2018/01/wpdt_export.csv";
     }
 
     public static String getAllUsersUrl(){

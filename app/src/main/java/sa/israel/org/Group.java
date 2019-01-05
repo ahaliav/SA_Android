@@ -5,7 +5,7 @@ package sa.israel.org;
  */
 
 public class Group {
-    public Group (String day, String fromTime, String toTime, String comment, String location, String lang, float latitude,float longitude, float km) {
+    public Group (String day, String fromTime, String toTime, String comment, String location, String lang, float latitude,float longitude, float km, int dayNum) {
         this.day = day;
         this.fromTime = fromTime;
         this.toTime = toTime;
@@ -15,6 +15,7 @@ public class Group {
         this.latitude = latitude;
         this.longitude = longitude;
         this.km = km;
+        this.dayNum = dayNum;
     }
 
     private String day = "";
@@ -55,6 +56,11 @@ public class Group {
     private float longitude = 0;
     public float getLongitude(){
         return longitude;
+    }
+
+    private int dayNum = 0;
+    public int getDayNum(){
+        return dayNum;
     }
 
     private float km = 0;

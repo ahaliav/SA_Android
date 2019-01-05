@@ -9,6 +9,7 @@ import java.util.Comparator;
 public class GroupComparator implements Comparator<Group> {
     @Override
     public int compare(Group o1, Group o2) {
-        return Float.compare(o1.getKm(),o2.getKm());
+       return Float.compare(((float)o1.getDayNum() + o1.getKm()),((float)o2.getDayNum() + o2.getKm()));
+
     }
 }

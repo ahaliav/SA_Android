@@ -123,6 +123,8 @@
     <string name="ig_northh">North Zone</string>
     <string name="ig_eng">English Groups</string>
     <string name="trsr">Treasurer</string>
+    <string name="download">Download</string>
+
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>

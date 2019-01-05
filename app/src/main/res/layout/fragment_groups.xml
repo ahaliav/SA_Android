@@ -21,6 +21,20 @@
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:orientation="horizontal">
+
+
+            <ImageButton
+                android:id="@+id/btnExcelDownloadFile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:tooltipText="@string/download"
+                android:background="#ffffff"
+                android:src="@drawable/btn_download_click"
+                android:tint="#233344" />
+
             <SearchView
                 android:id="@+id/searchgroup"
                 android:layout_width="match_parent"

@@ -112,6 +112,7 @@
     <string name="loadingcontacts">טוען אנשי קשר ...</string>
     <string name="importPhoneContacts">יבוא אנשי קשר</string>
     <string name="savingdata">שומר נתונים...</string>
+    <string name="download">להורדה</string>
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>
